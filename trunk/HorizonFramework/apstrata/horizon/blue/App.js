@@ -42,11 +42,12 @@ dojo.declare("apstrata.horizon.blue.App",
 //			self.main.openById('random')			
 		})
 
-		this.addChild(this.main)
-		setTimeout(function() {
-//			self.layout()
-		}, 100)
+		this.addMainPanel(this.main)
 		
+		this.inherited(arguments)
+	},
+	
+	startup: function() {
 		this.inherited(arguments)
 	}
 })

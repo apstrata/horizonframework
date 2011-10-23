@@ -25,21 +25,18 @@ dojo.require('dijit.layout._LayoutWidget')
 
 dojo.require('apstrata.horizon.ControlToolbar');
 
-
 /*
  * Layout widget container of the HStackable widgets
  */
-dojo.declare("apstrata.horizon.Container2", 
+dojo.declare("apstrata.horizon.Container", 
 [dijit.layout._LayoutWidget], 
 {
 	
 	// Provides a unique key for storing preferences data (by default to a cookie)
 	applicationId: "horizon",
-	
+
+	margin: null,
 	_marginRight: 5,
-
-
-	__children: {},
 	
 	constructor: function(attrs) {
 		if (attrs && attrs.applicationId) this.applicationId = attrs.applicationId
@@ -56,166 +53,12 @@ dojo.declare("apstrata.horizon.Container2",
 		// Decompose the path (request param path) into an array
 		if (this.request['path']) this.path = this.request['path'].split('/');
 		else this.path = [];
-		
-		this._fixedMainPanel = false
-	},
-	
-	addMainPanelx: function (child, fixed) {
-		this._mainPanel = child
-		//this.addChild(child)
-		dojo.place(child.domNode, dojo.body())
-		dojo.style(child.domNode, "zIndex", 105)
-		
-		if (fixed) this._fixedMainPanel = true
-	},
-	
-	addChildx: function(child) {
-		this.__children[child.id] = child
-		
-		this.inherited(arguments)
-	},
-	
-	removeChildx: function(child) {
-		if (this.__children[child.id]) delete this.__children[child.id]
-		
-		this.inherited(arguments)
-	},
-	
-	autoScroll: function() {
-		this.domNode.scrollLeft = this.domNode.scrollWidth - this.domNode.clientWidth
-	},
-		
-	getRemainingFreeWidth: function(excludeId) {
-		var w = 0
-		
-		for (id in this.__children) {
-			if (id != excludeId) {
-				var child = this.__children[id]
-				
-				w += child.domNode.offsetWidth
-			}
-		}
 
-//	todo: don't know why this is not working on logout		
-//		dojo.forEach(this.__children, function(child) {
-//			w += child.domNode.offsetWidth
-//		})
-
-		return this.domNode.offsetWidth - w - this._marginRight * (this.getChildren().length)
-	},
-
-	_setFixedPanel: function() {
-		var w = dijit.getViewport()
-		var coord = {}
-		
-		var p = dojo.position(this._mainPanel.domNode)
-
-//		coord.top = (this.margin.top + this._marginRight) + "px"
-		coord.left = (this.margin.left + this._marginRight + p.w) + "px"
-		coord.width = (w.w - this.margin.left - this.margin.right - 2*this._marginRight - p.w) + "px"
-//		coord.height = (w.h - this.margin.top - this.margin.bottom - 2*this._marginRight) + "px"
-		
-//		this.height = (w.h - this.margin.top - this.margin.bottom - 2*this._marginRight)
-console.dir(coord)		
-		dojo.style(this.domNode, {
-			left: coord.left,
-			width: coord.width,
-			background: "red"
-		})
-		
-//		this.layout()
-	},
-
-	/*
-	 * Auto calculate coordinates and size of Explorer based on 
-	 *  window size and this.margin analog to CSS margin
-	 */
-	_layoutMarginModex: function() {
-		var w = dijit.getViewport()
-		
-		var coord = {}
-
-		coord.top = (this.margin.top + this._marginRight) + "px"
-		coord.height = (w.h - this.margin.top - this.margin.bottom - 2*this._marginRight) + "px"
-
-		if (this._fixedMainPanel) {
-			var p = dojo.position(this._mainPanel.domNode)
-			coord.left = (this.margin.left + this._marginRight + p.w) + "px"
-			coord.width = (w.w - this.margin.left - this.margin.right - 2*this._marginRight - p.w) + "px"
-		} else {
-			coord.left = (this.margin.left + this._marginRight) + "px"
-			coord.width = (w.w - this.margin.left - this.margin.right - 2*this._marginRight) + "px"
-		}
-
-		this.height = (w.h - this.margin.top - this.margin.bottom - 2*this._marginRight)
-		
-		dojo.style(this.domNode, {
-			top: coord.top,
-			left: coord.left,
-			width: coord.width,
-			height: coord.height,
-			zIndex: "100"
-		})
-
-		coord.top = (this.margin.top + this._marginRight - 5) + "px"
-		coord.left = (this.margin.left + this._marginRight - 5) + "px"
-		coord.width = (w.w - this.margin.left - this.margin.right - 2*this._marginRight + 10) + "px"
-		coord.height = (w.h - this.margin.top - this.margin.bottom - 2*this._marginRight + 10) + "px"
-
-		dojo.style(this.background, {
-			top: coord.top,
-			left: coord.left,
-			width: coord.width,
-			height: coord.height,
-			zIndex: "1"
-		})
-
-		coord.top = (this.margin.top - 23) + "px"
-		coord.left = (w.w - 2*this._marginRight + 5 - 200) + "px"
-		coord.left = (this.margin.left + this._marginRight + 5) + "px"
-
-		this._controlToolbar.setPosition(coord.top, coord.left)
-	},
-		
-	startup: function() {
-		//setTimeout(dojo.hitch(this, 'loadPreferences'), 3000)
-		this.loadPreferences();
-		
-		this.inherited(arguments)
-	},
-
-	loadPreferences: function() {
-		var prefs = {}
-
-		try {
-			var prefs = dojo.fromJson(dojo.cookie(this.applicationId + "-prefs"))
-			if (prefs) this.preferencesChanged(prefs); else prefs = {}
-		} catch (err) {
-			
-		}
-		
-		return prefs
-	},
-
-	savePreferences: function(preferences) {
-		dojo.cookie(this.applicationId + "-prefs", dojo.toJson(preferences), { expires: 365 })
-		this.preferencesChanged(preferences)
-	},
-
-	preferencesChanged: function(preferences) {}
-})
-
-
-dojo.declare("apstrata.horizon.Container", 
-[apstrata.horizon.Container2], 
-{
-	
-	margin: null,
-	marginMax: {left: 0,right: 0,top: 50,bottom: 0},
-	
-	consturctor: function() {
 		this._maximize = false
 		this._mainPanel = false
+		this._count = 0
+		this.__children = {}
+		this.__childrenOrder = {}
 	},
 	
 	postCreate: function() {
@@ -244,13 +87,36 @@ dojo.declare("apstrata.horizon.Container",
 			dojo.connect(self._controlToolbar, "restore", dojo.hitch(this, 'restore'))
 		}
 		
-		this.layout()
-
 		this.inherited(arguments)
 	},
 	
 	startup: function() {
+		//setTimeout(dojo.hitch(this, 'loadPreferences'), 3000)
+		setTimeout(dojo.hitch(this, 'layout'), 100)
+
 		this.inherited(arguments)
+	},
+	
+	autoScroll: function() {
+		this.domNode.scrollLeft = this.domNode.scrollWidth - this.domNode.clientWidth
+	},
+		
+	getRemainingFreeWidth: function(excludeId) {
+		var w = 0
+		
+		for (id in this.__children) {
+			if (id != excludeId) {
+				var child = this.__children[id]
+				
+				w += child.domNode.offsetWidth
+			}
+		}
+
+		return this.domNode.offsetWidth - w - this._marginRight * (this.getChildren().length)
+	},
+	
+	getMarginBetweenPanels: function() {
+		return this._marginRight
 	},
 	
 	layout: function() {
@@ -371,6 +237,7 @@ dojo.declare("apstrata.horizon.Container",
 	addMainPanel: function (child, fixed) {
 		var self = this
 		this._mainPanel = child
+		child.setFixedPanel(true)
 		
 		setTimeout(function() {
 			dojo.place(child.domNode, self.fixedPanelNode)
@@ -380,13 +247,39 @@ dojo.declare("apstrata.horizon.Container",
 	
 	addChild: function(child) {
 		this.__children[child.id] = child
+		this.__childrenOrder[child.id] = this._count++
 		
 		this.inherited(arguments)
 	},
-	
+
+	getChildPosition: function(child) {
+		return this.__childrenOrder[child.id]
+	},	
+
+	/* this doesn't work need to call the panel close method too */
 	removeChild: function(child) {
 		if (this.__children[child.id]) delete this.__children[child.id]
 		
 		this.inherited(arguments)
 	},
+
+	loadPreferences: function() {
+		var prefs = {}
+
+		try {
+			var prefs = dojo.fromJson(dojo.cookie(this.applicationId + "-prefs"))
+			if (prefs) this.preferencesChanged(prefs); else prefs = {}
+		} catch (err) {
+			
+		}
+		
+		return prefs
+	},
+	
+	savePreferences: function(preferences) {
+		dojo.cookie(this.applicationId + "-prefs", dojo.toJson(preferences), { expires: 365 })
+		this.preferencesChanged(preferences)
+	},
+
+	preferencesChanged: function(preferences) {}
 })

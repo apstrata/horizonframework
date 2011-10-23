@@ -1,0 +1,24 @@
+<div class='verticalList hStackable rounded-sml' style='width: {{ width }}px'>
+
+	<div dojoAttachPoint='dvHeader' class='layoutRegion' style='height: {{ headerHeight }};'>header</div>
+	<div dojoAttachPoint='dvMiddle' class='layoutRegion2' style='height: {{ contentHeight }};'></div>
+	<div dojoAttachPoint='dvFooter' class='layoutRegion' style='height: {{ footerHeight }};'>footer</div>
+
+
+	<!-- table>
+	<div dojoAttachPoint='dvHeader' class='layoutRegion' style='height: {{ headerHeight }};'>header</div>
+	<div dojoAttachPoint='dvMiddle' class='layoutRegion2' style='height: {{ contentHeight }};'></div>
+	<div dojoAttachPoint='dvFooter' class='layoutRegion' style='height: {{ footerHeight }};'>footer</div>
+	<div dojoAttachPoint='dvContent' class='myGrid'></div> 
+		<tr>
+			<td>
+				<div dojoAttachPoint='dvHeader'>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			</td>
+		</tr>
+	</table -->
+</div>

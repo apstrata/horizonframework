@@ -1,0 +1,22 @@
+<div>
+	<table>
+		<tr>
+			<td>
+				<table dojoAttachPoint="dvHeader">
+					<tr>
+						<td>
+							<div class='sortField'>
+								<img dojoAttachPoint='imgUp' dojoAttachEvent='onmouseover: _upOn, onmouseout: _upOff, onclick: _ascending' class='off' src='{{ _apstrataRoot }}/resources/images/pencil-icons/sml-up-arrow.png'><img dojoAttachPoint='imgDown'  dojoAttachEvent='onmouseover: _downOn, onmouseout: _downOff, onclick: _descending' class='off' src='{{ _apstrataRoot }}/resources/images/pencil-icons/sml-down-arrow.png'>
+							</div>
+						</td>
+						<td>
+							<div class='searchField'>
+								<input type='text' dojoAttachPoint='fldSearchField' dojoAttachEvent='onkeypress: filterChange' value='' />
+							</div>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>	
+</div>

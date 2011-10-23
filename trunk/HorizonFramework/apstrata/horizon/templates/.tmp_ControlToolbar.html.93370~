@@ -1,0 +1,14 @@
+<div class='horizonControlToolbar'>
+	<div class='tab iconTab'>
+		<img class="icon" height="20" alt='{{ _actionName }}' src='{{ _apstrataRoot }}/resources/images/pencil-icons/maximize.png' dojoAttachPoint='_MinMaxIcon' dojoAttachEvent='onclick: maximize'>
+	</div> 
+	<div class='tab'>
+		Sample Tab 1
+	</div> 
+	<div class='tab'>
+		Sample Tab 2
+	</div> 
+	<div class='tab'>
+		Sample Tab 3
+	</div> 
+</div>

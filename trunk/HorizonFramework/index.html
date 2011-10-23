@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<title>ap((strata Horizon Demo App</title>
+
+	    <link rel="shortcut icon" href="images/favicon.png" type="image/png" />
+	
+		<script type="text/javascript" src="lib/dojo/dojo/dojo.js" djConfig="parseOnLoad: false"></script>
+
+		<!-- 
+			pencil icons are under cc license from http://olawolska.com/newsy/49-hand-drawing-icons-set/
+		-->
+
+	    <style type="text/css">
+			@import "lib/dojo/dojo/resources/dojo.css";
+		    @import "lib/dojo/dijit/themes/claro/claro.css";
+            @import "lib/dojo/dojox/grid/resources/Grid.css";
+		    @import "lib/dojo/dojox/grid/resources/claroGrid.css";
+			@import "lib/dojo/dojox/form/resources/FileInput.css";
+
+	        @import "lib/apstrataSDK/apstrata/themes/apstrata/apstrata.css";
+	        @import "lib/apstrataSDK/apstrata/themes/apstrata/Alert.css";
+	        @import "lib/apstrataSDK/apstrata/themes/apstrata/RESTMonitor.css";
+
+
+	        @import "apstrata/themes/horizon.css";
+
+			@import "apstrata/horizon/blue/css/Toaster.css";
+			@import "apstrata/horizon/blue/css/demo.css";
+
+			.blueHorizon {
+				font-family: sans-serif;
+				font-size: 1.2em;
+
+				top: 44px;
+				left: 70px;
+				width: 700px;
+				height: 400px;
+
+			}
+        </style>
+		
+		<script>
+			apstrata = {}
+			apstrata.baseUrl = 'apstrata'
+			// if index.html is in apstrata/horizon/blue, apstrata.baseUrl = '../../../apstrata'
+
+			dojo.registerModulePath("apstrata", "../../apstrataSDK/apstrata")
+			dojo.registerModulePath("apstrata.horizon", "../../../apstrata/horizon")
+
+			dojo.require("apstrata.horizon.blue.App")
+			dojo.require("apstrata.Connection")
+
+			dojo.addOnLoad(function() {
+
+				// TODO: find a better way to do this
+				dojo.extend(dijit._Widget, {
+					_apstrataRoot: apstrata.baseUrl
+				})
+
+				// These are visual properties used by the application that can not fit in a CSS file yet 			
+				apstrata.horizon.magicUIdimensions = {
+					"list.SimpleFilterAndSort.width": 35,
+					"panel.finalAlpha": .95
+				}
+
+				// use apstrata demo account credentials
+				var credentials = {
+					key: "",
+					secret: ""	
+				}
+
+				dojo.setObject("bluehorizon.config.apstrataConnection", 
+					new apstrata.Connection({credentials: credentials}))
+
+				dojo.require("dojo.parser")
+				dojo.parser.parse()
+			})
+
+		</script>
+	</head>
+	<body class='claro'>
+		<img src="apstrata/resources/images/apstrata-big.png" class='logo'>
+		<div class='appTitle'>Blue Horizon Demo App</div>		
+		<div style='clear:both'></div>
+
+		<div>
+			<!-- 
+				The horizon container is positioned based on the CSS class attributes, 
+				you can use alternatively the margin attribute:
+					e.g.: margin="{top: 70, left: 1, right:1, bottom: 1}"
+			-->
+			<div dojoType="apstrata.horizon.blue.App" 
+				class="blueHorizon"></div>
+		</div>
+	</body>
+</html>
+<!--
+				margin="{top: 90, left: 5, right:5, bottom: 5}"
+
+-->
+<!-- div class="logo">ap<span style="color: #FF6600;">((</span>strata</div-->

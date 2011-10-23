@@ -1,0 +1,60 @@
+blue horizon picture:
+http://www.flickr.com/photos/28634332@N05/5975258728/
+
+
+issues:
++deselect a list item when searching
++return a deffered after opening a panel to know when the operation completes
++when typing in the filter box, the footer keeps flashing, the dimensions of the content div are changing, it goes up then is pushed down by SimpleListContent.layout
++tooltips not working on SimpleFilterAndSort
+
+features:
++tabs open additional horizon
+
+
+
+				dojo.xhrGet({
+					url: "initAccount.json",
+					handleAs: 'json',
+					
+					load: function(json) {
+						console.dir(json)
+//						var is = new apstrata.util.BulkUpdate({connection: connection, data: json})
+					},
+					
+					error: function() {
+						// not found
+						apstrata.alert("File initAccount.json not found!")
+					}
+				})
+
+				dojo.require("apstrata.horizon.util.TestDataSets")
+				var testData = new apstrata.horizon.util.TestDataSets()
+
+				var data = []
+				var item
+			/*
+				dojo.forEach(testData.crayolaColors, function(color) {
+					item = {
+						"apsdb.action": "SaveDocument",
+						"apsdb.store": 'horizonTesting'
+					}
+					
+					item = dojo.mixin(item, color)
+					console.dir(item)
+				})
+*/
+				data = [
+					{
+						apsdb: {store: "horizonTesting"},
+						"apsdb.action": "SaveDocument",
+						"code": "12345",
+						"name": "some color",
+						"number": "123",
+						"apsdb.documentKey": "theKey"
+					}
+				]
+
+				dojo.require("apstrata.util.BulkUpdate")
+				var bulkUpdate = new apstrata.util.BulkUpdate({connection: bluehorizon.config.apstrataConnection, data:data})
+	

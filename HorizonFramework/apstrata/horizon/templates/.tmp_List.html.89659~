@@ -1,0 +1,14 @@
+<div class='list' style='width: {{ width }}px'>
+	<div dojoAttachPoint='dvHeader'></div>
+	<div dojoAttachPoint='dvItems'>
+	</div> 
+	<div dojoAttachPoint='dvLoading' style="text-align: center;position:relative;">
+		<img src="apstrata/resources/images/misc/loading-animation-3lights.gif">
+		<div style="font-size:0.7em;">refreshing</div>
+	</div>
+	<div dojoAttachPoint='dvFooter' style='width: 100%;text-align: center;overflow: hidden;'>
+		{% if editable %} 
+		<div dojoType='dijit.form.ToggleButton' iconClass='dijitCheckBoxIcon' dojoAttachPoint='_tglEdit' dojoAttachEvent='onClick: editItems'>delete</div><div dojoType='dijit.form.Button' dojoAttachEvent='onClick: newItem' dojoAttachPoint='_btnNew'>new</div>
+		{% endif %}
+	</div>
+</div>

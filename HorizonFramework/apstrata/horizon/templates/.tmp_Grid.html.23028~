@@ -1,0 +1,32 @@
+<div class='verticalList hStackable rounded-sml' style='width: {{ width }}px'>
+	<style>
+		.myGrid {
+			position: relative;
+			left: -5px;
+			width: 400px; height: 300px;
+		}
+		
+		.layoutRegion {
+			width: 100%;
+			background: green;
+		}
+	</style>
+	<div dojoAttachPoint='dvHeader' class='layoutRegion'>header</div>
+	<div dojoAttachPoint='dvMiddle' class='layoutRegion'></div>
+	<div dojoAttachPoint='dvFooter' class='layoutRegion'>footer</div>
+
+
+	<!-- table>
+	<div dojoAttachPoint='dvContent' class='myGrid'></div> 
+		<tr>
+			<td>
+				<div dojoAttachPoint='dvHeader'>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			</td>
+		</tr>
+	</table -->
+</div>

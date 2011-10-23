@@ -27,25 +27,38 @@ dojo.require('dojo.fx.easing')
  */
 apstrata.horizon.util.PanelAnimation = function(panel) {
 	if (panel.parentNode) {
+
+		var startLeft, endLeft
+		if (panel.getParent().isFixedPanel()) {
+			startLeft = -200
+			endLeft = panel.getContainer()._marginRight
+		} else {
+			startLeft = panel.parentNode.offsetLeft 
+			endLeft = panel.parentNode.offsetLeft + panel.parentNode.offsetWidth + panel.getContainer().getMarginBetweenPanels()
+		}
+
 		dojo.style(panel.domNode, {
-			left: (panel.parentNode.offsetLeft) + "px",
+			left: (startLeft) + "px",
 			opacity: .6
 		})
-
+		
 		var _animation = {
 			node: panel.domNode,
 			easing: dojo.fx.easing.cubicOut,
-			duration: 200,
+			duration: 500,
 			onEnd: function() {
 				panel.getContainer().autoScroll()
+			},
+			properties: {
+			// The animation coordinates top/left have already been calculated during resize
+				left: endLeft,
+				opacity: apstrata.horizon.magicUIdimensions["panel.finalAlpha"]?apstrata.horizon.magicUIdimensions["panel.finalAlpha"]:1
 			}
 		}
+
 		
-		// The animation coordinates top/left have already been calculated during resize
-		_animation.properties = {
-			left: panel.parentNode.offsetLeft + panel.parentNode.offsetWidth + panel.getContainer()._marginRight,
-			opacity: apstrata.horizon.magicUIdimensions["panel.finalAlpha"]?apstrata.horizon.magicUIdimensions["panel.finalAlpha"]:1
-		}
+//		_animation.properties = {
+//		}
 		
 		dojo.animateProperty(_animation).play()
 	}

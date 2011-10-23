@@ -63,6 +63,7 @@ dojo.declare("apstrata.horizon.Panel",
 			}
 		}
 		
+		this._fixedPanel = false
 		this.deferred = new dojo.Deferred()
 	},
 
@@ -90,7 +91,7 @@ dojo.declare("apstrata.horizon.Panel",
 		// mandatory style attributes for the panels to function
 		dojo.style(this.domNode, "position", "absolute")
 		dojo.style(this.domNode, "overflow", "hidden")
-		dojo.style(this.domNode, "height", "100%")
+		dojo.style(this.domNode, "height", "99%")
 
 		// When rendering the domNode id and widgetid are lost, save them them reinstall them in this.render
 		this._savedId = this.domNode.id
@@ -107,8 +108,8 @@ dojo.declare("apstrata.horizon.Panel",
 				self._savePos = dojo.marginBox(self.domNode)
 				var w = dojo.marginBox(self.getContainer().domNode)
 				dojo.style(self.domNode, {
-					left: "0px",
-					width: w.w+"px", 
+					left: self.getContainer().getMarginBetweenPanels() + "px",
+					width: w.w - self.getContainer().getMarginBetweenPanels() +"px", 
 				})
 			})
 			dojo.connect(icons, 'restore', function() {
@@ -136,6 +137,18 @@ dojo.declare("apstrata.horizon.Panel",
 
 	getParent: function() {
 		return this._parent
+	},
+	
+	setFixedPanel: function(fixed) {
+		this._fixedPanel = fixed	
+	},
+	
+	isFixedPanel: function() {
+		return this._fixedPanel
+	},
+	
+	getPanelPosition: function() {
+		return this.container.getChildPosition(this)
 	},
 
 	getContainer: function() {

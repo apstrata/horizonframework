@@ -9,6 +9,6 @@ import latest dojo SDK into lib/dojo, the folder will look like:
 	<projectFolder>/lib/dojo/dojox
 	<projectFolder>/lib/dojo/util
 
-import latest apstrata SDK into lib/apstrata, the folder will look like:
+import latest apstrata SDK into lib/apstrataSDK, the folder will look like:
 	<projectFolder>/lib/apstrata
 

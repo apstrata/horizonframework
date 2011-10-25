@@ -107,9 +107,11 @@ dojo.declare("apstrata.horizon.Panel",
 			dojo.connect(icons, 'maximize', function() {
 				self._savePos = dojo.marginBox(self.domNode)
 				var w = dojo.marginBox(self.getContainer().domNode)
+				var marginL = dojo.style(self.domNode, "marginLeft")
+				var marginR = dojo.style(self.domNode, "marginRight")
 				dojo.style(self.domNode, {
-					left: self.getContainer().getMarginBetweenPanels() + "px",
-					width: w.w - self.getContainer().getMarginBetweenPanels() +"px", 
+					left: "0px",
+					width: w.w - marginL -marginR +"px", 
 				})
 			})
 			dojo.connect(icons, 'restore', function() {

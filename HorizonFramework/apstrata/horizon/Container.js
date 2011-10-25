@@ -77,6 +77,7 @@ dojo.declare("apstrata.horizon.Container",
 
 		// Create the background transparent div
 		this.background = dojo.create("div", null, dojo.body())
+		this.background.id = 'horizonBackground';
 		dojo.addClass(this.background, "horizonBackground")
 		
 		// Only add the control toolbar if it is not already set by the user-application.

@@ -20,9 +20,10 @@
 
 dojo.provide('apstrata.horizon.Login');
 
+dojo.require('apstrata.horizon.Panel');
 
 dojo.declare("apstrata.horizon.Login", 
-[dijit._Widget, dojox.dtl._Templated, apstrata.horizon._HStackableMixin], 
+[dijit._Widget, dojox.dtl._Templated, apstrata.horizon.Panel], 
 {
 	widgetsInTemplate: true,
 	templatePath: dojo.moduleUrl("apstrata.horizon", "templates/Login.html"),

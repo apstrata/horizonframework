@@ -23,7 +23,7 @@ dojo.provide("apstrata.horizon.util.PanelAnimation")
 dojo.require('dojo.fx.easing')
 
 /*
- * default function used for dojo.store.Memory to filter items and highlight item labels based on a string
+ * default function used by dojo.horizon.Panel to animate while opening
  */
 apstrata.horizon.util.PanelAnimation = function(panel) {
 	if (panel.parentNode) {
@@ -31,20 +31,21 @@ apstrata.horizon.util.PanelAnimation = function(panel) {
 		var startLeft, endLeft
 		if (panel.getParent().isFixedPanel()) {
 			startLeft = -200
-			endLeft = panel.getContainer()._marginRight
+			endLeft = 0
 		} else {
+console.debug(panel.parentNode.offsetLeft, panel.parentNode.offsetWidth)		
 			startLeft = panel.parentNode.offsetLeft 
-			endLeft = panel.parentNode.offsetLeft + panel.parentNode.offsetWidth 
+			endLeft = panel.parentNode.offsetLeft + panel.parentNode.offsetWidth
 		}
 
 		dojo.style(panel.domNode, {
 			left: (startLeft) + "px",
 			opacity: .6
 		})
-		
+
 		var _animation = {
 			node: panel.domNode,
-			easing: dojo.fx.easing.cubicOut,
+			easing: dojo.fx.easing.cubicInOut,
 			duration: 500,
 			onEnd: function() {
 				panel.getContainer().autoScroll()

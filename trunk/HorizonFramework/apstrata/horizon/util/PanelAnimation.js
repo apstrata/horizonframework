@@ -34,7 +34,7 @@ apstrata.horizon.util.PanelAnimation = function(panel) {
 			endLeft = panel.getContainer()._marginRight
 		} else {
 			startLeft = panel.parentNode.offsetLeft 
-			endLeft = panel.parentNode.offsetLeft + panel.parentNode.offsetWidth + panel.getContainer().getMarginBetweenPanels()
+			endLeft = panel.parentNode.offsetLeft + panel.parentNode.offsetWidth 
 		}
 
 		dojo.style(panel.domNode, {

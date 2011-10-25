@@ -36,7 +36,7 @@ dojo.declare("apstrata.horizon.Container",
 	applicationId: "horizon",
 
 	margin: null,
-	_marginRight: 5,
+	_marginRight: 0,
 	
 	constructor: function(attrs) {
 		if (attrs && attrs.applicationId) this.applicationId = attrs.applicationId
@@ -112,11 +112,7 @@ dojo.declare("apstrata.horizon.Container",
 			}
 		}
 
-		return this.domNode.offsetWidth - w - this._marginRight * (this.getChildren().length)
-	},
-	
-	getMarginBetweenPanels: function() {
-		return this._marginRight
+		return this.domNode.offsetWidth - w
 	},
 	
 	layout: function() {
@@ -126,6 +122,8 @@ dojo.declare("apstrata.horizon.Container",
 		dojo.forEach(this.getChildren(), function(child) {
 			child.layout();
 		})
+
+		this._mainPanel.layout()
 
 		this.inherited(arguments)
 	},
@@ -240,6 +238,7 @@ dojo.declare("apstrata.horizon.Container",
 		child.setFixedPanel(true)
 		
 		setTimeout(function() {
+			dojo.addClass(child.domNode, "mainPanel")
 			dojo.place(child.domNode, self.fixedPanelNode)
 			child.layout()
 		}, 100)

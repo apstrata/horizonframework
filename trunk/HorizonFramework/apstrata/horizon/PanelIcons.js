@@ -29,7 +29,6 @@ dojo.declare("apstrata.horizon.PanelIcons",
 	
 	click: function() {
 		var self = this
-console.debug(this.img)		
 
 		if (this.maximized) {
 			this.maximized = false

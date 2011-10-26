@@ -35,7 +35,6 @@ dojo.declare("apstrata.horizon.blue.DataList",
 	filterable: true,
 	sortable: true,
 	editable: true,
-	width: 400,
 	
 	idProperty: 'key',
 	labelProperty: 'title',
@@ -48,6 +47,12 @@ dojo.declare("apstrata.horizon.blue.DataList",
 			store: "website",
 			queryFields: "formType, title, template"
 		})
+	},
+
+	postCreate: function() {
+		var self = this
+		dojo.style(this.domNode, "width", "300px")
+		this.inherited(arguments)
 	},
 
 	_queryParams: function() {

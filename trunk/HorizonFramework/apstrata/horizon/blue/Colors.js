@@ -25,9 +25,7 @@ dojo.require("apstrata.horizon.util.TestDataSets")
  
 dojo.declare("apstrata.horizon.blue.Colors", 
 [apstrata.horizon.List], 
-{
-	width: 300,
-	
+{	
 	//
 	// widget attributes
 	//
@@ -54,6 +52,7 @@ dojo.declare("apstrata.horizon.blue.Colors",
 	postCreate: function() {
 		var self = this
 		if (this.myColor) dojo.style(this.domNode, "background", this.myColor.code)
+		dojo.style(this.domNode, "width", "300px")
 		this.inherited(arguments)
 	},
 		

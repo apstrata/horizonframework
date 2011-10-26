@@ -25,8 +25,6 @@ dojo.require("apstrata.horizon.List")
 dojo.declare("apstrata.horizon.blue.List", 
 [apstrata.horizon.List], 
 {
-	width: 300,
-	
 	_seed: "Items are, in general, returned in an indeterminate order. This isn’t always what you want to happen; there are definite cases where sorting items based on specific attributes is important. Fortunately, you do not have to do the sorting yourself because dojo.data provides a mechanism to do it for you. The mechanism is just another option passed to fetch, the sort array.",
 	
 	//
@@ -47,6 +45,11 @@ dojo.declare("apstrata.horizon.blue.List",
 		this.store = new dojo.store.Memory({data: self.items})
 	},
 		
+	postCreate: function() {
+		dojo.style(this.domNode, "width", "250px")
+		this.inherited(arguments)	
+	},
+	
 	onClick: function(index, id) {
 		var self = this
 	}

@@ -39,8 +39,8 @@ dojo.declare("apstrata.horizon.Panel",
 	parentList: null,
 
 	maximizePanel: false,
-	width: 160,
-	height: 300,
+//	width: 160,
+//	height: 300,
 
 	/*
 	 * Instantiate an HStackable and set its parent
@@ -88,6 +88,7 @@ dojo.declare("apstrata.horizon.Panel",
 	},
 
 	postCreate: function() {
+console.debug('panel: postCreate')		
 		var self = this
 
 		// mandatory style attributes for the panels to function
@@ -227,6 +228,7 @@ dojo.declare("apstrata.horizon.Panel",
 	 * Executes animation effect after a slide contents have been refreshed
 	 */
 	render: function() {
+//console.debug('panel: render')		
 		var self = this
 		this.inherited(arguments)
 
@@ -243,6 +245,7 @@ dojo.declare("apstrata.horizon.Panel",
 	 * Invoked by the container when the window size changes
 	 */
 	layout: function() {
+//console.debug('panel: layout')		
 		this._setStyle()
 	}
 })

@@ -51,26 +51,24 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 		this._lastSelectedIndex = null
 
 		this._normalizeResult(args.result)
-		this._calcDimensions()
 	},
 	
 	postCreate: function() {
+console.debug('SimpleListContent: postCreate')
+
+		var self = this
+				
+		this.render()
 		this.inherited(arguments)
 	},
 
-	// calculate variables to be used inside the template
-	_calcDimensions: function() {
-		this.height = this.parent.getContentHeight()
-	},
-
 	layout: function() {
+console.debug('SimpleListContent: layout')
 		var self = this
-		self.render()
 				
 		setTimeout(
 			function() {
-				self._calcDimensions()
-				dojo.style(self.domNode, "height", self.height + "px")				
+				dojo.style(self.domNode, "height", self.parent.getContentHeight() + "px")				
 				if (self._lastSelectedIndex) self.toggleItem(self._lastSelectedIndex, true)
 			}, 
 			1)
@@ -78,7 +76,6 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 	
 	render: function() {
 		var self = this
-//		dojo.style(self.domNode, "height", self.height + "px")				
 		this.inherited(arguments)
 	},
 
@@ -86,7 +83,7 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 		var self = this
 		
 		this._normalizeResult(result)
-//		this.render()
+		this.render()
 		this.layout()
 	},
 	

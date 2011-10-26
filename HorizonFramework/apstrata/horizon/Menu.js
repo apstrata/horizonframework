@@ -35,18 +35,6 @@ dojo.declare("apstrata.horizon.Menu",
 		]
 	 */
 	
-	constructor: function() {
-		this._connection = null
-	},
-	
-	postCreate: function() {
-		this.inherited(arguments)
-	},
-	
-	startup: function() {
-		this.inherited(arguments)		
-	},
-
 	onClick: function(index, id) {
 		var self = this	
 		

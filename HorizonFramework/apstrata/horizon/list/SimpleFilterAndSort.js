@@ -40,6 +40,7 @@ dojo.declare("apstrata.horizon.list.SimpleFilterAndSort",
 	},
 	
 	layout: function() {
+console.debug('SimpleFilterAndSort: layout')
 		var self = this
 		
 /* TODO: why doesn't this work?
@@ -58,9 +59,21 @@ or this
 		},1)
  */
 
-		dojo.style(this.fldSearchField, {
-			width: (self.parent.width - (apstrata.horizon.magicUIdimensions["list.SimpleFilterAndSort.width"]?apstrata.horizon.magicUIdimensions["list.SimpleFilterAndSort.width"]:38)) + "px"
-		})
+console.debug(dojo.position(self.parent.domNode).w)
+
+		setTimeout(
+			function() {
+console.debug(dojo.position(self.parent.domNode).w)
+			var p = dojo.marginBox (self.parent.domNode)
+				dojo.style(self.fldSearchField, {
+					width: (p.w - apstrata.horizon.magicUIdimensions["list.SimpleFilterAndSort.width"] - 3) + "px"
+	//				width: (self.parent.width - (apstrata.horizon.magicUIdimensions["list.SimpleFilterAndSort.width"]?apstrata.horizon.magicUIdimensions["list.SimpleFilterAndSort.width"]:38)) + "px"
+				})
+			}, 
+			1)
+
+//				width: (self.parent.width - (apstrata.horizon.magicUIdimensions["list.SimpleFilterAndSort.width"]?apstrata.horizon.magicUIdimensions["list.SimpleFilterAndSort.width"]:38)) + "px"
+
 	},
 	
 	postCreate: function() {

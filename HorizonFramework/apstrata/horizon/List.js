@@ -72,6 +72,9 @@ dojo.declare("apstrata.horizon.List",
 	contentClass: apstrata.horizon.list.SimpleListContent,
 	
 	postCreate: function() {
+console.debug('list: postCreate')		
+		this.layout()
+		this.inherited(arguments)
 		var self = this
 
 		// Instantiate the widget that will display the content
@@ -86,10 +89,7 @@ dojo.declare("apstrata.horizon.List",
 			dojo.connect(self._filterWidget, "onSortChange", dojo.hitch(this, "sort"))
 			dojo.connect(self._filterWidget, "onFilterChange", dojo.hitch(this, "filter"))
 		}
-
-		this.layout()
 		this.reload()
-		this.inherited(arguments)
 	},
 	
 	sort: function(sort) {
@@ -104,6 +104,7 @@ dojo.declare("apstrata.horizon.List",
 
 	// function called each time containers dimensions change
 	layout: function() {
+console.debug('list: layout')		
 		var self = this
 
 		setTimeout(
@@ -115,6 +116,8 @@ dojo.declare("apstrata.horizon.List",
 				if (self._listContent) self._listContent.layout()
 				if (self._filterWidget) self._filterWidget.layout()
 			}, 1)
+			
+		this.inherited(arguments)
 	},
 	
 	_markSelected: function(e) {
@@ -241,6 +244,7 @@ dojo.declare("apstrata.horizon.List",
 	},
 	
 	reload: function() {
+console.debug('list: reload')
 		var self = this
 		
 		var query = this._queryParams()

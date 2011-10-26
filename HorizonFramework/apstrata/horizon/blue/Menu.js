@@ -82,11 +82,11 @@ dojo.declare("apstrata.horizon.blue.Menu",
 		this.store = new dojo.store.Memory({data: self.items})
 	},
 	
-	startup: function() {
+//	startup: function() {
 //		this.home()
 		
-		this.inherited(arguments)
-	},
+//		this.inherited(arguments)
+//	},
 	
 	home: function() {
 		dojo.require("apstrata.horizon.blue.Panel")

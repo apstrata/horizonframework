@@ -37,6 +37,8 @@ dojo.declare("apstrata.horizon.Container",
 
 	margin: null,
 	_marginRight: 0,
+	controlToolbarClass: apstrata.horizon.ControlToolbar,
+	showToolbar: true,
 	
 	constructor: function(attrs) {
 		if (attrs && attrs.applicationId) this.applicationId = attrs.applicationId
@@ -77,12 +79,11 @@ dojo.declare("apstrata.horizon.Container",
 
 		// Create the background transparent div
 		this.background = dojo.create("div", null, dojo.body())
-		this.background.id = 'horizonBackground';
 		dojo.addClass(this.background, "horizonBackground")
 		
 		// Only add the control toolbar if it is not already set by the user-application.
-		if (!self._controlToolbar) {
-			self._controlToolbar = new apstrata.horizon.ControlToolbar({container: self});
+		if (this.showToolbar) {
+			self._controlToolbar = new this.controlToolbarClass({container: self});
 			dojo.place(self._controlToolbar.domNode, dojo.body());
 			dojo.connect(self._controlToolbar, "maximize", dojo.hitch(this, 'maximize'))
 			dojo.connect(self._controlToolbar, "restore", dojo.hitch(this, 'restore'))
@@ -150,7 +151,8 @@ dojo.declare("apstrata.horizon.Container",
 		var bMargin = dojo.style(this.background, "borderTopWidth")
 
 		// Get control bar height
-		var cBarH = dojo.position(this._controlToolbar.domNode).h
+		var cBarH = 0
+		if (this._controlToolbar) cBarH = dojo.position(this._controlToolbar.domNode).h
 
 		// Calculate bounding dimensions
 		var bounding = {}
@@ -232,7 +234,7 @@ dojo.declare("apstrata.horizon.Container",
 			zIndex: "1"
 		})
 
-		this._controlToolbar.setPosition(toolbar.top + "px", toolbar.left + "px")
+		if (this._controlToolbar) this._controlToolbar.setPosition(toolbar.top + "px", toolbar.left + "px")
 	},
 
 	addMainPanel: function (child, fixed) {

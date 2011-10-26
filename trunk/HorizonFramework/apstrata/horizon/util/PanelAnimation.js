@@ -33,7 +33,6 @@ apstrata.horizon.util.PanelAnimation = function(panel) {
 			startLeft = -200
 			endLeft = 0
 		} else {
-console.debug(panel.parentNode.offsetLeft, panel.parentNode.offsetWidth)		
 			startLeft = panel.parentNode.offsetLeft 
 			endLeft = panel.parentNode.offsetLeft + panel.parentNode.offsetWidth
 		}

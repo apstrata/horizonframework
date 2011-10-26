@@ -124,7 +124,9 @@ dojo.declare("apstrata.horizon.Container",
 			child.layout();
 		})
 
-		this._mainPanel.layout()
+		if (this._mainPanel) {
+			this._mainPanel.layout();
+		}
 
 		this.inherited(arguments)
 	},

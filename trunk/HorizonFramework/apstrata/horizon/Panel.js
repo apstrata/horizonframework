@@ -59,8 +59,11 @@ dojo.declare("apstrata.horizon.Panel",
 						throw Error('parentNode ' + attrs.parentListId + ' not found')
 				}
 			}
+
+			this._selectIds = attrs.selectIds
 		}
 		
+	
 		this._fixedPanel = false
 		this.deferred = new dojo.Deferred()
 	},

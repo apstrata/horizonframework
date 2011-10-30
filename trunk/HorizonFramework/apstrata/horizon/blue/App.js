@@ -35,10 +35,22 @@ dojo.declare("apstrata.horizon.blue.App",
 	
 	startup: function() {
 		var self = this
+
+		// Check if there's a hash string
+		var s = window.location.hash
+		if (s) {
+			s = s.substring(1)
+			
+			// split it on slashes			
+			var selectIds = s.split('/')
+		}
+		
+		// pass selectIds to main to cascade open panels, this makes panels bookmarkable
+
 		// Create the leftMost Panel
 		this.main = new apstrata.horizon.blue.Menu({
 			container: self,
-//			selectIds: ['colors', 1,2,3]
+			selectIds: selectIds
 		})
 
 		this.addMainPanel(this.main)

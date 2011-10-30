@@ -55,14 +55,15 @@ dojo.declare("apstrata.horizon.Container",
 		// Decompose the path (request param path) into an array
 		if (this.request['path']) this.path = this.request['path'].split('/');
 		else this.path = [];
-
+console.dir(this.path)
+console.dir(this.request)
 		this._maximize = false
 		this._mainPanel = false
 		this._count = 0
 		this.__children = {}
 		this.__childrenOrder = {}
 	},
-	
+		
 	postCreate: function() {
 		var self = this
 

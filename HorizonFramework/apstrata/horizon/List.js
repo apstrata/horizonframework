@@ -77,7 +77,7 @@ dojo.declare("apstrata.horizon.List",
 		// Instantiate the widget that will display the content
 		self._listContent = new this.contentClass({result: [], parent: self, selectIds: self._selectIds})
 
-		dojo.place(self._listContent.domNode, self.dvItems)
+		dojo.place(self._listContent.domNode, self.dvContent)
 
 		// Place the sorting filtering widget
 		if (this.sortable || this.filterable) {
@@ -263,13 +263,13 @@ dojo.declare("apstrata.horizon.List",
 	_showLoadingMessage: function(b) {
 		if (b) {
 			dojo.style(this.dvLoading, "display", "block")
-			dojo.style(this.dvItems, "display", "none")
+			dojo.style(this.dvContent, "display", "none")
 
 //			if (this.dvHeader) dojo.style(this.dvHeader, "display", "none")
 			if (this.dvFooter) dojo.style(this.dvFooter, "display", "none")
 		} else {
 			dojo.style(this.dvLoading, "display", "none")
-			dojo.style(this.dvItems, "display", "block")
+			dojo.style(this.dvContent, "display", "block")
 
 //			if (this.dvHeader) dojo.style(this.dvHeader, "display", "block")
 			if (this.dvFooter) dojo.style(this.dvFooter, "display", "block")

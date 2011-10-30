@@ -33,6 +33,7 @@ dojo.declare("apstrata.horizon.blue.List",
 	filterable: true,
 	sortable: true,
 	editable: true,
+	maximizable: true,
 	
 	constructor: function() {
 		var self = this

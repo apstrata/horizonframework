@@ -71,10 +71,6 @@ dojo.declare("apstrata.horizon.List",
 	
 	contentClass: apstrata.horizon.list.SimpleListContent,
 	
-	constructor: function(args) {
-		this._selectIds = args.selectIds
-	},
-	
 	startup: function() {
 		var self = this
 

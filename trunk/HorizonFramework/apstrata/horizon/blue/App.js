@@ -23,7 +23,8 @@ dojo.require("apstrata.horizon.Container")
 dojo.require("apstrata.horizon.blue.Home")
 dojo.require("apstrata.horizon.blue.Menu")
 dojo.require("apstrata.horizon.blue.TestPanel")
-
+dojo.require("apstrata.horizon.blue.Panel")
+dojo.require("apstrata.horizon.blue.Panel1")
 
 //dojo.require("apstrata.horizon.Preferences")
 
@@ -32,22 +33,16 @@ dojo.declare("apstrata.horizon.blue.App",
 {
 	applicationId: "blueHorizonDemo",
 	
-	postCreate: function() {
+	startup: function() {
 		var self = this
-
 		// Create the leftMost Panel
-		this.main = new apstrata.horizon.blue.Menu({container: self})
-
-		this.main.deferred.then(function() {
-//			self.main.openById('random')			
+		this.main = new apstrata.horizon.blue.Menu({
+			container: self,
+//			selectIds: ['colors', 1,2,3]
 		})
 
 		this.addMainPanel(this.main)
-		
-		this.inherited(arguments)
-	},
-	
-	startup: function() {
+
 		this.inherited(arguments)
 	}
 })

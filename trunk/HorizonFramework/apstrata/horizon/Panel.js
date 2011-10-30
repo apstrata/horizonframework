@@ -39,8 +39,6 @@ dojo.declare("apstrata.horizon.Panel",
 	parentList: null,
 
 	maximizePanel: false,
-//	width: 160,
-//	height: 300,
 
 	/*
 	 * Instantiate an HStackable and set its parent
@@ -88,7 +86,6 @@ dojo.declare("apstrata.horizon.Panel",
 	},
 
 	postCreate: function() {
-console.debug('panel: postCreate')		
 		var self = this
 
 		// mandatory style attributes for the panels to function
@@ -110,6 +107,7 @@ console.debug('panel: postCreate')
 			dojo.connect(icons, 'maximize', function() {
 				self._savePos = dojo.marginBox(self.domNode)
 				var w = dojo.marginBox(self.getContainer().domNode)
+				
 				var marginL = dojo.style(self.domNode, "marginLeft")
 				var marginR = dojo.style(self.domNode, "marginRight")
 				dojo.style(self.domNode, {
@@ -127,7 +125,7 @@ console.debug('panel: postCreate')
 		}
 		
 		this._animateToPosition()
-		self.deferred.callback({success: true})			
+		//self.deferred.callback({success: true})			
 
 		this.inherited(arguments)
 	},
@@ -165,7 +163,6 @@ console.debug('panel: postCreate')
 	 */
 	openPanel: function(panel, args) {
 		var self = this
-		
 		// Destroy an existing child open panel
 		this.closePanel();
 
@@ -228,7 +225,6 @@ console.debug('panel: postCreate')
 	 * Executes animation effect after a slide contents have been refreshed
 	 */
 	render: function() {
-//console.debug('panel: render')		
 		var self = this
 		this.inherited(arguments)
 
@@ -245,7 +241,10 @@ console.debug('panel: postCreate')
 	 * Invoked by the container when the window size changes
 	 */
 	layout: function() {
-//console.debug('panel: layout')		
+		this._setStyle()
+	},
+	
+	resize: function() {
 		this._setStyle()
 	}
 })

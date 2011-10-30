@@ -22,6 +22,9 @@ dojo.provide("apstrata.horizon.util.PanelAnimation")
 
 dojo.require('dojo.fx.easing')
 
+dojo.setObject("apstrata.horizon.config.disableAnimation", false)
+
+
 /*
  * default function used by dojo.horizon.Panel to animate while opening
  */
@@ -37,28 +40,34 @@ apstrata.horizon.util.PanelAnimation = function(panel) {
 			endLeft = panel.parentNode.offsetLeft + panel.parentNode.offsetWidth
 		}
 
-		dojo.style(panel.domNode, {
-			left: (startLeft) + "px",
-			opacity: .6
-		})
-
 		var _animation = {
 			node: panel.domNode,
 			easing: dojo.fx.easing.cubicInOut,
-			duration: 500,
+			duration: 1000,
 			onEnd: function() {
 				panel.getContainer().autoScroll()
 			},
 			properties: {
 			// The animation coordinates top/left have already been calculated during resize
-				left: endLeft,
+//				left: endLeft,
 				opacity: apstrata.horizon.magicUIdimensions["panel.finalAlpha"]?apstrata.horizon.magicUIdimensions["panel.finalAlpha"]:1
 			}
 		}
 
-		
-//		_animation.properties = {
-//		}
+		if (apstrata.horizon.config.disableAnimation) {
+			dojo.style(panel.domNode, {
+				left: (startLeft) + "px",
+				opacity: .6
+			})
+			_animation.duration = 500
+			_animation.properties.left = endLeft
+		} else {
+			dojo.style(panel.domNode, {
+				left: (endLeft) + "px",
+				opacity: .6
+			})
+		}
+
 		
 		dojo.animateProperty(_animation).play()
 	}

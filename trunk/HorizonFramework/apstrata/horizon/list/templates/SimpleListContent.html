@@ -11,14 +11,14 @@
 						title='{{ o.label }}' 
 						itemIndex='{{ forloop.counter0 }}' 
 						itemId='{{ o.id }}'
-						id='{{ id }}-{{ o.id }}'
+						id='{{ o.id }}'
 						dojoAttachEvent='onmouseover: _onMouseover, onmouseout: _onMouseout,onclick: _onClick'> 
 	
 					<table class='content'>
 						<tr valign='center'>
 							<td class='deleteCell' valign='top' 
 								itemIndex='{{ forloop.counter0 }}' 
-								itemId='{{ o.id }}'></td>
+								itemId='d{{ o.id }}'></td>
 									{% if o.iconSrc %}
 										<td width='0' valign="top">
 											<div class='icon'><img src='{{ o.iconSrc }}'></div>

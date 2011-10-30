@@ -36,7 +36,8 @@ dojo.declare("apstrata.horizon.blue.Colors",
 	idProperty: 'number',
 	labelProperty: 'name',
 
-	constructor: function() {
+
+	constructor: function(args) {
 		var self = this
 		var testData = new apstrata.horizon.util.TestDataSets()
 
@@ -46,17 +47,25 @@ dojo.declare("apstrata.horizon.blue.Colors",
 		})
 
 		this.store = new dojo.store.Memory({data: testData.crayolaColors})
-		if (arguments[0] && arguments[0].colorId) this.myColor = this.store.get(arguments[0].colorId+"")
+		
+		if (args && args.colorId) this.myColor = this.store.get(args.colorId+"")
 	},
 	
 	postCreate: function() {
 		var self = this
-		if (this.myColor) dojo.style(this.domNode, "background", this.myColor.code)
 		dojo.style(this.domNode, "width", "300px")
 		this.inherited(arguments)
 	},
+	
+	startup: function() {
+		if (this.myColor) dojo.style(this.domNode, "background", this.myColor.code)
 		
-	onClick: function(index, id) {
-		this.openPanel(apstrata.horizon.blue.Colors, {colorId: id})
+		this.inherited(arguments)
+	},
+		
+	onClick: function(index, id, args) {
+		var self = this
+		this.openPanel(apstrata.horizon.blue.Colors, {colorId: id, selectIds: args.selectIds})
+		this.inherited(arguments)
 	}
 })

@@ -35,7 +35,7 @@ dojo.declare("apstrata.horizon.Menu",
 		]
 	 */
 	
-	onClick: function(index, id) {
+	onClick: function(index, id, args) {
 		var self = this	
 		
 		if (this.store) dojo.when(
@@ -48,7 +48,7 @@ dojo.declare("apstrata.horizon.Menu",
 					// (dojo.addOnLoad will insure that the module is loaded)
 					dojo.addOnLoad(function() {
 						// open it as a child panel
-						self.openPanel(dojo.getObject(item.panelClass))
+						self.openPanel(dojo.getObject(item.panelClass), args)
 					})
 				}
 			}			

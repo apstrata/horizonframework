@@ -30,91 +30,25 @@ dojo.declare("apstrata.horizon.Grid",
 	templatePath: dojo.moduleUrl("apstrata.horizon", "templates/Grid.html"),
 	widgetsInTemplate: true,
 
-	width: 400,
 	store: null,
-	heights: {
-		header: 30,
-		footer: 50
-	},
-
-	headerHeight: 30,
-	contentHeight: 0,
-	footerHeight: 50,
 	
-	constructor: function() {
-		this.store = new apstrata.ObjectStore({
-			connection: bluehorizon.config.apstrataConnection,
-			store: "website",
-			queryFields: "apsdb.documentKey, formType, title, template"
-		})
-	},
-	
-	postCreate: function() {
+	startup: function() {
 		var self = this
 
 		var data = new apstrata.ObjectStoreAdaptor({objectStore: self.store})
 
-		var layoutNumbers = [
-			// view 1
-			{ cells: [ new dojox.grid.cells.RowIndex({width: 5}) ], noscroll: true},
-			// view 2
-			[
-				{ field: 'apsdb.documentKey', width: 'auto' },
-				{ field: 'formType', editable: 'true', width: 'auto' },
-				{ field: 'title', editable: 'true', width: 'auto' },
-				{ field: 'template', editable: 'true', width: 'auto' }
-			]
-		]
-
 		this._grid = new dojox.grid.DataGrid({
 			store: data,
-			structure: layoutNumbers,
+			structure: self.layout,
 			rowsPerPage: 20,
 			rowSelector: "20px"
 		})
 
-		dojo.place(this._grid.domNode, this.dvMiddle)
+		dojo.place(this._grid.domNode, this.dvContent)
 		this._grid.startup()
 		
-//		this.autoDimension()
-		
-
-//		this.resizeLayout()
-		var d = dojo.contentBox(this.domNode)
-		var height = d.h-this.heights.header-this.heights.footer
-
-		this.headerHeight = this.heights.header
-		this.contentHeight = height
-		this.footerHeight = this.heights.footer
-
 		this.inherited(arguments)
-	},
-
-	autoDimension: function() {
-		var d = dojo.contentBox(this.domNode)
-		
-		var height = d.h-this.heights.header-this.heights.footer
-
-		dojo.style(this.dvHeader, "height", this.heights.header+"px")
-		dojo.style(this.dvMiddle, "height", height+"px")
-		dojo.style(this.dvFooter, "height", this.heights.footer+"px")
-	},
-	
-	layout: function() {
-		var self = this
-	
-//		this.autoDimension()
-		
-//		dojo.contentBox(this._grid.domNode, {w: d.w, h: height});
-//		this._grid.update();
-
-
-//		this.inherited(arguments)
-	},
-
-	getContentHeight: function() {
-		
-		return this.getContainer().height
 	}
+
 	
 })

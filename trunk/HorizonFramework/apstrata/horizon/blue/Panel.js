@@ -25,8 +25,8 @@ dojo.declare("apstrata.horizon.blue.Panel",
 [apstrata.horizon.Panel], 
 {
 	widgetsInTemplate: true,
-	templatePath: dojo.moduleUrl("apstrata.horizon.blue", "templates/HomePanel.html"),
-	templateString: "<div class='panel' style='width: 400px;'><br><div style='height: 100%;overflow-x: auto;overflow-y: scroll'>{{ content }}</div></div>",
+//	templatePath: dojo.moduleUrl("apstrata.horizon.blue", "templates/HomePanel.html"),
+//	templateString: "<div class='panel' style='width: 400px;'><br><div style='height: 100%;overflow-x: auto;overflow-y: scroll'>{{ content }}</div></div>",
 	
 	maximizable: true,
 	content: "",
@@ -34,14 +34,14 @@ dojo.declare("apstrata.horizon.blue.Panel",
 	postCreate: function() {
 		var tmp = ''
 		
+		dojo.style(this.domNode, "width", "400px")
+		
 		for (i=0; i<1200; i++) tmp += (i+" ")
 		dojo.style(this.domNode, {
 			"innerHTML": ""
 		})
 		
-		this.content = tmp
-		
-		this.render()
+		this.dvContent.innerHTML = tmp
 		
 		this.inherited(arguments)
 	}

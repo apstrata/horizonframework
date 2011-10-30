@@ -25,4 +25,48 @@ dojo.require("apstrata.horizon.Grid")
 dojo.declare("apstrata.horizon.blue.Grid", 
 [apstrata.horizon.Grid], 
 {
+	idProperty: 'key',
+	labelProperty: 'title',
+
+	constructor: function() {
+		var self = this
+		
+		this.store = new apstrata.ObjectStore({
+			connection: bluehorizon.config.apstrataConnection,
+			store: "website",
+			queryFields: "formType, title, template"
+		})
+		
+		this.layout = [
+			// view 1
+			{ cells: [ new dojox.grid.cells.RowIndex({width: 5}) ], noscroll: true},
+			// view 2
+			[
+				{ field: 'apsdb.documentKey', width: 'auto' },
+				{ field: 'formType', editable: 'true', width: 'auto' },
+				{ field: 'title', editable: 'true', width: 'auto' },
+				{ field: 'template', editable: 'true', width: 'auto' }
+			]
+		]
+	},
+
+	_queryParams: function() {
+		var self = this
+
+		var query =  (self._filter=="")?{}:{query: "title like \"" + self._filter + "%\""}
+
+		var sort = {} 
+		if (this._sort == 1) {
+			sort = {sort: "title<string:ASC>"}
+		} else if (this._sort == 2) {
+			sort = {sort: "title<string:DESC>"}
+		}
+		
+		return dojo.mixin(query, sort)
+	},
+	
+	_queryOptions: function() {
+		return {}		
+	},
+		
 })

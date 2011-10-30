@@ -23,7 +23,7 @@ dojo.declare("apstrata.horizon.PanelIcons",
 [dijit._Widget, dojox.dtl._Templated], 
 {
 	widgetsInTemplate: true,
-	templateString: "<div style='position: absolute;top:3px;left:3px;' ><img dojoAttachPoint='img' dojoAttachEvent='onclick: click' src='{{ _apstrataRoot }}/resources/images/pencil-icons/round-maximize.png' style='width: 16px;'></div>",
+	templateString: "<div style='position: relative;top:3px;left:3px;' ><img dojoAttachPoint='img' dojoAttachEvent='onclick: click' src='{{ _apstrataRoot }}/resources/images/pencil-icons/round-maximize.png' style='width: 16px;'></div>",
 	
 	maximized: false,
 	

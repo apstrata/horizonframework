@@ -33,6 +33,7 @@ dojo.declare("apstrata.horizon.Panel",
 [dijit._Widget, dojox.dtl._Templated], 
 {
 	templatePath: dojo.moduleUrl("apstrata.horizon", "templates/Panel.html"),
+//	templateString: "<div class='panel'><div dojoAttachPoint='dvHeader'></div><div dojoAttachPoint='dvContent'></div><div dojoAttachPoint='dvFooter'></div></div>",
 	widgetsInTemplate: false,
 
 	parentListId: "",
@@ -101,7 +102,7 @@ dojo.declare("apstrata.horizon.Panel",
 
 		if (this.maximizable) {
 			var icons = new apstrata.horizon.PanelIcons()
-			dojo.place(icons.domNode, this.domNode)
+			dojo.place(icons.domNode, this.dvHeader)
 			
 //				dojo.style(icons.domNode, "left", dojo.position(self.domNode).w - dojo.position(icons.domNode).w - 20 + "px")
 			

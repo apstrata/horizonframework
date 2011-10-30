@@ -6,7 +6,7 @@
 
 	    <link rel="shortcut icon" href="images/favicon.png" type="image/png" />
 	
-		<script type="text/javascript" src="lib/dojo/dojo/dojo.js" djConfig="parseOnLoad: false"></script>
+		<script type="text/javascript" src="lib/dojo/dojo/dojo.js" djConfig="parseOnLoad: false, isDebug: true"></script>
 
 		<!-- 
 			pencil icons are under cc license from http://olawolska.com/newsy/49-hand-drawing-icons-set/
@@ -38,6 +38,10 @@
 				width: 700px;
 				height: 400px;
 			}
+			
+			#apstrata_horizon_blue_Menu_0 {
+				width: 200px;
+			}
         </style>
 		
 		<script>
@@ -66,8 +70,8 @@
 
 				// use apstrata demo account credentials
 				var credentials = {
-					key: "E83D22E93F",
-					secret: "XEA48AE769BF2B86910FBC74116CDF4E"	
+					key: "",
+					secret: ""	
 				}
 
 				dojo.setObject("bluehorizon.config.apstrataConnection", 
@@ -76,6 +80,8 @@
 				dojo.require("dojo.parser")
 				dojo.parser.parse()
 			})
+
+
 
 		</script>
 	</head>
@@ -91,8 +97,7 @@
 					e.g.: margin="{top: 70, left: 1, right:1, bottom: 1}"
 			-->
 			<div dojoType="apstrata.horizon.blue.App" 
-				showToolbar="true"
-				margin="{top: 70, left: 100, right:1, bottom: 1}"
+				margin="{top: 70, left: 100, right:10, bottom: 10}"
 				class="blueHorizon"></div>
 		</div>
 	</body>

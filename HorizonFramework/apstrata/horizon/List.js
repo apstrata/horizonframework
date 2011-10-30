@@ -71,14 +71,16 @@ dojo.declare("apstrata.horizon.List",
 	
 	contentClass: apstrata.horizon.list.SimpleListContent,
 	
-	postCreate: function() {
-console.debug('list: postCreate')		
-		this.layout()
-		this.inherited(arguments)
+	constructor: function(args) {
+		this._selectIds = args.selectIds
+	},
+	
+	startup: function() {
 		var self = this
 
 		// Instantiate the widget that will display the content
-		self._listContent = new this.contentClass({result: [], parent: self})
+		self._listContent = new this.contentClass({result: [], parent: self, selectIds: self._selectIds})
+
 		dojo.place(self._listContent.domNode, self.dvItems)
 
 		// Place the sorting filtering widget
@@ -89,7 +91,11 @@ console.debug('list: postCreate')
 			dojo.connect(self._filterWidget, "onSortChange", dojo.hitch(this, "sort"))
 			dojo.connect(self._filterWidget, "onFilterChange", dojo.hitch(this, "filter"))
 		}
+		
+		this.resize()
 		this.reload()
+		
+		this.inherited(arguments)
 	},
 	
 	sort: function(sort) {
@@ -103,23 +109,38 @@ console.debug('list: postCreate')
 	},
 
 	// function called each time containers dimensions change
-	layout: function() {
-console.debug('list: layout')		
+	resize: function() {
 		var self = this
 
-		setTimeout(
-			function() {
-				// resize dvLoading
-				dojo.style(self.dvLoading, "top", (self.getContentHeight()/2-10)+"px")
-				dojo.style(self.dvLoading, "width", (self.width-10)+"px")
-		
-				if (self._listContent) self._listContent.layout()
-				if (self._filterWidget) self._filterWidget.layout()
-			}, 1)
+		// resize dvLoading
+		dojo.style(self.dvLoading, "top", (self.getContentHeight()/2-10)+"px")
+		dojo.style(self.dvLoading, "width", (self.width-10)+"px")
+
+		if (self._listContent) self._listContent.layout()
+		if (self._filterWidget) self._filterWidget.layout()
 			
 		this.inherited(arguments)
 	},
 	
+	reload: function() {
+		var self = this
+		
+		var query = this._queryParams()
+		var queryOptions = this._queryOptions()
+				
+		this._showLoadingMessage(true)
+		dojo.when(
+			this.store.query(
+				query,
+				queryOptions
+			),
+			function(result) {
+				self._showLoadingMessage(false)
+				self._listContent.setData(result)				
+			}
+		)
+	},
+
 	_markSelected: function(e) {
 		
 	},
@@ -129,7 +150,7 @@ console.debug('list: layout')
 		this._listContent.selectItem(id)
 	},	
 
-	onClick: function(index, id) {},
+	onClick: function(index, id, args) {},
 	
 	newItem: function() {},
 	
@@ -243,26 +264,6 @@ console.debug('list: layout')
 		return _queryOptions 
 	},
 	
-	reload: function() {
-console.debug('list: reload')
-		var self = this
-		
-		var query = this._queryParams()
-		var queryOptions = this._queryOptions()
-				
-		this._showLoadingMessage(true)
-		dojo.when(
-			this.store.query(
-				query,
-				queryOptions
-			),
-			function(result) {
-				self._showLoadingMessage(false)
-				self._listContent.setData(result)				
-			}
-		)
-	},
-
 	_showLoadingMessage: function(b) {
 		if (b) {
 			dojo.style(this.dvLoading, "display", "block")

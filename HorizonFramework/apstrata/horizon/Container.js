@@ -94,7 +94,7 @@ dojo.declare("apstrata.horizon.Container",
 	
 	startup: function() {
 		//setTimeout(dojo.hitch(this, 'loadPreferences'), 3000)
-		setTimeout(dojo.hitch(this, 'layout'), 100)
+		//setTimeout(dojo.hitch(this, 'layout'), 100)
 
 		this.inherited(arguments)
 	},
@@ -122,11 +122,11 @@ dojo.declare("apstrata.horizon.Container",
 		
 		// Call layout for each contained widget upon resize
 		dojo.forEach(this.getChildren(), function(child) {
-			child.layout();
+			child.resize();
 		})
 
 		if (this._mainPanel) {
-			this._mainPanel.layout();
+			this._mainPanel.resize();
 		}
 
 		this.inherited(arguments)
@@ -237,16 +237,18 @@ dojo.declare("apstrata.horizon.Container",
 		if (this._controlToolbar) this._controlToolbar.setPosition(toolbar.top + "px", toolbar.left + "px")
 	},
 
-	addMainPanel: function (child, fixed) {
+	addMainPanel: function (child) {
 		var self = this
 		this._mainPanel = child
 		child.setFixedPanel(true)
 		
+		dojo.addClass(child.domNode, "mainPanel")
+		dojo.place(child.domNode, self.fixedPanelNode)
+		child.startup()
+		
 		setTimeout(function() {
-			dojo.addClass(child.domNode, "mainPanel")
-			dojo.place(child.domNode, self.fixedPanelNode)
-			child.layout()
-		}, 100)
+			apstrata.horizon.config.disableAnimation = true
+		},200)
 	},
 	
 	addChild: function(child) {

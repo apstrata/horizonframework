@@ -57,7 +57,7 @@ dojo.declare("apstrata.horizon.blue.Menu",
 				panelClass: "apstrata.horizon.blue.Grid"
 			},
 			{
-				id:"random", 
+				id:"colors", 
 				label: "Colors", 
 				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
 				panelClass: "apstrata.horizon.blue.Colors"
@@ -77,7 +77,7 @@ dojo.declare("apstrata.horizon.blue.Menu",
 	sortable: true,
 	editable: false,
 	
-	constructor: function() {
+	constructor: function(args) {
 		var self = this
 		this.store = new dojo.store.Memory({data: self.items})
 	},

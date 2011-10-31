@@ -24,7 +24,6 @@ dojo.require("apstrata.horizon.blue.Home")
 dojo.require("apstrata.horizon.blue.Menu")
 dojo.require("apstrata.horizon.blue.TestPanel")
 dojo.require("apstrata.horizon.blue.Panel")
-dojo.require("apstrata.horizon.blue.Panel1")
 
 //dojo.require("apstrata.horizon.Preferences")
 

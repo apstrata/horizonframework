@@ -40,7 +40,6 @@ dojo.declare("apstrata.horizon.list.SimpleFilterAndSort",
 	},
 	
 	layout: function() {
-console.debug('SimpleFilterAndSort: layout')
 		var self = this
 		
 /* TODO: why doesn't this work?
@@ -59,11 +58,8 @@ or this
 		},1)
  */
 
-console.debug(dojo.position(self.parent.domNode).w)
-
 		setTimeout(
 			function() {
-console.debug(dojo.position(self.parent.domNode).w)
 			var p = dojo.marginBox (self.parent.domNode)
 				dojo.style(self.fldSearchField, {
 					width: (p.w - apstrata.horizon.magicUIdimensions["list.SimpleFilterAndSort.width"] - 3) + "px"

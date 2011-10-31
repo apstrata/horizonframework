@@ -55,8 +55,6 @@ dojo.declare("apstrata.horizon.Container",
 		// Decompose the path (request param path) into an array
 		if (this.request['path']) this.path = this.request['path'].split('/');
 		else this.path = [];
-console.dir(this.path)
-console.dir(this.request)
 		this._maximize = false
 		this._mainPanel = false
 		this._count = 0
@@ -247,6 +245,9 @@ console.dir(this.request)
 		dojo.place(child.domNode, self.fixedPanelNode)
 		child.startup()
 		
+		// Disabling position animation when instantiating a container because it is making cascade open fail
+		//  So we re-enable it after 200ms
+		// TODO: temporary solution that needs to be replaced with more solid code 
 		setTimeout(function() {
 			apstrata.horizon.config.disableAnimation = true
 		},200)

@@ -47,6 +47,11 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 		var self = this
 		this.result = args.result
 		this.parent = args.parent
+
+		if (args.selectIds) {
+			this._selectId = args.selectIds.shift()
+			this._selectIds = args.selectIds
+		}
 		
 		this._lastSelectedIndex = null
 
@@ -54,31 +59,14 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 	},
 	
 	postCreate: function() {
-console.debug('SimpleListContent: postCreate')
-
-		var self = this
-				
+		this.inherited(arguments)
+	},
+	
+	startup: function() {
 		this.render()
 		this.inherited(arguments)
 	},
-
-	layout: function() {
-console.debug('SimpleListContent: layout')
-		var self = this
-				
-		setTimeout(
-			function() {
-				dojo.style(self.domNode, "height", self.parent.getContentHeight() + "px")				
-				if (self._lastSelectedIndex) self.toggleItem(self._lastSelectedIndex, true)
-			}, 
-			1)
-	},
 	
-	render: function() {
-		var self = this
-		this.inherited(arguments)
-	},
-
 	setData: function(result) {
 		var self = this
 		
@@ -87,22 +75,61 @@ console.debug('SimpleListContent: layout')
 		this.layout()
 	},
 	
+	layout: function() {
+		var self = this
+
+		dojo.style(self.domNode, "height", self.parent.getContentHeight() + "px")				
+		if (self._lastSelectedIndex) self.toggleItem(self._lastSelectedIndex, true)
+	},
+
+	render: function() {
+		var self = this
+		this.inherited(arguments)
+
+		this.select()
+
+//		setTimeout( dojo.hitch(this, "select"), 1)
+/*
+		setTimeout(
+			dojo.hitch(this, function() {
+					if (self._selectId) {
+						self.selectItem(self._selectId, true)
+						self._selectId = null
+					}
+				}), 1)
+
+		setTimeout(function() {
+			if (self._selectId) {
+				self.selectItem(self._selectId, true)
+				self._selectId = null
+			}
+		}, 1)
+*/
+	},
+
+	select: function() {
+		var self = this
+		if (this._selectId) {
+			var node = dojo.query("[itemid$=\""+ this._selectId +"\"]", this.domNode)[0]
+			var index = node.getAttribute('itemIndex')
+	
+			if (this._lastSelectedIndex) this.toggleItem(this._lastSelectedIndex, false)
+			this.toggleItem(this._selectId, true)
+			this._lastSelectedIndex = this._selectId
+			
+			this.parent.onClick(index, this._selectId, { selectIds: self._selectIds })
+		}
+	},
+
 	toggleItem: function(id, selected) {
+		var node = dojo.query("[itemid$=\""+ id +"\"]", this.domNode)[0]
 		if (selected) {
-			dojo.addClass(dojo.byId(this.id+"-"+id), "itemSelected")
+			dojo.addClass(node, "itemSelected")
 		} else {
-			dojo.removeClass(dojo.byId(this.id+"-"+id), "itemSelected")
+			dojo.removeClass(node, "itemSelected")
 		}
 	},
 	
-	selectItem: function(id) {
-		var node = dojo.byId(this.id+"-"+id)
-		var index = node.getAttribute('itemIndex')
-	
-		if (this._lastSelectedIndex) this.toggleItem(this._lastSelectedIndex, false)
-		this.toggleItem(id, true)
-		this._lastSelectedIndex = id
-	},
 
 	_onClick: function(e) {
 		if (this.noEdit) return;
@@ -111,9 +138,8 @@ console.debug('SimpleListContent: layout')
 		var index = e.currentTarget.getAttribute('itemIndex')
 		var id = e.currentTarget.getAttribute('itemId')
 
-		this.selectItem(id)
-
-		this.parent.onClick(index, id)
+		this._selectId = id
+		this.select()
 	},
 	
 	_onMouseover: function(e) {
@@ -126,7 +152,5 @@ console.debug('SimpleListContent: layout')
 		dojo.removeClass(e.currentTarget, "itemMouseOver")
 	},
 	
-	_markSelected: function(e) {},
-	select: function(index, label, attrs) {},
-	onClick: function(index, label, attrs) {}
+	_markSelected: function(e) {}
 })

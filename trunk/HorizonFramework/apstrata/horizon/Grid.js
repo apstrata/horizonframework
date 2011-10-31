@@ -41,14 +41,21 @@ dojo.declare("apstrata.horizon.Grid",
 			store: data,
 			structure: self.layout,
 			rowsPerPage: 20,
-			rowSelector: "20px"
+			rowSelector: "0px"
+		})
+
+		dojo.connect(this._grid, "onRowClick", function(e) {
+			self.onClick(e.rowIndex, self._grid.selection.getSelected()[0].key)
 		})
 
 		dojo.place(this._grid.domNode, this.dvContent)
 		this._grid.startup()
 		
 		this.inherited(arguments)
-	}
+	},
 
+	onClick: function(index, id, args) {
+		console.debug(index, id)
+	}
 	
 })

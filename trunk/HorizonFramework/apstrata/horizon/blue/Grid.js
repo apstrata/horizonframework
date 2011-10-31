@@ -42,12 +42,17 @@ dojo.declare("apstrata.horizon.blue.Grid",
 			{ cells: [ new dojox.grid.cells.RowIndex({width: 5}) ], noscroll: true},
 			// view 2
 			[
-				{ field: 'apsdb.documentKey', width: 'auto' },
+				{ field: 'key', width: 'auto' },
 				{ field: 'formType', editable: 'true', width: 'auto' },
 				{ field: 'title', editable: 'true', width: 'auto' },
 				{ field: 'template', editable: 'true', width: 'auto' }
 			]
 		]
+	},
+	
+	postCreate: function() {
+		dojo.style(this.domNode, "width", "600px")
+		this.inherited(arguments)
 	},
 
 	_queryParams: function() {

@@ -12,7 +12,7 @@
     border-radius: 10px;
 }
 
-.horizon {
+div.horizon {
 	overflow-x: auto;
 	overflow-y: hidden;
 	position: absolute;

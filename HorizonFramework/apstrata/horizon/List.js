@@ -98,6 +98,10 @@ dojo.declare("apstrata.horizon.List",
 		this._sort = sort
 		this.reload()
 	},
+   
+	select: function() {
+		this._listContent.select();
+	},   
 	
 	filter: function(filter) {
 		this._filter = filter
@@ -131,8 +135,9 @@ dojo.declare("apstrata.horizon.List",
 				queryOptions
 			),
 			function(result) {
-				self._showLoadingMessage(false)
-				self._listContent.setData(result)				
+				self._showLoadingMessage(false);
+				self._listContent.setData(result) ;  		
+        self.select();    
 			}
 		)
 	},

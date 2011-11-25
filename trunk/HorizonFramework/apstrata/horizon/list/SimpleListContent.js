@@ -124,11 +124,13 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 	},
 
 	toggleItem: function(id, selected) {
-		var node = dojo.query("[itemid$=\""+ id +"\"]", this.domNode)[0]
-		if (selected) {
-			dojo.addClass(node, "itemSelected")
-		} else {
-			dojo.removeClass(node, "itemSelected")
+		var node = dojo.query("[itemid$=\""+ id +"\"]", this.domNode)[0];
+		if (node) {
+			if (selected) {
+				dojo.addClass(node, "itemSelected")
+			} else {
+				dojo.removeClass(node, "itemSelected")
+			}
 		}
 	},
 	

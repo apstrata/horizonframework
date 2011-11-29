@@ -8,7 +8,12 @@
 					<div 
 						class='item'
 						style='width: 100%;' 
-						title='{{ o.label }}' 
+ 						{% if o.title %}
+						title='{{ o.title }}'
+						{% endif %}  
+						{% if not o.title %}
+						title='{{ o.label }}'
+						{% endif %} 
 						itemIndex='{{ forloop.counter0 }}' 
 						itemId='{{ o.id }}'
 						id='{{ o.id }}'

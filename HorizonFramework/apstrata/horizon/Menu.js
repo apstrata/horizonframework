@@ -37,7 +37,8 @@ dojo.declare("apstrata.horizon.Menu",
 	
 	onClick: function(index, id, args) {
 		var self = this	
-		
+
+		if (args && !args.menuItemId) args.menuItemId = id;
 		if (this.store) dojo.when(
 			this.store.get(id),
 			function(item) {

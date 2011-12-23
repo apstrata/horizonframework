@@ -114,7 +114,7 @@ dojo.declare("apstrata.horizon.List",
 
 		// resize dvLoading
 		dojo.style(self.dvLoading, "top", (self.getContentHeight()/2-10)+"px")
-		dojo.style(self.dvLoading, "width", (self.width-10)+"px")
+		if (self.width) dojo.style(self.dvLoading, "width", (self.width-10)+"px")
 
 		if (self._listContent) self._listContent.layout()
 		if (self._filterWidget) self._filterWidget.layout()

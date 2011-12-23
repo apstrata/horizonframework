@@ -267,8 +267,10 @@ dojo.declare("apstrata.horizon.Container",
 	/* this doesn't work need to call the panel close method too */
 	removeChild: function(child) {
 		if (this.__children[child.id]) delete this.__children[child.id]
-		
-		this.inherited(arguments)
+
+		// situation happened when refreshing domNode is null on IE
+		if(child.domNode || !dojo.isIE)
+			this.inherited(arguments)
 	},
 
 	loadPreferences: function() {

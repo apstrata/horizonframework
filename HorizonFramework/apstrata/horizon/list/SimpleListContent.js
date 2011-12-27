@@ -33,15 +33,15 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 	height: 100,
 	
 	_normalizeResult: function(result) {
-		var self = this
+		var self = this;
 		
 		this.data = [];
-		var item = null;
-		for(var i=0; i<result.length; i++) {
-			item = result[i];
-			if (!item['id']) item['id'] = item[self.parent.idProperty];
-			if (!item['label']) item['label'] = item[self.parent.labelProperty] || "<empty>";
-			self.data.push(item);
+		if (result.length > 0) {
+			result.forEach(function(item) {
+				if (!item['id']) item['id'] = item[self.parent.idProperty];
+				if (!item['label']) item['label'] = item[self.parent.labelProperty] || "<empty>";
+				self.data.push(item);
+			});		
 		}
 	},
 	

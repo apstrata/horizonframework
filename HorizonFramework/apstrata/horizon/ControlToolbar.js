@@ -86,13 +86,13 @@ dojo.declare("apstrata.horizon.ControlToolbar",
 		if (!this._maximized) {
 			this._maximized = true
 			
-			this._MinMaxIcon.src = this._apstrataRoot +"/resources/images/pencil-icons/restore.png"
+			this._MinMaxIcon.src = this._horizonRoot +"/resources/images/pencil-icons/restore.png"
 			this._actionName = "minimize"
 			this.maximize()		
 		} else {
 			this._maximized = false
 			
-			this._MinMaxIcon.src = this._apstrataRoot +"/resources/images/pencil-icons/maximize.png"
+			this._MinMaxIcon.src = this._horizonRoot +"/resources/images/pencil-icons/maximize.png"
 			this._actionName = "minimize"
 			this.restore()
 		}

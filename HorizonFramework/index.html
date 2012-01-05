@@ -24,7 +24,7 @@
 	        @import "lib/apstrataSDK/apstrata/themes/apstrata/RESTMonitor.css";
 
 
-	        @import "apstrata/themes/horizon.css";
+	        @import "apstrata/horizon/themes/horizon.css";
 
 			@import "apstrata/horizon/blue/css/Toaster.css";
 			@import "apstrata/horizon/blue/css/demo.css";
@@ -60,7 +60,7 @@
 				// TODO: find a better way to do this
 				dojo.extend(dijit._Widget, {
 					_apstrataRoot: apstrata.baseUrl,
-					_horizonRoot: "apstrata"
+					_horizonRoot: "apstrata/horizon"
 				})
 
 				// These are visual properties used by the application that can not fit in a CSS file yet 			
@@ -87,7 +87,7 @@
 		</script>
 	</head>
 	<body class='claro'>
-		<img src="apstrata/resources/images/apstrata-big.png" class='logo'>
+		<img src="apstrata/horizon/resources/images/apstrata-big.png" class='logo'>
 		<div class='appTitle'>Blue Horizon Demo App</div>		
 		<div style='clear:both'></div>
 

@@ -175,7 +175,7 @@ dojo.declare("apstrata.horizon.List",
 			var items = dojo.query('.deleteCell', this.domNode)
 			
 			dojo.forEach(items, function(item) {
-				var n = dojo.create("div", {innerHTML: "<img src='"+ self._apstrataRoot +"/resources/images/pencil-icons/stop-red-sml.png'>"})
+				var n = dojo.create("div", {innerHTML: "<img src='"+ self._horizonRoot +"/resources/images/pencil-icons/stop-red-sml.png'>"})
 				n.setAttribute('itemId', item.getAttribute('itemId'))
 				n.setAttribute('itemIndex', item.getAttribute('itemIndex'))
 

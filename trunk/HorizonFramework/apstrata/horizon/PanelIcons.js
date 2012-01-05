@@ -23,7 +23,7 @@ dojo.declare("apstrata.horizon.PanelIcons",
 [dijit._Widget, dojox.dtl._Templated], 
 {
 	widgetsInTemplate: true,
-	templateString: "<div style='position: relative;top:3px;left:3px;' ><img dojoAttachPoint='img' dojoAttachEvent='onclick: click' src='{{ _apstrataRoot }}/resources/images/pencil-icons/round-maximize.png' style='width: 16px;'></div>",
+	templateString: "<div style='position: relative;top:3px;left:3px;' ><img dojoAttachPoint='img' dojoAttachEvent='onclick: click' src='{{ _horizonRoot }}/resources/images/pencil-icons/round-maximize.png' style='width: 16px;'></div>",
 	
 	maximized: false,
 	
@@ -34,12 +34,12 @@ dojo.declare("apstrata.horizon.PanelIcons",
 			this.maximized = false
 			this.restore()
 
-			this.img.setAttribute("src", self._apstrataRoot + "/resources/images/pencil-icons/round-maximize.png")
+			this.img.setAttribute("src", self._horizonRoot + "/resources/images/pencil-icons/round-maximize.png")
 		} else {
 			this.maximized = true
 			this.maximize()
 
-			this.img.setAttribute("src", self._apstrataRoot + "/resources/images/pencil-icons/round-restore.png")
+			this.img.setAttribute("src", self._horizonRoot + "/resources/images/pencil-icons/round-restore.png")
 		}
 	},
 	

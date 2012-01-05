@@ -29,43 +29,43 @@ dojo.declare("apstrata.horizon.blue.Menu",
 			{	
 				id:"home", 
 				label: "Home", 
-				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/home.png",
+				iconSrc: "/resources/images/pencil-icons/home.png",
 				panelClass: "apstrata.horizon.blue.Home"
 			},
 			{
 				id:"panel", 
 				label: "Panel", 
-				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
+				iconSrc: "/resources/images/pencil-icons/computer.png", 
 				panelClass: "apstrata.horizon.blue.Panel"
 			},
 			{
 				id:"list", 
 				label: "List", 
-				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
+				iconSrc: "/resources/images/pencil-icons/computer.png", 
 				panelClass: "apstrata.horizon.blue.List"
 			},
 			{
 				id:"datalist", 
 				label: "List from apstrata", 
-				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
+				iconSrc: "/resources/images/pencil-icons/computer.png", 
 				panelClass: "apstrata.horizon.blue.DataList"
 			},
 			{
 				id:"grid", 
 				label: "Grid", 
-				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
+				iconSrc: "/resources/images/pencil-icons/computer.png", 
 				panelClass: "apstrata.horizon.blue.Grid"
 			},
 			{
 				id:"colors", 
 				label: "Colors", 
-				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
+				iconSrc: "/resources/images/pencil-icons/computer.png", 
 				panelClass: "apstrata.horizon.blue.Colors"
 			},
 			{	
 				id:"preferences", 
 				label: "Preferences", 
-				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/tick.png", 
+				iconSrc: "/resources/images/pencil-icons/tick.png", 
 				panelClass: "apstrata.horizon.Preferences"
 			}
 		],
@@ -79,6 +79,12 @@ dojo.declare("apstrata.horizon.blue.Menu",
 	
 	constructor: function(args) {
 		var self = this
+
+		// Fix the path to the icons by adding the dynamic root path to its beginning.
+		for (var i=0; i<self.items.length; i++) {
+			self.items[i].iconSrc = self._horizonRoot + self.items[i].iconSrc;
+		}
+
 		this.store = new dojo.store.Memory({data: self.items})
 	},
 	

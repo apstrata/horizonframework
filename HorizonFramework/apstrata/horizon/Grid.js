@@ -20,10 +20,16 @@
 dojo.provide("apstrata.horizon.Grid")
 
 dojo.require("dojox.grid.DataGrid")
+
 dojo.require("apstrata.ObjectStore")
 
 dojo.require("apstrata.horizon.Panel")
+dojo.require("apstrata.horizon.GridFTSearch")
 
+/*
+ * This Grid component provides the necessary functionality to instantiate the grid, filter and action areas
+ * it also provides the main event handlers for adding, deleting and filtering the grid
+ */
 dojo.declare("apstrata.horizon.Grid", 
 [apstrata.horizon.Panel], 
 {
@@ -31,31 +37,65 @@ dojo.declare("apstrata.horizon.Grid",
 	widgetsInTemplate: true,
 
 	store: null,
+	rowsPerPage: 20,
 	
 	startup: function() {
 		var self = this
 
-		var data = new apstrata.ObjectStoreAdaptor({objectStore: self.store})
-
-		this._grid = new dojox.grid.DataGrid({
-			store: data,
-			structure: self.layout,
-			rowsPerPage: 20,
-			rowSelector: "0px"
-		})
-
-		dojo.connect(this._grid, "onRowClick", function(e) {
-			self.onClick(e.rowIndex, self._grid.selection.getSelected()[0].key)
-		})
-
-		dojo.place(this._grid.domNode, this.dvContent)
-		this._grid.startup()
+		// If no custom grid widget is specified use default apstrata.horizon.GridFTSearch 
+		if(!this.filterClass) this.filterClass = apstrata.horizon.GridFTSearch
+		this._filter = new this.filterClass(null, this.dvHeader)
 		
+		dojo.connect(this._filter, "search", dojo.hitch(this, "filter"))
+		this.resize()
+
+		// If no custom grid widget is specified use default dojox.grid.DataGrid 
+		if (!this.gridClass) this.gridClass = dojox.grid.DataGrid
+
 		this.inherited(arguments)
 	},
 
-	onClick: function(index, id, args) {
-		console.debug(index, id)
-	}
+	onClick: function(e) {
+		// To obtain the selected items and clicked
+		//  this._grid.selection.getSelected(), e.rowIndex
+	},
 	
+	// function called each time containers dimensions change
+	resize: function() {
+		var self = this
+
+		dojo.style(this.dvContent, "height", self.getContentHeight() + "px")				
+		
+		// On resize, we are destroying the grid
+		if (this._grid) {
+			dojo.disconnect(this._handle)
+			this._grid.destroyRecursive()
+		}
+		
+		// And recreating it
+		// TODO: this has to be changed to autoresize, need to find out why it's not working
+		//		we put it in a child div of dvContent because it gets destroyed with the widget
+		var gridDv = dojo.create("div", null, this.dvContent)
+		this._grid = new this.gridClass(this.gridParams, gridDv)
+		this._grid.startup()
+		this._handle = dojo.connect(this._grid, "onRowClick", dojo.hitch(this, "onClick")) 
+
+		this.inherited(arguments)
+	},
+
+	filter: function(attr) {},
+	editItems: function() {},
+	newItem: function() {},
+	deleteItems: function() {
+		// This just deletes the top item from the selection for now
+		var deferred = this.gridParams.store.objectStore.remove(this._grid.selection.getSelected()[0].key)
+		
+		deferred.then(function(attr) {
+			if (!attr) console.debug('fail'); else console.debug('success')
+		})
+	},
+
+	getContentHeight: function() {
+		return  dojo.contentBox(this.domNode).h  - dojo.contentBox(this._filter.domNode).h - dojo.contentBox(this.dvFooter).h
+	}
 })

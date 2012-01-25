@@ -39,6 +39,11 @@ dojo.declare("apstrata.horizon.Grid",
 	store: null,
 	rowsPerPage: 20,
 	
+	constructor: function() {
+		// If no custom grid widget is specified use default dojox.grid.DataGrid 
+		if (!this.gridClass) this.gridClass = dojox.grid.DataGrid
+	},
+	
 	startup: function() {
 		var self = this
 
@@ -48,9 +53,6 @@ dojo.declare("apstrata.horizon.Grid",
 		
 		dojo.connect(this._filter, "search", dojo.hitch(this, "filter"))
 		this.resize()
-
-		// If no custom grid widget is specified use default dojox.grid.DataGrid 
-		if (!this.gridClass) this.gridClass = dojox.grid.DataGrid
 
 		this.inherited(arguments)
 	},

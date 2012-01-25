@@ -29,43 +29,49 @@ dojo.declare("apstrata.horizon.blue.Menu",
 			{	
 				id:"home", 
 				label: "Home", 
-				iconSrc: "/resources/images/pencil-icons/home.png",
+				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/home.png",
 				panelClass: "apstrata.horizon.blue.Home"
 			},
 			{
 				id:"panel", 
 				label: "Panel", 
-				iconSrc: "/resources/images/pencil-icons/computer.png", 
+				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
 				panelClass: "apstrata.horizon.blue.Panel"
 			},
 			{
 				id:"list", 
 				label: "List", 
-				iconSrc: "/resources/images/pencil-icons/computer.png", 
+				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
 				panelClass: "apstrata.horizon.blue.List"
 			},
 			{
 				id:"datalist", 
 				label: "List from apstrata", 
-				iconSrc: "/resources/images/pencil-icons/computer.png", 
+				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
 				panelClass: "apstrata.horizon.blue.DataList"
 			},
 			{
 				id:"grid", 
 				label: "Grid", 
-				iconSrc: "/resources/images/pencil-icons/computer.png", 
+				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
 				panelClass: "apstrata.horizon.blue.Grid"
+			},
+			{
+				id:"gridWithPagination", 
+				label: "Grid with pagination", 
+				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
+				panelClass: "apstrata.horizon.blue.GridWithPagination"
 			},
 			{
 				id:"colors", 
 				label: "Colors", 
-				iconSrc: "/resources/images/pencil-icons/computer.png", 
+				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
 				panelClass: "apstrata.horizon.blue.Colors"
 			},
 			{	
 				id:"preferences", 
 				label: "Preferences", 
-				iconSrc: "/resources/images/pencil-icons/tick.png", 
+				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/tick.png", 
 				panelClass: "apstrata.horizon.Preferences"
 			}
 		],

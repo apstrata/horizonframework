@@ -40,6 +40,8 @@ dojo.declare("apstrata.horizon.Grid",
 	rowsPerPage: 20,
 	
 	constructor: function() {
+		this.editable = true
+		this.filterable = true
 		// If no custom grid widget is specified use default dojox.grid.DataGrid 
 		if (!this.gridClass) this.gridClass = dojox.grid.DataGrid
 	},
@@ -49,9 +51,12 @@ dojo.declare("apstrata.horizon.Grid",
 
 		// If no custom grid widget is specified use default apstrata.horizon.GridFTSearch 
 		if(!this.filterClass) this.filterClass = apstrata.horizon.GridFTSearch
-		this._filter = new this.filterClass(null, this.dvHeader)
+		if (this.dvHeader) {
+			var filterDv = dojo.create("div", null, this.dvHeader)
+			this._filter = new this.filterClass(null, filterDv)
+			dojo.connect(this._filter, "search", dojo.hitch(this, "filter"))
+		}
 		
-		dojo.connect(this._filter, "search", dojo.hitch(this, "filter"))
 		this.resize()
 
 		this.inherited(arguments)
@@ -84,6 +89,10 @@ dojo.declare("apstrata.horizon.Grid",
 
 		this.inherited(arguments)
 	},
+	
+	addNodeToHeader: function(n) {
+		dojo.place(n, this.dvHeader)
+	},
 
 	filter: function(attr) {},
 	editItems: function() {},
@@ -98,6 +107,14 @@ dojo.declare("apstrata.horizon.Grid",
 	},
 
 	getContentHeight: function() {
-		return  dojo.contentBox(this.domNode).h  - dojo.contentBox(this._filter.domNode).h - dojo.contentBox(this.dvFooter).h
+		var h, c, f
+		
+		h = (this._filter)?dojo.contentBox(this._filter.domNode).h:0
+		
+//		if (this._filter) h = dojo.contentBox(this._filter.domNode).h
+		c = dojo.contentBox(this.domNode).h
+		f = dojo.contentBox(this.dvFooter).h
+		
+		return  c  - h - f
 	}
 })

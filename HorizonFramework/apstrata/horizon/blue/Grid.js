@@ -27,51 +27,75 @@ dojo.declare("apstrata.horizon.blue.Grid",
 {
 	idProperty: 'key',
 	labelProperty: 'title',
+	editable: true,
 
 	constructor: function() {
 		var self = this
 		
-		this.store = new apstrata.ObjectStore({
+		this.rowsPerPage = 25
+
+		var storeParams = {
 			connection: bluehorizon.config.apstrataConnection,
-			store: "website",
-			queryFields: "formType, title, template"
-		})
-		
-		this.layout = [
-			// view 1
-			{ cells: [ new dojox.grid.cells.RowIndex({width: 5}) ], noscroll: true},
-			// view 2
-			[
-				{ field: 'key', width: 'auto' },
-				{ field: 'formType', editable: 'true', width: 'auto' },
-				{ field: 'title', editable: 'true', width: 'auto' },
-				{ field: 'template', editable: 'true', width: 'auto' }
-			]
-		]
+			store: "DefaultStore",
+			resultsPerPage: self.rowsPerPage,
+			queryExpression: 'testData="batch4"',
+			queryFields: "id, title, ownername, tags, views, datetaken",
+			
+			// used to indicate the sort type to be applied to a column
+			fieldTypes: {
+				id: "strting",
+				title: "string",
+				ownername: "string",
+				tags: "string",
+				views: "numeric",
+				datetaken: "date"
+			}
+		}
+
+		this.gridParams = {
+			rowsPerPage: self.rowsPerPage,
+			
+			store:  new apstrata.ObjectStoreAdaptor({objectStore: new apstrata.ObjectStore(storeParams)}),
+			
+			structure: [
+				// view 1
+				{ cells: [ new dojox.grid.cells.RowIndex({width: "30px"}) ], noscroll: true},
+				// view 2
+				[
+					// { field: 'key', width: 'auto' },
+					{ field: 'id', editable: 'false', width: 'auto' },
+					{ field: 'title', editable: 'false', width: 'auto' },
+					{ field: 'ownername', editable: 'false', width: 'auto' },
+					{ field: 'tags', editable: 'false', width: 'auto' },
+					{ field: 'views', editable: 'false', width: '35px' },
+					{ field: 'datetaken', editable: 'false', width: 'auto' }
+				]
+			],
+			rowSelector: "15px"
+		}
 	},
 	
 	postCreate: function() {
 		dojo.style(this.domNode, "width", "600px")
 		this.inherited(arguments)
 	},
-
-	_queryParams: function() {
-		var self = this
-
-		var query =  (self._filter=="")?{}:{query: "title like \"" + self._filter + "%\""}
-
-		var sort = {} 
-		if (this._sort == 1) {
-			sort = {sort: "title<string:ASC>"}
-		} else if (this._sort == 2) {
-			sort = {sort: "title<string:DESC>"}
-		}
-		
-		return dojo.mixin(query, sort)
-	},
 	
-	_queryOptions: function() {
-		return {}		
-	},
+	filter: function(attr) {
+		var self = this
 		
+		var storeParams = {
+			connection: bluehorizon.config.apstrataConnection,
+			store: "DefaultStore",
+			resultsPerPage: self.rowsPerPage,
+			queryExpression: 'testData="batch3"',  // AND title="' + search + '"
+			queryFields: "id, title, ownername, tags, views, datetaken",
+			fieldTypes: ['string', 'string', 'string', 'numeric', 'date']
+		}
+
+		if (attr.search.trim()!='') {
+				storeParams.ftsQuery = attr.search
+		} 
+		
+		self._grid.setStore(new apstrata.ObjectStoreAdaptor({objectStore: new apstrata.ObjectStore(storeParams)}))
+	}
 })

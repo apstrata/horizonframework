@@ -1,5 +1,7 @@
 <div class='panel grid'>
-	<div dojoAttachPoint='dvHeader'></div>
+	{% if filterable %} 
+		<div dojoAttachPoint='dvHeader'></div>
+	{% endif %}
 	<div dojoAttachPoint='dvContent' style="width:100%;"></div> 
 	<div dojoAttachPoint='dvFooter' style='width: 100%;text-align: center;overflow: hidden;'>
 		<div style='height: 2px;'></div>

@@ -40,7 +40,7 @@ dojo.declare("apstrata.horizon.blue.GridWithPagination",
 			connection: bluehorizon.config.apstrataConnection,
 			store: "DefaultStore",
 			resultsPerPage: self.rowsPerPage,
-			queryExpression: 'testData="UFO"',
+			queryExpression: 'testData="batch4"',
 			queryFields: "id, title, ownername, tags, views, datetaken",
 
 			// used to indicate the sort type to be applied to a column

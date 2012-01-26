@@ -32,7 +32,7 @@ dojo.declare("apstrata.horizon.blue.Grid",
 	constructor: function() {
 		var self = this
 		
-		this.rowsPerPage = 25
+		this.rowsPerPage = 10
 
 		var storeParams = {
 			connection: bluehorizon.config.apstrataConnection,
@@ -77,6 +77,7 @@ dojo.declare("apstrata.horizon.blue.Grid",
 	
 	postCreate: function() {
 		dojo.style(this.domNode, "width", "600px")
+
 		this.inherited(arguments)
 	},
 	

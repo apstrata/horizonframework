@@ -86,11 +86,6 @@ dojo.declare("apstrata.horizon.blue.Menu",
 	constructor: function(args) {
 		var self = this
 
-		// Fix the path to the icons by adding the dynamic root path to its beginning.
-		for (var i=0; i<self.items.length; i++) {
-			self.items[i].iconSrc = self._horizonRoot + self.items[i].iconSrc;
-		}
-
 		this.store = new dojo.store.Memory({data: self.items})
 	},
 	

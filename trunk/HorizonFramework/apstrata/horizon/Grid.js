@@ -51,7 +51,7 @@ dojo.declare("apstrata.horizon.Grid",
 
 		// If no custom grid widget is specified use default apstrata.horizon.GridFTSearch 
 		if(!this.filterClass) this.filterClass = apstrata.horizon.GridFTSearch
-		if (this.dvHeader) {
+		if (this.filterable) {
 			var filterDv = dojo.create("div", null, this.dvHeader)
 			this._filter = new this.filterClass(null, filterDv)
 			dojo.connect(this._filter, "search", dojo.hitch(this, "filter"))

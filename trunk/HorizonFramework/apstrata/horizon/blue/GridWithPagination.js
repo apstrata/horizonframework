@@ -29,12 +29,12 @@ dojo.declare("apstrata.horizon.blue.GridWithPagination",
 {
 	idProperty: 'key',
 	labelProperty: 'title',
-	editable: true,
 
 	constructor: function() {
 		var self = this
 		
 		this.rowsPerPage = 25
+	this.editable= false
 
 		var storeParams = {
 			connection: bluehorizon.config.apstrataConnection,
@@ -97,6 +97,7 @@ dojo.declare("apstrata.horizon.blue.GridWithPagination",
 	
 	postCreate: function() {
 		dojo.style(this.domNode, "width", "600px")
+
 		this.inherited(arguments)
 	},
 	

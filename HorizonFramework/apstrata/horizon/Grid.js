@@ -109,9 +109,7 @@ dojo.declare("apstrata.horizon.Grid",
 	getContentHeight: function() {
 		var h, c, f
 		
-		h = (this._filter)?dojo.contentBox(this._filter.domNode).h:0
-		
-//		if (this._filter) h = dojo.contentBox(this._filter.domNode).h
+		h = dojo.contentBox(this.dvHeader).h
 		c = dojo.contentBox(this.domNode).h
 		f = dojo.contentBox(this.dvFooter).h
 		

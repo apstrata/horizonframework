@@ -17,14 +17,14 @@
  *  along with Apstrata Database Javascript Client.  If not, see <http://www.gnu.org/licenses/>.
  * *****************************************************************************
  */
-dojo.provide("apstrata.horizon.blue.GridWithPagination")
+dojo.provide("apstrata.horizon.blue.ApstrataGridWithPagination")
 
 dojo.require("dojo.store.Memory")
 dojo.require("apstrata.horizon.Grid")
 dojo.require("dojox.grid.EnhancedGrid")
 dojo.require("dojox.grid.enhanced.plugins.Pagination");
 
-dojo.declare("apstrata.horizon.blue.GridWithPagination", 
+dojo.declare("apstrata.horizon.blue.ApstrataGridWithPagination", 
 [apstrata.horizon.Grid], 
 {
 	idProperty: 'key',
@@ -40,6 +40,7 @@ dojo.declare("apstrata.horizon.blue.GridWithPagination",
 			connection: bluehorizon.config.apstrataConnection,
 			store: "DefaultStore",
 			resultsPerPage: self.rowsPerPage,
+			//querytExpression: "",
 			queryFields: "id, title, ownername, tags, views, datetaken",
 
 			// used to indicate the sort type to be applied to a column

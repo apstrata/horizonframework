@@ -21,6 +21,7 @@ dojo.provide("apstrata.horizon.blue.Grid")
 
 dojo.require("dojo.store.Memory")
 dojo.require("apstrata.horizon.Grid")
+dojo.require("apstrata.horizon.blue.TestData")
 
 dojo.declare("apstrata.horizon.blue.Grid", 
 [apstrata.horizon.Grid], 
@@ -34,41 +35,21 @@ dojo.declare("apstrata.horizon.blue.Grid",
 		
 		this.rowsPerPage = 10
 
-		var storeParams = {
-			connection: bluehorizon.config.apstrataConnection,
-			store: "DefaultStore",
-			resultsPerPage: self.rowsPerPage,
-			queryExpression: 'testData="batch4"',
-			queryFields: "id, title, ownername, tags, views, datetaken",
-			
-			// used to indicate the sort type to be applied to a column
-			fieldTypes: {
-				id: "strting",
-				title: "string",
-				ownername: "string",
-				tags: "string",
-				views: "numeric",
-				datetaken: "date"
-			}
-		}
-
 		this.gridParams = {
 			rowsPerPage: self.rowsPerPage,
 			
-			store:  new apstrata.ObjectStoreAdaptor({objectStore: new apstrata.ObjectStore(storeParams)}),
+			store:  new apstrata.ObjectStoreAdaptor({objectStore: new apstrata.ObjectStore(musicStore)}),
 			
 			structure: [
 				// view 1
-				{ cells: [ new dojox.grid.cells.RowIndex({width: "30px"}) ], noscroll: true},
+//				{ cells: [ new dojox.grid.cells.RowIndex({width: "30px"}) ], noscroll: true},
 				// view 2
 				[
-					// { field: 'key', width: 'auto' },
-					{ field: 'id', editable: 'false', width: 'auto' },
-					{ field: 'title', editable: 'false', width: 'auto' },
-					{ field: 'ownername', editable: 'false', width: 'auto' },
-					{ field: 'tags', editable: 'false', width: 'auto' },
-					{ field: 'views', editable: 'false', width: '35px' },
-					{ field: 'datetaken', editable: 'false', width: 'auto' }
+					{ field: 'Genre', editable: 'false', width: 'auto' },
+					{ field: 'Artist', editable: 'false', width: 'auto' },
+					{ field: 'Name', editable: 'false', width: 'auto' },
+					{ field: 'Composer', editable: 'false', width: 'auto' },
+					{ field: 'Year', editable: 'false', width: 'auto' }
 				]
 			],
 			rowSelector: "15px"

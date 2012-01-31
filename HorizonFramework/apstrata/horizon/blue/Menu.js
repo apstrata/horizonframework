@@ -45,22 +45,10 @@ dojo.declare("apstrata.horizon.blue.Menu",
 				panelClass: "apstrata.horizon.blue.List"
 			},
 			{
-				id:"datalist", 
-				label: "List from apstrata", 
-				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
-				panelClass: "apstrata.horizon.blue.DataList"
-			},
-			{
 				id:"grid", 
 				label: "Grid", 
 				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
 				panelClass: "apstrata.horizon.blue.Grid"
-			},
-			{
-				id:"gridWithPagination", 
-				label: "Grid with pagination", 
-				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
-				panelClass: "apstrata.horizon.blue.GridWithPagination"
 			},
 			{
 				id:"colors", 
@@ -68,42 +56,36 @@ dojo.declare("apstrata.horizon.blue.Menu",
 				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
 				panelClass: "apstrata.horizon.blue.Colors"
 			},
-			{	
-				id:"preferences", 
-				label: "Preferences", 
-				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/tick.png", 
-				panelClass: "apstrata.horizon.Preferences"
+			{
+				id:"apstrata", 
+				label: "apstrata widgets", 
+				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/datebase.png", 
+				panelClass: "apstrata.horizon.blue.ApstrataMenu"
 			}
-		],
+	],
 	
-	//
-	// widget attributes
-	//
-	filterable: true,
-	sortable: true,
-	editable: false,
 	
 	constructor: function(args) {
 		var self = this
+		//
+		// widget attributes
+		//
+		this.filterable = true
+		this.sortable = true
+		this.editable = false
 
 		this.store = new dojo.store.Memory({data: self.items})
 	},
 	
-//	startup: function() {
-//		this.home()
+	startup: function() {
 		
-//		this.inherited(arguments)
-//	},
-	
-	home: function() {
-		dojo.require("apstrata.horizon.blue.Panel")
-		var a = this.openPanel(apstrata.horizon.blue.Panel)
-		a.deferred.then(function() {
-console.debug(a.id +' done')
-//			self.openById('random')			
-		})
+		dojo.require("apstrata.horizon.blue.Home")
+		//var a = this.openPanel(apstrata.horizon.blue.Home)
+		//a.deferred.then(function() {
+		//	console.debug(a.id +' done')
+		//})
 		
-//		this.openPanel(apstrata.horizon.blue.Home)
+		this.inherited(arguments)
 	}
 })
 

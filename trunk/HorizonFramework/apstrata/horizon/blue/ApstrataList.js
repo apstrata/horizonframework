@@ -17,15 +17,17 @@
  *  along with Apstrata Database Javascript Client.  If not, see <http://www.gnu.org/licenses/>.
  * *****************************************************************************
  */
-dojo.provide("apstrata.horizon.blue.List")
+dojo.provide("apstrata.horizon.blue.ApstrataList")
 
-dojo.require("dojo.store.Memory")
 dojo.require("apstrata.horizon.List")
-dojo.require("apstrata.horizon.blue.TestData")
 
-dojo.declare("apstrata.horizon.blue.List", 
+dojo.require("apstrata.Connection")
+dojo.require("apstrata.ObjectStore")
+
+dojo.declare("apstrata.horizon.blue.ApstrataList", 
 [apstrata.horizon.List], 
 {
+	items: [],
 	
 	//
 	// widget attributes
@@ -33,21 +35,45 @@ dojo.declare("apstrata.horizon.blue.List",
 	filterable: true,
 	sortable: true,
 	editable: true,
-	maximizable: true,
 	
-	idProperty: 'id',
-	labelProperty: 'Name',
+	idProperty: 'apsdb.documentKey',
+	labelProperty: 'title',
 	
 	constructor: function() {
 		var self = this
-		this.store = musicStore // defined in apstrata.horizon.blue.TestData
-	},
 		
+		this.store = new apstrata.ObjectStore({
+			connection: bluehorizon.config.apstrataConnection,
+			store: "DefaultStore",
+			queryFields: "apsdb.documentKey,title"
+		})
+	},
+
 	postCreate: function() {
-		dojo.style(this.domNode, "width", "250px")
-		this.inherited(arguments)	
+		var self = this
+		dojo.style(this.domNode, "width", "300px")
+		this.inherited(arguments)
+	},
+
+	_queryParams: function() {
+		var self = this
+
+		var query =  (self._filter=="")?{}:{query: "title like \"" + self._filter + "%\""}
+
+		var sort = {} 
+		if (this._sort == 1) {
+			sort = {sort: "title<string:ASC>"}
+		} else if (this._sort == 2) {
+			sort = {sort: "title<string:DESC>"}
+		}
+		
+		return dojo.mixin(query, sort)
 	},
 	
+	_queryOptions: function() {
+		return {}		
+	},
+		
 	onClick: function(index, id) {
 		var self = this
 	}

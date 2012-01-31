@@ -102,7 +102,7 @@ dojo.declare("apstrata.horizon.Panel",
 
 		if (this.maximizable) {
 			var icons = new apstrata.horizon.PanelIcons()
-			dojo.place(icons.domNode, this.dvHeader)
+			dojo.place(icons.domNode, this.domNode)
 			
 //				dojo.style(icons.domNode, "left", dojo.position(self.domNode).w - dojo.position(icons.domNode).w - 20 + "px")
 			
@@ -203,7 +203,7 @@ dojo.declare("apstrata.horizon.Panel",
 		// Destroy an existing child open panel
 		if (this._openPanel) {
 			this.getContainer().removeChild(this._openPanel)
-			this._openPanel.destroy()
+			this._openPanel.destroyRecursive()
 			this._openPanel = null
 		}
 	},

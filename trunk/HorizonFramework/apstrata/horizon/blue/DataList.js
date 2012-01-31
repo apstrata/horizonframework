@@ -36,7 +36,7 @@ dojo.declare("apstrata.horizon.blue.DataList",
 	sortable: true,
 	editable: true,
 	
-	idProperty: 'key',
+	idProperty: 'apsdb.documentKey',
 	labelProperty: 'title',
 	
 	constructor: function() {
@@ -44,8 +44,8 @@ dojo.declare("apstrata.horizon.blue.DataList",
 		
 		this.store = new apstrata.ObjectStore({
 			connection: bluehorizon.config.apstrataConnection,
-			store: "website",
-			queryFields: "formType, title, template"
+			store: "DefaultStore",
+			queryFields: "apsdb.documentKey,title"
 		})
 	},
 

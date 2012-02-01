@@ -81,14 +81,14 @@ dojo.declare("apstrata.horizon.blue.ApstrataGrid",
 		this.inherited(arguments)
 	},
 	
-	filter: function(attr) {
+	filter: function(attr) { 		
 		var self = this
 		
 		var storeParams = {
 			connection: bluehorizon.config.apstrataConnection,
 			store: "DefaultStore",
 			resultsPerPage: self.rowsPerPage,
-			queryExpression: 'testData="batch3"',  // AND title="' + search + '"
+			// queryExpression: 'testData="batch3"',  // AND title="' + search + '"
 			queryFields: "id, title, ownername, tags, views, datetaken",
 			fieldTypes: ['string', 'string', 'string', 'numeric', 'date']
 		}

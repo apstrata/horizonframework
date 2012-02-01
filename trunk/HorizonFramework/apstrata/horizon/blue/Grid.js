@@ -60,24 +60,6 @@ dojo.declare("apstrata.horizon.blue.Grid",
 		dojo.style(this.domNode, "width", "600px")
 
 		this.inherited(arguments)
-	},
-	
-	filter: function(attr) {
-		var self = this
-		
-		var storeParams = {
-			connection: bluehorizon.config.apstrataConnection,
-			store: "DefaultStore",
-			resultsPerPage: self.rowsPerPage,
-			queryExpression: 'testData="batch3"',  // AND title="' + search + '"
-			queryFields: "id, title, ownername, tags, views, datetaken",
-			fieldTypes: ['string', 'string', 'string', 'numeric', 'date']
-		}
-
-		if (attr.search.trim()!='') {
-				storeParams.ftsQuery = attr.search
-		} 
-		
-		self._grid.setStore(new apstrata.ObjectStoreAdaptor({objectStore: new apstrata.ObjectStore(storeParams)}))
 	}
+
 })

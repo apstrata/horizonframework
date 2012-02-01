@@ -11,10 +11,10 @@ dojo.declare("apstrata.horizon.GridFTSearch",
 	widgetsInTemplate: true,
 	
 	_search: function() {
-		this.filter({
+		this.search({
 			search: this.frmSearch.get('value').search
 		})
 	},
 	
-	filter: function() {}
+	search: function(attr) {}
 })

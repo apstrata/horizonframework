@@ -108,13 +108,14 @@ dojo.declare("apstrata.horizon.blue.ApstrataGridWithPagination",
 			connection: bluehorizon.config.apstrataConnection,
 			store: "DefaultStore",
 			resultsPerPage: self.rowsPerPage,
-			queryExpression: 'testData="UFO"',  // AND title="' + search + '"
-			queryExpression: 'tags like "' + attr.search.trim() + '%"',
 			queryFields: "id, title, ownername, tags, views, datetaken",
 			fieldTypes: ['string', 'string', 'string', 'numeric', 'date']
 		}
 
-//		storeParams.ftsQuery = attr.search.trim()
+
+		if (attr.search.trim()!='') {
+				storeParams.ftsQuery = attr.search
+		} 
 		
 		self._grid.setStore(new apstrata.ObjectStoreAdaptor({objectStore: new apstrata.ObjectStore(storeParams)}))
 	}

@@ -110,7 +110,7 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 	select: function() {
 		var self = this
 		if (this._selectId) {
-			var node = dojo.query("[itemid$=\""+ this._selectId +"\"]", this.domNode)[0];
+			var node = dojo.query("[itemid=\""+ this._selectId +"\"]", this.domNode)[0];
       if (node) {   
            var index = node.getAttribute('itemIndex');
 	
@@ -124,7 +124,7 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 	},
 
 	toggleItem: function(id, selected) {
-		var node = dojo.query("[itemid$=\""+ id +"\"]", this.domNode)[0];
+		var node = dojo.query("[itemid=\""+ id +"\"]", this.domNode)[0];
 		if (node) {
 			if (selected) {
 				dojo.addClass(node, "itemSelected")

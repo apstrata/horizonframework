@@ -114,20 +114,27 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 	select: function() {
 		var self = this
 		if (this._selectId) {
-			var node = dojo.query("[itemid=\""+ this._selectId +"\"]", this.domNode)[0];
+			var queryItemId = this._selectId;
+			if (dojo.isIE) {
+				queryItemId = queryItemId.replace(new RegExp("\\\\", "g"), "\\\\");
+			}
+			var node = dojo.query("[itemid=\"" + queryItemId + "\"]", this.domNode)[0];
 			if (node) {   
 				var index = node.getAttribute('itemIndex');
 				
 				if (this._lastSelectedIndex) this.toggleItem(this._lastSelectedIndex, false);
 				this.toggleItem(this._selectId, true);
 				this._lastSelectedIndex = this._selectId;
-				
+					
 				this.parent.onClick(index, this._selectId, { selectIds: self._selectIds });
-			}     
+			}
 		}
 	},
 
 	toggleItem: function(id, selected) {
+		if (dojo.isIE) {
+			id = id.replace(new RegExp("\\\\", "g"), "\\\\");
+		}
 		var node = dojo.query("[itemid=\""+ id +"\"]", this.domNode)[0];
 		if (node) {
 			if (selected) {

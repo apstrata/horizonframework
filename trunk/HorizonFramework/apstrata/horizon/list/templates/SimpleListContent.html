@@ -23,14 +23,16 @@
 						<tr valign='center'>
 							<td class='deleteCell' valign='top' 
 								itemIndex='{{ forloop.counter0 }}' 
-								itemId='d{{ o.id }}'></td>
+								itemId='{{ o.id }}'></td>
 									{% if o.iconSrc %}
 										<td width='0' valign="top">
 											<div class='icon'><img src='{{ o.iconSrc }}'></div>
 										</td>
 									{% endif %} 
 							<td valign='center' class='label' width='100%' style="line-height: 1.3em"> 
-								{{ o.label|safe }} 
+								<div dojoAttachEvent='onclick: _editLabel' itemId='{{ o.id }}'>
+									<div class='listInnerLabel'>{{ o.label|safe }}</div>
+								</div>
 							</td>
 						</tr>
 					</table>

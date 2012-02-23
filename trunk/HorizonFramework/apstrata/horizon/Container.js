@@ -291,5 +291,26 @@ dojo.declare("apstrata.horizon.Container",
 		this.preferencesChanged(preferences)
 	},
 
-	preferencesChanged: function(preferences) {}
+	preferencesChanged: function(preferences) {},
+	
+	showCurtain: function() {
+		// Put a curtain over the entire window
+		var w = dijit.getViewport()
+		this._curtain = dojo.create('div', {}, dojo.body())
+		dojo.addClass(this._curtain, "apstrataHorizonAlertCurtain")
+
+		dojo.style(this._curtain, {
+			top: 0 + "px",
+			left: 0 + "px",
+			width: w.w + "px",
+			height: w.h + "px"
+		})
+	},
+	
+	hideCurtain: function() {
+		if (this._curtain) {
+			this._curtain.parentNode.removeChild(this._curtain)
+			this._curtain = null
+		}
+	}
 })

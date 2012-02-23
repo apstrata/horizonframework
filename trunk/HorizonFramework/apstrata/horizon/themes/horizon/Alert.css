@@ -1,11 +1,3 @@
-.apstrataHorizonAlertCurtain {
-	opacity: .15;
-	background: white;
-	position: absolute;
-	z-index: 9999; 
-}
-
-
 .apstrataHorizonAlert {
 	background: #bebebe;
 	position: absolute; 

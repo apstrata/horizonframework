@@ -18,3 +18,10 @@ div.horizon {
 	position: absolute;
 }
 
+.HorizonCurtain {
+	opacity: .15;
+	background: white;
+	position: absolute;
+	z-index: 9999; 
+}
+

@@ -58,18 +58,15 @@ or this
 		},1)
  */
 
+		// TODO: the timeout should be replaced with a hook into the end of the panel slide animation 
 		setTimeout(
 			function() {
 			var p = dojo.marginBox (self.parent.domNode)
 				dojo.style(self.fldSearchField, {
 					width: (p.w - apstrata.horizon.magicUIdimensions["list.SimpleFilterAndSort.width"] - 3) + "px"
-	//				width: (self.parent.width - (apstrata.horizon.magicUIdimensions["list.SimpleFilterAndSort.width"]?apstrata.horizon.magicUIdimensions["list.SimpleFilterAndSort.width"]:38)) + "px"
 				})
 			}, 
-			1)
-
-//				width: (self.parent.width - (apstrata.horizon.magicUIdimensions["list.SimpleFilterAndSort.width"]?apstrata.horizon.magicUIdimensions["list.SimpleFilterAndSort.width"]:38)) + "px"
-
+		1)
 	},
 	
 	postCreate: function() {
@@ -165,5 +162,21 @@ or this
 	},
 	
 	onSortChange: function(sort) {},
-	onFilterChange: function(filter) {}
+	onFilterChange: function(filter) {},
+	
+	_enableState: function() {
+		if (this._enabled) {
+			dojo.style(this.domNode, "visibility", "visible")
+		} else {
+			dojo.style(this.domNode, "visibility", "hidden")
+		}
+	},
+	
+	set: function() {
+		if (arguments[0] == 'enabled') {
+			this._enabled = arguments[1]
+			this._enableState()
+		}
+		this.inherited(arguments)
+	}
 })

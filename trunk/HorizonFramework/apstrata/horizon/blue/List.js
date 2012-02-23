@@ -62,11 +62,11 @@ dojo.declare("apstrata.horizon.blue.List",
 			message: "Are you sure you want to delete item: " + '[' + item.label + "] ?",
 			icon: "apstrata/horizon/resources/images/pencil-icons/bin-full.png",
 			actions: [
-				'Confirm',
-				'Cancel'
+				'Yes',
+				'No'
 			],
 			actionHandler: function(action) {
-				if (action=='Confirm') {
+				if (action=='Yes') {
 					doDelete()
 				}
 			}
@@ -82,11 +82,11 @@ dojo.declare("apstrata.horizon.blue.List",
 			message: "Are you sure you want to change the label: " + '[' + oldValue + "] to [" + newValue + "] ?",
 			icon: "apstrata/horizon/resources/images/pencil-icons/draft.png",
 			actions: [
-				'Confirm',
-				'Cancel'
+				'Yes',
+				'No'
 			],
 			actionHandler: function(action) {
-				if (action=='Confirm') {
+				if (action=='Yes') {
 					doChange()
 				} else {
 					doRevert()			

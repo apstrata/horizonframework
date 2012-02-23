@@ -27,19 +27,20 @@ dojo.declare("apstrata.horizon.blue.List",
 [apstrata.horizon.List], 
 {
 	
-	//
-	// widget attributes
-	//
-	filterable: true,
-	sortable: true,
-	editable: true,
-	maximizable: true,
-	
 	idProperty: 'id',
 	labelProperty: 'Name',
 	
 	constructor: function() {
 		var self = this
+
+		//
+		// widget attributes
+		//
+		this.filterable = true
+		this.sortable = true
+		this.editable = true
+		this.maximizable = false
+
 		this.store = musicStore // defined in apstrata.horizon.blue.TestData
 	},
 		
@@ -50,5 +51,48 @@ dojo.declare("apstrata.horizon.blue.List",
 	
 	onClick: function(index, id) {
 		var self = this
+	},
+	
+	onDeleteRequest: function(id, item, doDelete) {
+		var self = this
+		new apstrata.horizon.PanelAlert({
+			panel: self,
+			width: 320,
+			height: 100,
+			message: "Are you sure you want to delete item: " + '[' + item.label + "] ?",
+			icon: "apstrata/horizon/resources/images/pencil-icons/bin-full.png",
+			actions: [
+				'Confirm',
+				'Cancel'
+			],
+			actionHandler: function(action) {
+				if (action=='Confirm') {
+					doDelete()
+				}
+			}
+		})
+	},
+	
+	onChangeRequest: function(id, oldValue, newValue, doChange, doRevert) {
+		var self = this
+		new apstrata.horizon.PanelAlert({
+			panel: self,
+			width: 320,
+			height: 100,
+			message: "Are you sure you want to change the label: " + '[' + oldValue + "] to [" + newValue + "] ?",
+			icon: "apstrata/horizon/resources/images/pencil-icons/draft.png",
+			actions: [
+				'Confirm',
+				'Cancel'
+			],
+			actionHandler: function(action) {
+				if (action=='Confirm') {
+					doChange()
+				} else {
+					doRevert()			
+				}
+			}
+		})
+		
 	}
 })

@@ -23,18 +23,15 @@ dojo.provide('apstrata.horizon.Panel');
 dojo.require('dojox.dtl._Templated');
 dojo.require('dijit.layout.ContentPane')
 dojo.require('apstrata.horizon.PanelIcons')
+dojo.require("apstrata.horizon.PanelAlert")
 
 dojo.require('apstrata.horizon.util.PanelAnimation')
 
-/*
- * This mixin class insures that a HStackable Widget animates/opens in the appropriate position in the Stackable Container
- */
 dojo.declare("apstrata.horizon.Panel", 
 [dijit._Widget, dojox.dtl._Templated], 
 {
 	templatePath: dojo.moduleUrl("apstrata.horizon", "templates/Panel.html"),
-//	templateString: "<div class='panel'><div dojoAttachPoint='dvHeader'></div><div dojoAttachPoint='dvContent'></div><div dojoAttachPoint='dvFooter'></div></div>",
-	widgetsInTemplate: false,
+	widgetsInTemplate: true,
 
 	parentListId: "",
 	parentList: null,

@@ -20,6 +20,8 @@
 
 dojo.provide('apstrata.horizon.list.SimpleListContent');
 
+dojo.require('dijit.InlineEditBox')
+
 dojo.declare("apstrata.horizon.list.SimpleListContent", 
 [dijit._Widget, dojox.dtl._Templated], 
 {
@@ -47,6 +49,8 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 		var self = this
 		this.result = args.result
 		this.parent = args.parent
+		
+		this._activeEdit = false
 
 		if (args.selectIds) {
 			this._selectId = args.selectIds.shift()
@@ -111,15 +115,15 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 		var self = this
 		if (this._selectId) {
 			var node = dojo.query("[itemid=\""+ this._selectId +"\"]", this.domNode)[0];
-      if (node) {   
-           var index = node.getAttribute('itemIndex');
-	
-           if (this._lastSelectedIndex) this.toggleItem(this._lastSelectedIndex, false);
-           this.toggleItem(this._selectId, true);
-           this._lastSelectedIndex = this._selectId;
-			
-           this.parent.onClick(index, this._selectId, { selectIds: self._selectIds });
-      }     
+			if (node) {   
+				var index = node.getAttribute('itemIndex');
+				
+				if (this._lastSelectedIndex) this.toggleItem(this._lastSelectedIndex, false);
+				this.toggleItem(this._selectId, true);
+				this._lastSelectedIndex = this._selectId;
+				
+				this.parent.onClick(index, this._selectId, { selectIds: self._selectIds });
+			}     
 		}
 	},
 
@@ -137,13 +141,62 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 
 	_onClick: function(e) {
 		if (this.noEdit) return;
-		if (this._editMode) return;
 
 		var index = e.currentTarget.getAttribute('itemIndex')
 		var id = e.currentTarget.getAttribute('itemId')
 
 		this._selectId = id
-		this.select()
+
+		if (!this.parent._editMode) {
+			this.select()
+		}
+	},
+	
+	_editLabel: function(e) {
+		var self = this
+
+		if (this._activeEdit) return
+
+		this._oldValue = e.originalTarget.innerHTML
+		this._editedItemId = e.currentTarget.getAttribute('itemId')
+
+		if (this.parent._editMode) {
+			
+			this.toggleItem(this._selectId, false)
+			
+			this._activeEdit = true
+			var inlineWidget = new dijit.InlineEditBox({ 
+				renderAsHtml: false, 
+				autoSave: true,
+				onChange:function() {
+					self._activeEdit = false
+					var newValue = this.get("value")
+					
+					self.parent.onChangeRequest(self._editedItemId, self._oldValue, newValue, function() {
+//						self.store.remove(id)
+//						self._editMode = false
+//						self.reload()
+//						self._tglEdit.set("checked", false) 
+
+//						self.onDeleteItem(id, item)
+						var n = inlineWidget.domNode.parentNode
+						inlineWidget.destroyRecursive()
+						n.innerHTML = "<div title='click to edit'>"+newValue+"</div>" 
+					}, function() {
+						var n = inlineWidget.domNode.parentNode
+						inlineWidget.destroyRecursive()
+						n.innerHTML = "<div title='click to edit'>"+self._oldValue+"</div>" 
+					})
+				},
+				onCancel: function() {
+					self._activeEdit = false
+
+					var n = inlineWidget.domNode.parentNode
+					inlineWidget.destroyRecursive()
+					n.innerHTML = "<div title='click to edit'>"+self._oldValue+"</div>" 
+				}
+			}, e.originalTarget)
+		} 
 	},
 	
 	_onMouseover: function(e) {

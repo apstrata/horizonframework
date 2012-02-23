@@ -30,6 +30,7 @@ dojo.require('apstrata.horizon.list.SimpleListContent')
 dojo.require('apstrata.horizon.util.FilterLabelsByString')
 dojo.require('apstrata.horizon.list.SimpleFilterAndSort')
 
+
 /*
  * This List provides a scrolling vertical list of items. It provides edit and new functionality  
  */
@@ -66,8 +67,7 @@ dojo.declare("apstrata.horizon.List",
 	// Messages
 	// TODO: get from resource bundle
 	//
-	_MSG_FILTER: 'type to filter',
-	_MSG_DELETE: "Are you sure you want to delete item: ",
+	_MSG_FILTER: 'type to filter',	
 	
 	contentClass: apstrata.horizon.list.SimpleListContent,
 	
@@ -137,7 +137,7 @@ dojo.declare("apstrata.horizon.List",
 			function(result) {
 				self._showLoadingMessage(false);
 				self._listContent.setData(result) ;  		
-        self.select();    
+        		self.select();    
 			}
 		)
 	},
@@ -151,7 +151,9 @@ dojo.declare("apstrata.horizon.List",
 		this._listContent.selectItem(id)
 	},	
 
-	onClick: function(index, id, args) {},
+	onClick: function(index, id, args) {
+		console.debug(index, id, args)
+	},
 	
 	newItem: function() {},
 	
@@ -175,59 +177,45 @@ dojo.declare("apstrata.horizon.List",
 			var items = dojo.query('.deleteCell', this.domNode)
 			
 			dojo.forEach(items, function(item) {
-				var n = dojo.create("div", {innerHTML: "<img src='"+ self._horizonRoot +"/resources/images/pencil-icons/stop-red-sml.png'>"})
-				n.setAttribute('itemId', item.getAttribute('itemId'))
-				n.setAttribute('itemIndex', item.getAttribute('itemIndex'))
-
+				
+				var n = dojo.create("div", {
+					itemId: item.getAttribute('itemId'),
+					itemIndex: item.getAttribute('itemIndex')
+				}, item)
 				dojo.addClass(n, 'iconDelete')
-				dojo.place(n, item)
+
+				var img = dojo.create('img', {
+					title: "click to delete item",
+					src: self._horizonRoot +"/resources/images/pencil-icons/stop-red-sml.png"
+				}, n)
 				
 				dojo.connect(n, 'onclick', function(e) {
 					var id = e.currentTarget.getAttribute('itemId')
 					var item = self.store.get(id)
 
-					self._alert(self._MSG_DELETE + '[' + item.label + "] ?", 
-								e.currentTarget, 
-								function(target) {
-									self.store.remove(id)
-									self._editMode = false
-									self._refreshData()
-									self._tglEdit.attr("checked", false) 
-									
-									self.onDeleteItem(target.getAttribute('itemIndex'), id, item)
-								}, function(target) {
-									
-								})
+					self.onDeleteRequest(id, item, function() {
+						self.store.remove(id)
+						self._editMode = false
+						self.reload()
+						self._tglEdit.set("checked", false) 
 
+						//self.onDeleteItem(id, item)
+					})
 				})
 			})
+
+			var items = dojo.query('.listInnerLabel', this.domNode)
+			
+			dojo.forEach(items, function(item) {
+				item.setAttribute('title', 'click to edit')
+			})
+
 			this._editMode = true
 		}
 	},
-
 	
-	onDeleteItem: function(index, label, attrs) {},
-
-	_alert: function (msg, origin, yes, no) {
-		dialog3 = new apstrata.widgets.Alert({width: 300, 
-												height: 300, 
-												actions: "yes,no", 
-												message: msg, 
-												clazz: "rounded-sml Alert", 
-												iconSrc: apstrata.baseUrl + "/resources/images/pencil-icons/alert.png", 
-												animation: {from: origin}, 
-												modal: true })
-
-		dialog3.show()
-		dojo.connect(dialog3, "buttonPressed", function(label) {
-			if (label == 'yes') {
-				yes(origin)
-			} else {
-				no(origin)
-			}
-			dialog3.hide()
-		})
-	},
+	onDeleteRequest: function(id, item, doDelete) {},
+	onChangeRequest: function(id, oldValue, newValue, doChange, doRevert) {},
 	
 	/*
 	 * Works by default for dojo.store.Memory and for filtering a label based on a string

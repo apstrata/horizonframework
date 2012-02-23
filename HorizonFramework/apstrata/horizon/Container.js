@@ -297,7 +297,7 @@ dojo.declare("apstrata.horizon.Container",
 		// Put a curtain over the entire window
 		var w = dijit.getViewport()
 		this._curtain = dojo.create('div', {}, dojo.body())
-		dojo.addClass(this._curtain, "apstrataHorizonAlertCurtain")
+		dojo.addClass(this._curtain, "HorizonCurtain")
 
 		dojo.style(this._curtain, {
 			top: 0 + "px",

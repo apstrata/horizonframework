@@ -172,10 +172,10 @@ dojo.declare("apstrata.horizon.List",
 				if (icon) dojo.destroy(icon[0])
 			})
 			this._editMode = false
-			self._filterWidget.set('enabled', true)
+			if (self._filterWidget) self._filterWidget.set('enabled', true)
 			
 		} else {
-			self._filterWidget.set('enabled', false)
+			if (self._filterWidget) self._filterWidget.set('enabled', false)
 
 			// toggle delete icons on
 			var items = dojo.query('.deleteCell', this.domNode)
@@ -202,7 +202,7 @@ dojo.declare("apstrata.horizon.List",
 						self._editMode = false
 						self.reload()
 						self._tglEdit.set("checked", false) 
-						self._filterWidget.set('enabled', true)
+						if (self._filterWidget) self._filterWidget.set('enabled', true)
 					})
 				})
 			})

@@ -105,13 +105,5 @@ dojo.declare("apstrata.horizon.blue.List",
 			}
 		})
 		
-	},
-
-	deleteItem: function(id) {
-		this.inherited(arguments)
-	},
-	
-	changeItemLabel: function(id, label) {
-		this.inherited(arguments)
 	}
 })

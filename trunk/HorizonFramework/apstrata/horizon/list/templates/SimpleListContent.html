@@ -23,16 +23,30 @@
 						<tr valign='center'>
 							<td class='deleteCell' valign='top' 
 								itemIndex='{{ forloop.counter0 }}' 
-								itemId='{{ o.id }}'></td>
-									{% if o.iconSrc %}
-										<td width='0' valign="top">
-											<div class='icon'><img src='{{ o.iconSrc }}'></div>
-										</td>
-									{% endif %} 
+								itemId='{{ o.id }}'>
+									<div class='iconDelete'>
+							{% if o.isDeleteable %}
+										<img src="{{ _horizonRoot }}/resources/images/pencil-icons/stop-red-sml.png" itemId='{{ o.id }}' dojoAttachEvent='onclick: _deleteItem'>
+							{% else %}
+										<img src="{{ _horizonRoot }}/resources/images/pencil-icons/stop-disabled-sml.png">
+							{% endif %}
+									</div>
+							</td>
+						{% if o.iconSrc %}
+							<td width='0' valign="top">
+								<div class='icon'><img src='{{ o.iconSrc }}'></div>
+							</td>
+						{% endif %} 
 							<td valign='center' class='label' width='100%' style="line-height: 1.3em"> 
-								<div dojoAttachEvent='onclick: _editLabel' itemId='{{ o.id }}'>
-									<div class='listInnerLabel'>{{ o.label|safe }}</div>
-								</div>
+									{% if o.isEditable %}
+										<div dojoAttachEvent='onclick: _editLabel' itemId='{{ o.id }}'>
+									{% else %}
+										<div class='readOnly'>
+									{% endif %} 
+									
+											<div class='listInnerLabel'>{{ o.label|safe }}</div>
+									
+										</div>
 							</td>
 						</tr>
 					</table>

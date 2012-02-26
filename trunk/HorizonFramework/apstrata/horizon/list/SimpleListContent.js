@@ -36,13 +36,20 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 	
 	_normalizeResult: function(result) {
 		var self = this;
-		
+
 		this.data = [];
 		dojo.forEach(result, function(item) {
-			if (!item['id']) item['id'] = item[self.parent.idProperty];
-			if (!item['label']) item['label'] = item[self.parent.labelProperty] || "<empty>";
+			if (!item['id']) item['id'] = item[self.parent.idProperty]
+			if (!item['label']) item['label'] = item[self.parent.labelProperty] || "<empty>"
+			
+			item.isDeleteable = true || (self.parent.isDeletableCondition && (item[self.parent.isDeletableCondition.field] == item[self.parent.isDeletableCondition.value]))
+			item.isEditable = true || (self.parent.isEditableCondition && (item[self.parent.isEditableCondition.field] == item[self.parent.isEditableCondition.value]))
+
+			if (item.canBeDeleted) item.isDeleteable = true; else item.isDeleteable = false 
+			if (item.canBeEdited) item.isEditable = true; else item.isEditable = false 
+			
 			self.data.push(item);
-		});
+		})
 	},
 	
 	constructor: function(args) {
@@ -58,6 +65,7 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 		}
 		
 		this._lastSelectedIndex = null
+		this._activeInlineEdit = null
 
 		this._normalizeResult(args.result)
 	},
@@ -158,6 +166,29 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 			this.select()
 		}
 	},
+
+	_deleteItem: function(e) {
+		var self = this
+		var id = e.currentTarget.getAttribute('itemId')
+		var item = self.parent.store.get(id)
+
+		self.parent.onDeleteRequest(id, item)
+	},
+	
+	// this needs to be reviewed, currently not using it
+	removeItem: function(id){
+		
+		for (var i=0; i<this.data.length; i++) {
+			if (this.data[i].id == id) {
+				this.data.splice(i, 1)
+				this.render()
+				this.layout()
+				this.parent.showDeleteIcons()
+				return
+			}
+		}
+		
+	},	
 	
 	_editLabel: function(e) {
 		var self = this
@@ -172,7 +203,7 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 			this.toggleItem(this._selectId, false)
 			
 			this._activeEdit = true
-			var inlineWidget = new dijit.InlineEditBox({ 
+			this._activeInlineEdit = new dijit.InlineEditBox({ 
 				renderAsHtml: false, 
 				autoSave: true,
 				onChange:function() {
@@ -180,30 +211,36 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 					var newValue = this.get("value")
 					
 					self.parent.onChangeRequest(self._editedItemId, self._oldValue, newValue, function() {
-//						self.store.remove(id)
-//						self._editMode = false
-//						self.reload()
-//						self._tglEdit.set("checked", false) 
-
-//						self.onDeleteItem(id, item)
-						var n = inlineWidget.domNode.parentNode
-						inlineWidget.destroyRecursive()
-						n.innerHTML = "<div title='click to edit'>"+newValue+"</div>" 
+						self.parent.changeItemLabel(id, newValue)
 					}, function() {
-						var n = inlineWidget.domNode.parentNode
-						inlineWidget.destroyRecursive()
-						n.innerHTML = "<div title='click to edit'>"+self._oldValue+"</div>" 
+						self.revertItemEdit()
 					})
 				},
 				onCancel: function() {
-					self._activeEdit = false
-
-					var n = inlineWidget.domNode.parentNode
-					inlineWidget.destroyRecursive()
-					n.innerHTML = "<div title='click to edit'>"+self._oldValue+"</div>" 
+					self.revertItemEdit()
 				}
 			}, e.originalTarget)
 		} 
+	},
+	
+	changeItemLabel: function(id, label) {
+		if (!this._activeInlineEdit) return
+		
+		var n = this._activeInlineEdit.domNode.parentNode
+		this._activeInlineEdit.destroyRecursive()
+		n.innerHTML = "<div title='click to edit'>"+label+"</div>" 
+		
+		this._activeEdit = false
+	},
+	
+	revertItemEdit: function() {
+		if (!this._activeInlineEdit) return
+		
+		var n = this._activeInlineEdit.domNode.parentNode
+		this._activeInlineEdit.destroyRecursive()
+		n.innerHTML = "<div title='click to edit'>"+this._oldValue+"</div>" 
+
+		this._activeEdit = false
 	},
 	
 	_onMouseover: function(e) {

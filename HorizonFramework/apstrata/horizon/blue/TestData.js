@@ -129,6 +129,12 @@ var musicData = [
 	{"Heard": true, "Checked": "True", "Genre":"Progressive Rock",	"Artist":"Dixie dregs",	"Year":1978,	"Album":"What if",	"Name":"What if",	"Length":"05:02",	"Track":3,	"Composer":"Steve Morse",	"Download Date":"1992/3/28",	"Last Played":"00:22:30"}
 ]
 
-for(var i=0; i<musicData.length; i++) musicData[i].id = ""+i
+for (var i = 0; i < musicData.length; i++) {
+	musicData[i].id = ""+i
+	
+	musicData[i].canBeDeleted = (i>3)
+	musicData[i].canBeEdited = (i>1)
+}
+
 
 var musicStore = new dojo.store.Memory({data: musicData})

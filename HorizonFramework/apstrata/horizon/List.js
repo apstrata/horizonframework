@@ -210,11 +210,11 @@ dojo.declare("apstrata.horizon.List",
 	
 	deleteItem: function(id) {
 		this.store.remove(id)
-		this._editMode = false
 		
 		//this._listContent.removeItem(id)
 		
 		this.reload()
+		this._editMode = false
 		this._tglEdit.set("checked", false) 
 		if (this._filterWidget) this._filterWidget.set('enabled', true)
 	},

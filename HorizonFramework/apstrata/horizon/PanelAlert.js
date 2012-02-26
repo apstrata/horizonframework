@@ -36,8 +36,8 @@ dojo.declare("apstrata.horizon.PanelAlert",
  	constructor: function(attr) {
 		dojo.mixin(this, attr)
  	},
- 	
- 	postCreate: function() {
+	
+	_layout: function() {
 		var self = this
 
 		var a = dojo.position(this.panel.domNode)
@@ -63,19 +63,6 @@ dojo.declare("apstrata.horizon.PanelAlert",
 			dojo.place(button.domNode, this.dvActions)
 		}
 		
-		// Put a curtain over the entire window because the alert is modal
-/*
-		var w = dijit.getViewport()
-		this._curtain = dojo.create('div', {}, dojo.body())
-		dojo.addClass(this._curtain, "apstrataHorizonAlertCurtain")
-
-		dojo.style(this._curtain, {
-			top: 0 + "px",
-			left: 0 + "px",
-			width: w.w + "px",
-			height: w.h + "px"
-		})
-*/		
 		this.panel.container.showCurtain()
 		
 		// If an icon path is specified, show the img
@@ -89,7 +76,6 @@ dojo.declare("apstrata.horizon.PanelAlert",
 		var b = dojo.position(this.dvActions)
 		var i = dojo.position(this.dvIcon)
 
-
 		// Position the actions at the center lower part
 		dojo.style(this.dvActions, {
 			left: (d.w/2 - b.w/2) + "px",
@@ -100,7 +86,11 @@ dojo.declare("apstrata.horizon.PanelAlert",
 			width: (d.w-i.w) + "px",
 			height: (d.h - b.h) + "px"
 		})
-		
+	},
+ 	
+ 	postCreate: function() {
+		// delaying reflowing of divs because occasionally it breaks
+		setTimeout(dojo.hitch(this, "_layout"), 200)
  	},
 	
 	onClick: function(action) {

@@ -30,7 +30,6 @@ dojo.require('apstrata.horizon.list.SimpleListContent')
 dojo.require('apstrata.horizon.util.FilterLabelsByString')
 dojo.require('apstrata.horizon.list.SimpleFilterAndSort')
 
-
 /*
  * This List provides a scrolling vertical list of items. It provides edit and new functionality  
  */
@@ -135,11 +134,40 @@ dojo.declare("apstrata.horizon.List",
 				queryOptions
 			),
 			function(result) {
-				self._showLoadingMessage(false);
-				self._listContent.setData(result) ;  		
+				self._showLoadingMessage(false)
+
+				self._listContent.setData(result) 		
         		self.select();    
 			}
 		)
+	},
+	
+	showDeleteIcons: function() {
+		var items = dojo.query('.deleteCell', this.domNode)
+		dojo.forEach(items, function(item) {
+			dojo.style(item, "visibility", "hidden")
+		})
+	},
+	
+	hideDeleteIcons: function() {
+		var items = dojo.query('.deleteCell', this.domNode)
+		dojo.forEach(items, function(item) {
+			dojo.style(item, "visibility", "visible")
+		})
+	},
+	
+	dimReadOnlyLabels: function() {
+		var items = dojo.query('.readOnly', this.domNode)
+		dojo.forEach(items, function(item) {
+			dojo.addClass(item, "dim")
+		})
+	},
+	
+	unDimReadOnlyLabels: function() {
+		var items = dojo.query('.readOnly', this.domNode)
+		dojo.forEach(items, function(item) {
+			dojo.removeClass(item, "dim")
+		})
 	},
 
 	_markSelected: function(e) {
@@ -164,61 +192,40 @@ dojo.declare("apstrata.horizon.List",
 		this.closePanel()
 		
 		if (this._editMode) {
-			// toggle delete icons off
-			var items = dojo.query('.deleteCell', this.domNode)
-			dojo.forEach(items, function(item) {
-				var icon = dojo.query('.iconDelete', item)
-				
-				if (icon) dojo.destroy(icon[0])
-			})
 			this._editMode = false
 			if (self._filterWidget) self._filterWidget.set('enabled', true)
-			
+			this.showDeleteIcons()
+			this.unDimReadOnlyLabels()
 		} else {
-			if (self._filterWidget) self._filterWidget.set('enabled', false)
-
-			// toggle delete icons on
-			var items = dojo.query('.deleteCell', this.domNode)
-			
-			dojo.forEach(items, function(item) {
-				
-				var n = dojo.create("div", {
-					itemId: item.getAttribute('itemId'),
-					itemIndex: item.getAttribute('itemIndex')
-				}, item)
-				dojo.addClass(n, 'iconDelete')
-
-				var img = dojo.create('img', {
-					title: "click to delete item",
-					src: self._horizonRoot +"/resources/images/pencil-icons/stop-red-sml.png"
-				}, n)
-				
-				dojo.connect(n, 'onclick', function(e) {
-					var id = e.currentTarget.getAttribute('itemId')
-					var item = self.store.get(id)
-
-					self.onDeleteRequest(id, item, function() {
-						self.store.remove(id)
-						self._editMode = false
-						self.reload()
-						self._tglEdit.set("checked", false) 
-						if (self._filterWidget) self._filterWidget.set('enabled', true)
-					})
-				})
-			})
-
-			var items = dojo.query('.listInnerLabel', this.domNode)
-			
-			dojo.forEach(items, function(item) {
-				item.setAttribute('title', 'click to edit')
-			})
-
 			this._editMode = true
+			if (self._filterWidget) self._filterWidget.set('enabled', false)
+			this.hideDeleteIcons()
+			this.dimReadOnlyLabels()
 		}
 	},
 	
-	onDeleteRequest: function(id, item, doDelete) {},
-	onChangeRequest: function(id, oldValue, newValue, doChange, doRevert) {},
+	
+	onDeleteRequest: function(id, item) {},
+	onChangeRequest: function(id, oldValue, newValue) {},
+	
+	deleteItem: function(id) {
+		this.store.remove(id)
+		this._editMode = false
+		
+		//this._listContent.removeItem(id)
+		
+		this.reload()
+		this._tglEdit.set("checked", false) 
+		if (this._filterWidget) this._filterWidget.set('enabled', true)
+	},
+	
+	changeItemLabel: function(id, label) {
+		this._listContent.changeItemLabel(id, label)
+	},
+	
+	revertItemEdit: function() {
+		this._listContent.revertItemEdit()
+	}, 
 	
 	/*
 	 * Works by default for dojo.store.Memory and for filtering a label based on a string

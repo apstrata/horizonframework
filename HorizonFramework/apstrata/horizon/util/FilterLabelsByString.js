@@ -42,11 +42,11 @@ apstrata.horizon.util.FilterLabelsByString = function(item, filterString) {
 		if (selected) {
 			// save the original label before adding highlight HTML
 			item._originalLabel = item.label
-			
+			console.debug()
 			// add highlight HTML
 			item.label = item.label.substring(0, pos) + 
 				"<span class='highlightFilter'>" + item.label.substring(pos, pos + filterString.length) + "</span>" + 
-				item.label.substring(pos + filterString.length)
+				item.label.substring(pos + filterString.length) 
 		}
 	}
 	

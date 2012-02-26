@@ -98,6 +98,11 @@
 
 .horizon .list .item .content .deleteCell {
 	width: 0;
+	visibility: hidden;
+}
+
+.horizon .list .item .content .deleteCellEmpty {
+	width: 17px;
 }
 
 .horizon .list .item .icon img {
@@ -121,4 +126,10 @@
 .horizon .list .item .label {
 	padding-left: 3px;
 	word-wrap: break-word;
+}
+
+.horizon .list .item .label .readOnly {}
+
+.horizon .list .item .label .dim {
+	color: grey;
 }

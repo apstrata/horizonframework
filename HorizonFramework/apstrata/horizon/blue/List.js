@@ -40,6 +40,19 @@ dojo.declare("apstrata.horizon.blue.List",
 		this.sortable = true
 		this.editable = true
 		this.maximizable = false
+		
+		//
+		// Read only attributes
+		//
+		this.isDeletableCondition = {
+			field: "canBeDeleted",
+			value: true
+		}
+		
+		this.isEditedCondition = {
+			field: "canBeEdited",
+			value: true
+		}
 
 		this.store = musicStore // defined in apstrata.horizon.blue.TestData
 	},
@@ -49,11 +62,9 @@ dojo.declare("apstrata.horizon.blue.List",
 		this.inherited(arguments)	
 	},
 	
-	onClick: function(index, id) {
-		var self = this
-	},
+	onClick: function(index, id) {},
 	
-	onDeleteRequest: function(id, item, doDelete) {
+	onDeleteRequest: function(id, item) {
 		var self = this
 		new apstrata.horizon.PanelAlert({
 			panel: self,
@@ -67,7 +78,7 @@ dojo.declare("apstrata.horizon.blue.List",
 			],
 			actionHandler: function(action) {
 				if (action=='Yes') {
-					doDelete()
+					self.deleteItem(id)
 				}
 			}
 		})
@@ -87,12 +98,20 @@ dojo.declare("apstrata.horizon.blue.List",
 			],
 			actionHandler: function(action) {
 				if (action=='Yes') {
-					doChange()
+					self.changeItemLabel(id, newValue)
 				} else {
-					doRevert()			
+					self.revertItemEdit()
 				}
 			}
 		})
 		
+	},
+
+	deleteItem: function(id) {
+		this.inherited(arguments)
+	},
+	
+	changeItemLabel: function(id, label) {
+		this.inherited(arguments)
 	}
 })

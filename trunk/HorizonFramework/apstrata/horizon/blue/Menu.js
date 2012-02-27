@@ -29,37 +29,37 @@ dojo.declare("apstrata.horizon.blue.Menu",
 			{	
 				id:"home", 
 				label: "Home", 
-				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/home.png",
+				iconSrc: apstrata.baseUrl+"/horizon/resources/images/pencil-icons/home.png",
 				panelClass: "apstrata.horizon.blue.Home"
 			},
 			{
 				id:"panel", 
 				label: "Panel", 
-				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
+				iconSrc: apstrata.baseUrl+"/horizon/resources/images/pencil-icons/computer.png", 
 				panelClass: "apstrata.horizon.blue.Panel"
 			},
 			{
 				id:"list", 
 				label: "List", 
-				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
+				iconSrc: apstrata.baseUrl+"/horizon/resources/images/pencil-icons/computer.png", 
 				panelClass: "apstrata.horizon.blue.List"
 			},
 			{
 				id:"grid", 
 				label: "Grid", 
-				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
+				iconSrc: apstrata.baseUrl+"/horizon/resources/images/pencil-icons/computer.png", 
 				panelClass: "apstrata.horizon.blue.Grid"
 			},
 			{
 				id:"colors", 
 				label: "Colors", 
-				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/computer.png", 
+				iconSrc: apstrata.baseUrl+"/horizon/resources/images/pencil-icons/computer.png", 
 				panelClass: "apstrata.horizon.blue.Colors"
 			},
 			{
 				id:"apstrata", 
 				label: "apstrata widgets", 
-				iconSrc: apstrata.baseUrl+"/resources/images/pencil-icons/datebase.png", 
+				iconSrc: apstrata.baseUrl+"/horizon/resources/images/pencil-icons/datebase.png", 
 				panelClass: "apstrata.horizon.blue.ApstrataMenu"
 			}
 	],

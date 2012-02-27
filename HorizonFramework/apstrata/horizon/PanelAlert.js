@@ -67,9 +67,15 @@ dojo.declare("apstrata.horizon.PanelAlert",
 		
 		// If an icon path is specified, show the img
 		if (this.icon) {
-			dojo.create("img", {src: self.icon}, this.dvIcon)
+			var img = dojo.create("img", {}, this.dvIcon)
+			img.onload = dojo.hitch(this, "_reflowContent")
+			dojo.attr(img, "src", self.icon)
+		} else {
+			this._reflowContent()
 		}
-		
+	},
+	
+	_reflowContent: function() {
 		// Position elements
 		var d = dojo.contentBox(this.domNode)
 		var m = dojo.position(this.dvMessage)

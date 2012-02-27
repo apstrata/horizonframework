@@ -205,7 +205,7 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 			this._activeEdit = true
 			this._activeInlineEdit = new dijit.InlineEditBox({ 
 				renderAsHtml: false, 
-				autoSave: true,
+				autoSave: false,
 				onChange:function() {
 					self._activeEdit = false
 					var newValue = this.get("value")

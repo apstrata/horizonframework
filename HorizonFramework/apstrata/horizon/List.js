@@ -148,14 +148,14 @@ dojo.declare("apstrata.horizon.List",
 	showDeleteIcons: function() {
 		var items = dojo.query('.deleteCell', this.domNode)
 		dojo.forEach(items, function(item) {
-			dojo.style(item, "visibility", "hidden")
+			dojo.style(item, "display", "none")
 		})
 	},
 	
 	hideDeleteIcons: function() {
 		var items = dojo.query('.deleteCell', this.domNode)
 		dojo.forEach(items, function(item) {
-			dojo.style(item, "visibility", "visible")
+			dojo.style(item, "display", "block")
 		})
 	},
 	

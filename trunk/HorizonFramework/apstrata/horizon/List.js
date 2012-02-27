@@ -124,6 +124,9 @@ dojo.declare("apstrata.horizon.List",
 	reload: function() {
 		var self = this
 		
+		// Sometimes this might get called before a store has been initialized.
+		if (!this.store) return
+		
 		var query = this._queryParams()
 		var queryOptions = this._queryOptions()
 				

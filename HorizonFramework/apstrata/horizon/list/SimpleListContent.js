@@ -194,15 +194,22 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 		var self = this
 
 		if (this._activeEdit) return
-
-		this._oldValue = e.originalTarget.innerHTML
-		this._editedItemId = e.currentTarget.getAttribute('itemId')
-
+		var target = e.srcElement || e.currentTarget
+		
+		this._editedItemId = target.getAttribute('itemId')
+		
+		this._oldValue = this.parent.store.get(this._editedItemId).Name
+		
 		if (this.parent._editMode) {
 			
 			this.toggleItem(this._selectId, false)
 			
 			this._activeEdit = true
+			
+			var tmpDiv = dojo.create("div", {innerHTML: self._oldValue})
+			dojo.addClass(tmpDiv, "listInnerLabel")
+			dojo.place(tmpDiv, target, "only")
+			
 			this._activeInlineEdit = new dijit.InlineEditBox({ 
 				renderAsHtml: false, 
 				autoSave: false,
@@ -219,8 +226,12 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 				onCancel: function() {
 					self.revertItemEdit()
 				}
-			}, e.originalTarget)
+			}, tmpDiv)
 		} 
+	},
+	
+	cancelEdits: function() {
+		if (this._activeInlineEdit) this._activeInlineEdit.cancel()
 	},
 	
 	changeItemLabel: function(id, label) {
@@ -228,7 +239,7 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 		
 		var n = this._activeInlineEdit.domNode.parentNode
 		this._activeInlineEdit.destroyRecursive()
-		n.innerHTML = "<div title='click to edit'>"+label+"</div>" 
+		n.innerHTML = "<div class='listInnerLabel' title='click to edit'>"+label+"</div>" 
 		
 		this._activeEdit = false
 	},
@@ -238,7 +249,7 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 		
 		var n = this._activeInlineEdit.domNode.parentNode
 		this._activeInlineEdit.destroyRecursive()
-		n.innerHTML = "<div title='click to edit'>"+this._oldValue+"</div>" 
+		n.innerHTML = "<div class='listInnerLabel' title='click to edit'>"+this._oldValue+"</div>" 
 
 		this._activeEdit = false
 	},

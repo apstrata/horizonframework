@@ -34,6 +34,21 @@
 	float: left;
 }
 
+.apstrataHorizonAlert .editIcon {
+	background-image:url('../../resources/images/pencil-icons/draft.png');
+	width: 64px;
+	height: 64px;
+	background-size: 100% 100%;
+}
+
+
+.apstrataHorizonAlert .deleteIcon {
+	background-image:url('../../resources/images/pencil-icons/bin-full.png');
+	width: 64px;
+	height: 64px;
+	background-size: 100% 100%;
+}
+
 .apstrataHorizonAlert .icon img {
 	width: 50px;
 }

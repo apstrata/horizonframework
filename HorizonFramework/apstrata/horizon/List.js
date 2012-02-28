@@ -56,7 +56,6 @@ dojo.declare("apstrata.horizon.List",
 	//
 	_filter: '',
 	_queryOptions: null,
-	_editMode: false,
 
 	// index of the essential item properties
 	idProperty: 'key',
@@ -188,22 +187,43 @@ dojo.declare("apstrata.horizon.List",
 	
 	newItem: function() {},
 	
+	showEditTooltip: function() {
+		var items = dojo.query('.listInnerLabel', this.domNode)
+		dojo.forEach(items, function(item) {
+			dojo.attr(item, "title", "click to edit")
+		})
+	},
+	
+	hideEditTooltip: function() {
+		var items = dojo.query('.listInnerLabel', this.domNode)
+		dojo.forEach(items, function(item) {
+			dojo.attr(item, "title", "")
+		})
+	},
+	
 	editItems: function() {
 		var self = this
 		
 		// Close any open panels
 		this.closePanel()
 		
-		if (this._editMode) {
-			this._editMode = false
-			if (self._filterWidget) self._filterWidget.set('enabled', true)
-			this.showDeleteIcons()
-			this.unDimReadOnlyLabels()
-		} else {
+		if (this._tglEdit.get('checked')) {
+			// edit mode
 			this._editMode = true
+
 			if (self._filterWidget) self._filterWidget.set('enabled', false)
+			this.showEditTooltip()
 			this.hideDeleteIcons()
 			this.dimReadOnlyLabels()
+		} else {
+			// normal mode
+			this._editMode = false
+
+			if (self._filterWidget) self._filterWidget.set('enabled', true)
+			this.hideEditTooltip()
+			this.showDeleteIcons()
+			this.unDimReadOnlyLabels()
+			this._listContent.cancelEdits()
 		}
 	},
 	
@@ -217,13 +237,29 @@ dojo.declare("apstrata.horizon.List",
 		//this._listContent.removeItem(id)
 		
 		this.reload()
-		this._editMode = false
 		this._tglEdit.set("checked", false) 
 		if (this._filterWidget) this._filterWidget.set('enabled', true)
 	},
 	
 	changeItemLabel: function(id, label) {
-		this._listContent.changeItemLabel(id, label)
+		var self = this
+		
+		var item = this.store.get(id)
+		item[this.labelProperty] = label
+		var a = this.store.put(item, {overwrite: true})
+		console.dir(a)
+		if (this.store.save) {
+			// if the store supports save, we need to save the change in the remote storage
+			this.store.save.then(function(){
+				// on success we can show the modified label
+				self._listContent.changeItemLabel(id, label)
+			}, function() {
+				// on failure revert the old value
+				self._listContent.revertItemEdit()
+			})
+		} else {
+			self._listContent.changeItemLabel(id, label)
+		}
 	},
 	
 	revertItemEdit: function() {

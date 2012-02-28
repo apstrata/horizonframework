@@ -24,11 +24,11 @@
 							<td class='deleteCell' valign='top' 
 								itemIndex='{{ forloop.counter0 }}' 
 								itemId='{{ o.id }}'>
-									<div class='iconDelete'>
+									<div>
 							{% if o.isDeleteable %}
-										<img src="{{ _horizonRoot }}/resources/images/pencil-icons/stop-red-sml.png" itemId='{{ o.id }}' dojoAttachEvent='onclick: _deleteItem'>
+										<div class='iconDelete' itemId='{{ o.id }}' dojoAttachEvent='onclick: _deleteItem'></div> 
 							{% else %}
-										<img src="{{ _horizonRoot }}/resources/images/pencil-icons/stop-disabled-sml.png">
+										<div class='iconDeleteDisabled'></div> 
 							{% endif %}
 									</div>
 							</td>

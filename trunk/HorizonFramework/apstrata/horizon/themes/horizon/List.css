@@ -63,7 +63,7 @@
 }
 
 .horizon .list .item {
-	height: 45px;
+	height: auto;
 	position: relative;
 	top: 12px;
 	padding-left: 0px;
@@ -110,10 +110,22 @@
 	height: 40px;
 }
 
-.horizon .list .item .iconDelete img {
+.horizon .list .item .iconDelete {
 	position: relative;
+	background-image:url('../../resources/images/pencil-icons/stop-red-sml.png');
 	top: 10px;
+	width: 17px;
 	height: 17px;
+	background-size: 100% 100%;
+}
+
+.horizon .list .item .iconDeleteDisabled {
+	position: relative;
+	background-image:url('../../resources/images/pencil-icons/stop-disabled-sml.png');
+	top: 10px;
+	width: 17px;
+	height: 17px;
+	background-size: 100% 100%;
 }
 
 .horizon .list .item .iconSelect img {

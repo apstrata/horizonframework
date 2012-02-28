@@ -70,6 +70,9 @@ dojo.declare("apstrata.horizon.PanelAlert",
 			var img = dojo.create("img", {}, this.dvIcon)
 			img.onload = dojo.hitch(this, "_reflowContent")
 			dojo.attr(img, "src", self.icon)
+		} else if (this.iconClass) {
+			dojo.addClass(this.dvIcon, this.iconClass)
+			this._reflowContent()
 		} else {
 			this._reflowContent()
 		}

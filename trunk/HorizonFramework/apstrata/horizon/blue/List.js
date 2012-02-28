@@ -71,7 +71,8 @@ dojo.declare("apstrata.horizon.blue.List",
 			width: 320,
 			height: 100,
 			message: "Are you sure you want to delete item: " + '[' + item.label + "] ?",
-			icon: "apstrata/horizon/resources/images/pencil-icons/bin-full.png",
+			//icon: "apstrata/horizon/resources/images/pencil-icons/bin-full.png",
+			iconClass: "deleteIcon",
 			actions: [
 				'Yes',
 				'No'
@@ -91,7 +92,8 @@ dojo.declare("apstrata.horizon.blue.List",
 			width: 320,
 			height: 100,
 			message: "Are you sure you want to change the label: " + '[' + oldValue + "] to [" + newValue + "] ?",
-			icon: "apstrata/horizon/resources/images/pencil-icons/draft.png",
+			//icon: "apstrata/horizon/resources/images/pencil-icons/draft.png",
+			iconClass: "editIcon",
 			actions: [
 				'Yes',
 				'No'

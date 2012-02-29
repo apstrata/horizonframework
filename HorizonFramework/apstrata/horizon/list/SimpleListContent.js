@@ -193,41 +193,42 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 	_editLabel: function(e) {
 		var self = this
 
-		if (this._activeEdit) return
+		if (this._activeEdit || !this.parent._editMode) return
+		
+		// Determine which div has been clicked 
 		var target = e.currentTarget || e.srcElement
 		
+		// Deduce the id in the store from the itemId attribute we placed in the template
 		this._editedItemId = target.getAttribute('itemId')
 		
+		// Determine the oldValue from the store because this hasn't been changed yet
 		this._oldValue = this.parent.store.get(this._editedItemId).Name
 		
-		if (this.parent._editMode) {
-			
-			this.toggleItem(this._selectId, false)
-			
-			this._activeEdit = true
-			
-			var tmpDiv = dojo.create("div", {innerHTML: self._oldValue})
-			dojo.addClass(tmpDiv, "listInnerLabel")
-			dojo.place(tmpDiv, target, "only")
-			
-			this._activeInlineEdit = new dijit.InlineEditBox({ 
-				renderAsHtml: false, 
-				autoSave: false,
-				onChange:function() {
-					self._activeEdit = false
-					var newValue = this.get("value")
-					
-					self.parent.onChangeRequest(self._editedItemId, self._oldValue, newValue, function() {
-						self.parent.changeItemLabel(id, newValue)
-					}, function() {
-						self.revertItemEdit()
-					})
-				},
-				onCancel: function() {
+		this.toggleItem(this._selectId, false)
+		
+		this._activeEdit = true
+		
+		var tmpDiv = dojo.create("div", {innerHTML: self._oldValue})
+		dojo.addClass(tmpDiv, "listInnerLabel")
+		dojo.place(tmpDiv, target, "only")
+		
+		this._activeInlineEdit = new dijit.InlineEditBox({ 
+			renderAsHtml: false, 
+			autoSave: false,
+			onChange:function() {
+				self._activeEdit = false
+				var newValue = this.get("value")
+				
+				self.parent.onChangeRequest(self._editedItemId, self._oldValue, newValue, function() {
+					self.parent.changeItemLabel(id, newValue)
+				}, function() {
 					self.revertItemEdit()
-				}
-			}, tmpDiv)
-		} 
+				})
+			},
+			onCancel: function() {
+				self.revertItemEdit()
+			}
+		}, tmpDiv)
 	},
 	
 	cancelEdits: function() {

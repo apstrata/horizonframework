@@ -252,9 +252,12 @@ dojo.declare("apstrata.horizon.Panel",
 	startup: function() {
 		this.inherited(arguments);
 		if (dojo.isIE && dojo.isIE == 9) {
-			// die
 			var box = dojo.marginBox(this.domNode);
-			dojo.style(this.dvContent, "height", (box.h - 20)+ "px");
+			var footerHeight = 0;
+			if(this.dvFooter){
+				footerHeight = dojo.marginBox(this.dvFooter).h;
+			}
+			dojo.style(this.dvContent, "height", (box.h - 20 - footerHeight)+ "px");
 		}
 	}
 

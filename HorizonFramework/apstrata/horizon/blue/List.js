@@ -101,6 +101,7 @@ dojo.declare("apstrata.horizon.blue.List",
 			actionHandler: function(action) {
 				if (action=='Yes') {
 					self.changeItemLabel(id, newValue)
+					self.setEditMode(false)
 				} else {
 					self.revertItemEdit()
 				}

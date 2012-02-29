@@ -197,7 +197,7 @@ dojo.declare("apstrata.horizon.List",
 	
 	_newItem: function() {
 		this._tglEdit.set('checked', false)
-		this.editItems()
+		this.setEditMode(false)
 		
 		this.newItem()
 	},
@@ -219,15 +219,16 @@ dojo.declare("apstrata.horizon.List",
 		})
 	},
 	
-	editItems: function() {
+	setEditMode: function(editMode) {
 		var self = this
 		
 		// Close any open panels
 		this.closePanel()
-		
-		if (this._tglEdit.get('checked')) {
+
+		this._editMode = editMode
+
+		if (editMode) {
 			// edit mode
-			this._editMode = true
 
 			if (self._filterWidget) self._filterWidget.set('enabled', false)
 			this.showEditTooltip()
@@ -242,7 +243,11 @@ dojo.declare("apstrata.horizon.List",
 			this.showDeleteIcons()
 			this.unDimReadOnlyLabels()
 			this._listContent.cancelEdits()
-		}
+		}	
+	},
+	
+	editItems: function() {
+		this.setEditMode(this._tglEdit.get('checked'))
 	},
 	
 	

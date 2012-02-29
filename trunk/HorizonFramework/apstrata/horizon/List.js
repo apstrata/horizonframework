@@ -60,6 +60,8 @@ dojo.declare("apstrata.horizon.List",
 	// index of the essential item properties
 	idProperty: 'key',
 	labelProperty: 'title',
+	
+	_messages: {},
 		
 	//
 	// Messages
@@ -68,6 +70,14 @@ dojo.declare("apstrata.horizon.List",
 	_MSG_FILTER: 'type to filter',	
 	
 	contentClass: apstrata.horizon.list.SimpleListContent,
+	
+	constructor: function() {
+		this._messages = {
+			editButtonLabel: "edit",
+			newButtonLabel: "new",
+			clickToEditMessage: "double click to edit..."
+		}
+	},
 	
 	startup: function() {
 		var self = this
@@ -185,12 +195,20 @@ dojo.declare("apstrata.horizon.List",
 		console.debug(index, id, args)
 	},
 	
+	_newItem: function() {
+		this._tglEdit.set('checked', false)
+		this.editItems()
+		
+		this.newItem()
+	},
+	
 	newItem: function() {},
 	
 	showEditTooltip: function() {
+		var self = this
 		var items = dojo.query('.listInnerLabel', this.domNode)
 		dojo.forEach(items, function(item) {
-			dojo.attr(item, "title", "click to edit")
+			dojo.attr(item, "title", self._messages.clickToEditMessage)
 		})
 	},
 	

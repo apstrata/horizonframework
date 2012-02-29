@@ -194,7 +194,7 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 		var self = this
 
 		if (this._activeEdit) return
-		var target = e.srcElement || e.currentTarget
+		var target = e.currentTarget || e.srcElement
 		
 		this._editedItemId = target.getAttribute('itemId')
 		

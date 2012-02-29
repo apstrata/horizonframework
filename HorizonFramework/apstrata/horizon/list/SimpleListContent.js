@@ -240,7 +240,7 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 		
 		var n = this._activeInlineEdit.domNode.parentNode
 		this._activeInlineEdit.destroyRecursive()
-		n.innerHTML = "<div class='listInnerLabel' title='click to edit'>"+label+"</div>" 
+		n.innerHTML = "<div class='listInnerLabel' title='" + this.parent._messages.clickToEditMessage + "'>"+label+"</div>" 
 		
 		this._activeEdit = false
 	},
@@ -250,7 +250,7 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 		
 		var n = this._activeInlineEdit.domNode.parentNode
 		this._activeInlineEdit.destroyRecursive()
-		n.innerHTML = "<div class='listInnerLabel' title='click to edit'>"+this._oldValue+"</div>" 
+		n.innerHTML = "<div class='listInnerLabel' title='" + this.parent._messages.clickToEditMessage + "'>"+this._oldValue+"</div>" 
 
 		this._activeEdit = false
 	},

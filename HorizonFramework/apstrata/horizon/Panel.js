@@ -247,5 +247,15 @@ dojo.declare("apstrata.horizon.Panel",
 	
 	resize: function() {
 		this._setStyle()
+	},
+
+	startup: function() {
+		this.inherited(arguments);
+		if (dojo.isIE && dojo.isIE == 9) {
+			// die
+			var box = dojo.marginBox(this.domNode);
+			dojo.style(this.dvContent, "height", (box.h - 20)+ "px");
+		}
 	}
+
 })

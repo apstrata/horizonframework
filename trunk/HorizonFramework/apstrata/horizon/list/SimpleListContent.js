@@ -204,7 +204,7 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 		// Determine the oldValue from the store because this hasn't been changed yet
 		this._oldValue = this.parent.store.get(this._editedItemId).Name
 		
-		this.toggleItem(this._selectId, false)
+		this.toggleItem(this._editedItemId, false)
 		
 		this._activeEdit = true
 		

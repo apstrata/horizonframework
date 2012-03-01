@@ -18,7 +18,7 @@
  * *****************************************************************************
  */
 dojo.provide("apstrata.horizon.PanelAlert") 
-
+dojo.require("dojo.fx.easing")
  
 dojo.declare("apstrata.horizon.PanelAlert", 
 [dijit._Widget, dojox.dtl._Templated], 
@@ -44,40 +44,75 @@ dojo.declare("apstrata.horizon.PanelAlert",
 
 		// Style and position the widget
 		dojo.addClass(this.domNode, "apstrataHorizonAlert")
+
+		// Start with a small rectangle
 		dojo.style(this.domNode, {
-			top: (a.y) + "px",
-			left: (a.x + a.w/2 - self.width/2) + "px",
-			height: self.height + "px",
-			width: self.width + "px"
+			top: (a.y-5) + "px",
+			left: (a.x + a.w/2 - 4) + "px",
+			height: "8px",
+			width: 8 + "px"
 		})
 		dojo.place(this.domNode, dojo.body())
+		
+		dojo.style(this.dvMessage, "display", "none")
+		
+		self.panel.container.showCurtain()
+		
+		// Animate to full height
+		dojo.animateProperty({
+			node: this.domNode,
+			duration: 100,
+			properties: {
+				top: a.y,
+				height: self.height,
+			}, 
+			onEnd: function() {
+				// Animate to full width
+				dojo.animateProperty({
+					node: self.domNode,
+					duration: 200,
+					easing: dojo.fx.easing.bounceInOut,
+					properties: {
+						width: self.width,
+						left: (a.x + a.w/2 - self.width/2) 
+					}, 
+					onEnd: function() {
+						// Setup content after animation
+						self._setupDialogContent()
+					}
+				}).play()
+			}
+		}).play()
+	},
+	
+	_setupDialogContent: function() {
+		var self = this
+		dojo.style(self.dvMessage, "display", "block")
 
 		// Add the buttons
 		for (var i=0; i<self.actions.length; i++) {
 			var button = new dijit.form.Button({
 				label: self.actions[i],
 				onClick: function() {
-					self.onClick(this.label)
+					self.onClick(self.label)
 				}
 			})
-			dojo.place(button.domNode, this.dvActions)
+			dojo.place(button.domNode, self.dvActions)
 		}
-		
-		this.panel.container.showCurtain()
 		
 		// If an icon path is specified, show the img
-		if (this.icon) {
-			var img = dojo.create("img", {}, this.dvIcon)
-			img.onload = dojo.hitch(this, "_reflowContent")
+		if (self.icon) {
+			var img = dojo.create("img", {}, self.dvIcon)
+			img.onload = dojo.hitch(self, "_reflowContent")
 			dojo.attr(img, "src", self.icon)
-		} else if (this.iconClass) {
-			dojo.addClass(this.dvIcon, this.iconClass)
-			this._reflowContent()
+		} else if (self.iconClass) {
+			dojo.addClass(self.dvIcon, self.iconClass)
+			self._reflowContent()
 		} else {
-			this._reflowContent()
+			self._reflowContent()
 		}
 	},
-	
+
 	_reflowContent: function() {
 		// Position elements
 		var d = dojo.contentBox(this.domNode)

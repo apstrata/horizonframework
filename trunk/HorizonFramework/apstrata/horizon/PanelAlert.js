@@ -94,7 +94,7 @@ dojo.declare("apstrata.horizon.PanelAlert",
 			var button = new dijit.form.Button({
 				label: self.actions[i],
 				onClick: function() {
-					self.onClick(self.label)
+					self.onClick(this.label)
 				}
 			})
 			dojo.place(button.domNode, self.dvActions)

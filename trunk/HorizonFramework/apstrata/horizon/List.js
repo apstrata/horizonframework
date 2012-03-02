@@ -234,6 +234,7 @@ dojo.declare("apstrata.horizon.List",
 			this.showEditTooltip()
 			this.hideDeleteIcons()
 			this.dimReadOnlyLabels()
+			this._tglEdit.set('checked', true)
 		} else {
 			// normal mode
 			this._editMode = false
@@ -243,6 +244,7 @@ dojo.declare("apstrata.horizon.List",
 			this.showDeleteIcons()
 			this.unDimReadOnlyLabels()
 			this._listContent.cancelEdits()
+			this._tglEdit.set('checked', false)
 		}	
 	},
 	

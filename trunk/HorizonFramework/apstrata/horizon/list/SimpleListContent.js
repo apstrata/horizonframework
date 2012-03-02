@@ -211,10 +211,11 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 		var tmpDiv = dojo.create("div", {innerHTML: self._oldValue})
 		dojo.addClass(tmpDiv, "listInnerLabel")
 		dojo.place(tmpDiv, target, "only")
-		var editorParams = (this.parent.editorParams)? this.parent.editorParams: {};
+		var editorParams = (this.parent.editorParams)? this.parent.editorParams : {};
+		var editorType = (this.parent.editorType)? this.parent.editorType : "dijit.form.TextBox"; 
 		
 		this._activeInlineEdit = new dijit.InlineEditBox({ 
-			editor:"dijit.form.ValidationTextBox",
+			editor: editorType,
 			renderAsHtml: false, 
 			autoSave: false,
 			editorParams: editorParams,

@@ -211,14 +211,13 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 		var tmpDiv = dojo.create("div", {innerHTML: self._oldValue})
 		dojo.addClass(tmpDiv, "listInnerLabel")
 		dojo.place(tmpDiv, target, "only")
-		// TODO pass the entire editorParams object from the parent
-		var editorParamsObj = {};
-		if (this.parent.labelPropertyMaxLength) editorParamsObj.maxLength = this.parent.labelPropertyMaxLength;
+		var editorParams = (this.parent.editorParams)? this.parent.editorParams: {};
 		
 		this._activeInlineEdit = new dijit.InlineEditBox({ 
+			editor:"dijit.form.ValidationTextBox",
 			renderAsHtml: false, 
 			autoSave: false,
-			editorParams: editorParamsObj,
+			editorParams: editorParams,
 			onChange:function() {
 				self._activeEdit = false
 				var newValue = this.get("value")

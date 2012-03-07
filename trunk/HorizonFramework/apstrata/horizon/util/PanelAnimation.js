@@ -36,7 +36,7 @@ apstrata.horizon.util.PanelAnimation = function(panel) {
 			startLeft = -200
 			endLeft = 0
 		} else {
-			startLeft = panel.parentNode.offsetLeft 
+			startLeft = panel.parentNode.offsetLeft
 			endLeft = panel.parentNode.offsetLeft + panel.parentNode.offsetWidth
 		}
 
@@ -45,6 +45,7 @@ apstrata.horizon.util.PanelAnimation = function(panel) {
 			easing: dojo.fx.easing.cubicInOut,
 			duration: 1000,
 			onEnd: function() {
+				panel.onAnimationEnd() 
 				panel.getContainer().autoScroll()
 			},
 			properties: {

@@ -131,6 +131,12 @@ dojo.declare("apstrata.horizon.Panel",
 		this.inherited(arguments)
 	},
 
+	/**
+	 * Panels are usually animated into place, this event gets called after the animation has ended
+	 */
+	onAnimationEnd: function() {
+	},
+
 	/*
 	 * Creates sliding effect
 	 */
@@ -247,18 +253,5 @@ dojo.declare("apstrata.horizon.Panel",
 	
 	resize: function() {
 		this._setStyle()
-	},
-
-	startup: function() {
-		this.inherited(arguments);
-		if (dojo.isIE && dojo.isIE == 9) {
-			var box = dojo.marginBox(this.domNode);
-			var footerHeight = 0;
-			if(this.dvFooter){
-				footerHeight = dojo.marginBox(this.dvFooter).h;
-			}
-			dojo.style(this.dvContent, "height", (box.h - 20 - footerHeight)+ "px");
-		}
 	}
-
 })

@@ -115,6 +115,8 @@ dojo.declare("apstrata.horizon.Panel",
 					left: "0px",
 					width: w.w - marginL -marginR +"px", 
 				})
+				
+				self.resize()
 			})
 			dojo.connect(icons, 'restore', function() {
 				var w = dojo.marginBox(self.getContainer().domNode)
@@ -122,6 +124,8 @@ dojo.declare("apstrata.horizon.Panel",
 					left: self._savePos.l + "px",
 					width: self._savePos.w +"px", 
 				})
+
+				self.resize()
 			})
 		}
 		

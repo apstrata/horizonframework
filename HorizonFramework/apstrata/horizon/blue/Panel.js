@@ -32,17 +32,35 @@ dojo.declare("apstrata.horizon.blue.Panel",
 	content: "",
 	
 	postCreate: function() {
-		var tmp = ''
-		
 		dojo.style(this.domNode, "width", "400px")
 		
-		for (i=0; i<1200; i++) tmp += (i+" ")
+		
+		this.inherited(arguments)
+	},
+	
+	showContent: function() {
+		var tmp = '<br>'
+		var blueHue
+		for (i = 0; i < 1200; i++) {
+
+			blueHue = Math.floor(Math.random()*150, 0) + 105
+			tmp += "<span style='opacity: .9;margin-top: 12px; -o-border-radius: 5px;-moz-border-radius: 5px;-webkit-border-radius: 5px;border-radius: 5px;padding: 5px; color: rgb(10, " + blueHue + ", 10); background: rgb(10, 10," + blueHue + ")'>"
+			tmp += (blueHue+" ") + "</span>"
+		}
 		dojo.style(this.domNode, {
 			"innerHTML": ""
 		})
-		
 		this.dvContent.innerHTML = tmp
 		
+		this.showAsBusy(false)
+	},
+	
+	onAnimationEnd: function() {
+		this.showAsBusy(true, "generating a lot of random numbers<br><b>take a deep breath</b>")
+		
+		setTimeout(dojo.hitch(this, "showContent"), 1000)
+		
+//		this.showAsBusy(false)
 		this.inherited(arguments)
 	}
 	

@@ -120,10 +120,6 @@ dojo.declare("apstrata.horizon.List",
 	resize: function() {
 		var self = this
 
-		// resize dvLoading
-		dojo.style(self.dvLoading, "top", (self.getContentHeight()/2-10)+"px")
-		if (self.width) dojo.style(self.dvLoading, "width", (self.width-10)+"px")
-
 		if (self._listContent) self._listContent.layout()
 		if (self._filterWidget) self._filterWidget.layout()
 			
@@ -139,14 +135,14 @@ dojo.declare("apstrata.horizon.List",
 		var query = this._queryParams()
 		var queryOptions = this._queryOptions()
 				
-		this._showLoadingMessage(true)
+		this.showAsBusy(true, "refreshing list")
 		dojo.when(
 			this.store.query(
 				query,
 				queryOptions
 			),
 			function(result) {
-				self._showLoadingMessage(false)
+				self.showAsBusy(false)
 
 				self._listContent.setData(result) 		
         		self.select();    
@@ -325,22 +321,6 @@ dojo.declare("apstrata.horizon.List",
 		} 
 		
 		return _queryOptions 
-	},
-	
-	_showLoadingMessage: function(b) {
-		if (b) {
-			dojo.style(this.dvLoading, "display", "block")
-			dojo.style(this.dvContent, "display", "none")
-
-//			if (this.dvHeader) dojo.style(this.dvHeader, "display", "none")
-			if (this.dvFooter) dojo.style(this.dvFooter, "display", "none")
-		} else {
-			dojo.style(this.dvLoading, "display", "none")
-			dojo.style(this.dvContent, "display", "block")
-
-//			if (this.dvHeader) dojo.style(this.dvHeader, "display", "block")
-			if (this.dvFooter) dojo.style(this.dvFooter, "display", "block")
-		}
 	},
 	
 	getContentHeight: function() {

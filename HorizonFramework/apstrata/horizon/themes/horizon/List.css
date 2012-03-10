@@ -144,3 +144,8 @@
 .horizon .list .item .label .dim {
 	color: grey;
 }
+
+.horizon .list .footer {
+	min-height: 10px;
+	xheight: 20px;
+}

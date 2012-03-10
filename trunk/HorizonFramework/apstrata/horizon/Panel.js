@@ -200,6 +200,10 @@ dojo.declare("apstrata.horizon.Panel",
 		// Add to DojoLayout container
 		this.getContainer().addChild(this._openPanel)
 		
+		// Resize after adding a panel because the scroll bar might show on the container
+		// TODO: this should be handled differently
+		this.resize()
+		
 		return this._openPanel
 	},
 	
@@ -269,5 +273,48 @@ dojo.declare("apstrata.horizon.Panel",
 			}
 			dojo.style(this.dvContent, "height", (box.h - 20 - footerHeight)+ "px");
 		}
+	},
+	
+	showAsBusy: function(b, message) {
+		if (b) {
+			if (this._curtain) return
+			
+			var c = dojo.marginBox(this.domNode)
+			this._curtain = dojo.create("div", {}, this.domNode)
+			dojo.style(this._curtain, {
+				top: "0px", left: "0px",
+				width: c.w + "px", height: c.h + "px"
+			})
+			dojo.addClass(this._curtain, "panelCurtain")
+			
+			this._curtainAnimation = dojo.create("div", {}, this._curtain)
+			dojo.addClass(this._curtainAnimation, "busyIcon")
+			
+			var i = dojo.contentBox(this._curtainAnimation)
+			dojo.style(this._curtainAnimation, {
+				top: (c.h - i.h)/2 + "px",
+				left: (c.w - i.w)/2 + "px"
+			})
+
+			this._curtainMessage = dojo.create("div", {}, this._curtain)
+			dojo.addClass(this._curtainMessage, "busyMessage")
+			
+			if (message) this.setBusyMessage(message); else this.setBusyMessage("")
+		} else {
+			this._curtain.parentNode.removeChild(this._curtain)
+		}
+	},
+	
+	setBusyMessage: function(message) {
+		this._curtainMessage.innerHTML = message
+
+		var c = dojo.marginBox(this.domNode)
+		var m = dojo.contentBox(this._curtainMessage)
+		var i = dojo.marginBox(this._curtainAnimation)
+
+		dojo.style(this._curtainMessage, {
+			top: i.t+i.h + "px",
+			left: (c.w - m.w)/2 + "px"
+		})
 	}
 })

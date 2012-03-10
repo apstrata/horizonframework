@@ -91,9 +91,24 @@ dojo.declare("apstrata.horizon.Container",
 		this.inherited(arguments)
 	},
 	
+	_checkUrlHashChange: function() {
+		if (!this._lastUrlHash) {
+			this._lastUrlHash = document.location.hash
+		} else {
+			if (document.location.hash != this._lastUrlHash) this.onUrlHashChange(document.location.hash)
+			this._lastUrlHash = document.location.hash
+		}
+	},
+	
+	onUrlHashChange: function(hash) {
+		console.debug('URL Hash changed to: ' + hash)
+	},
+	
 	startup: function() {
 		//setTimeout(dojo.hitch(this, 'loadPreferences'), 3000)
 		//setTimeout(dojo.hitch(this, 'layout'), 100)
+
+		setInterval(dojo.hitch(this,"_checkUrlHashChange"), 500)
 
 		this.inherited(arguments)
 	},
@@ -236,14 +251,58 @@ dojo.declare("apstrata.horizon.Container",
 		if (this._controlToolbar) this._controlToolbar.setPosition(toolbar.top + "px", toolbar.left + "px")
 	},
 
-	addMainPanel: function (child) {
-		var self = this
-		this._mainPanel = child
-		child.setFixedPanel(true)
+	/**
+	 * Shows the main panel (menu) of the Horizon application
+	 * 
+	 * @param {Object} child is an instance or Class function of the desired main panel
+	 */
+	addMainPanel: function (childOrClass, attrs) {
+		var panel
+
+		if (dojo.isFunction(childOrClass)) {
+			this._mainPanelClass = childOrClass
+		} else {
+			// This is provided for compatibility with existing code
+			//  if an instance is provided, deduce the class and reinstantiate
+			this._mainPanelClass = dojo.getObject(childOrClass.declaredClass)
+		}
 		
-		dojo.addClass(child.domNode, "mainPanel")
-		dojo.place(child.domNode, self.fixedPanelNode)
-		child.startup()
+		if (attrs) this._mainPanelAttrs = attrs; else this._mainPanelAttrs = {} 
+		
+		this._instantiateMainPanel()
+
+		dojo.connect(this, "onUrlHashChange", this._instantiateMainPanel)
+	},
+	
+	_instantiateMainPanel: function() {
+		var self = this
+
+		// Check if there's a hash string
+		var s = window.location.hash
+		if (s) {
+			s = s.substring(1)
+			
+			// split it on slashes			
+			var selectIds = s.split('/')
+		}
+		
+		// pass selectIds to main to cascade open panels, this makes panels bookmarkable
+		this._mainPanelAttrs.selectIds = selectIds
+		this._mainPanelAttrs.container = self
+
+		// Create the leftMost Panel
+		this.main = new this._mainPanelClass(this._mainPanelAttrs)
+
+		// Remove any existing main panel, we can only have one
+		this.removeMainPanel()
+
+		this._mainPanel = this.main
+		this.main.setFixedPanel(true)
+		
+		dojo.addClass(this.main.domNode, "mainPanel")
+		dojo.place(this.main.domNode, self.fixedPanelNode)
+		apstrata.horizon.config.disableAnimation = false
+		this.main.startup()
 		
 		// Disabling position animation when instantiating a container because it is making cascade open fail
 		//  So we re-enable it after 200ms
@@ -251,6 +310,13 @@ dojo.declare("apstrata.horizon.Container",
 		setTimeout(function() {
 			apstrata.horizon.config.disableAnimation = true
 		},200)
+	},
+
+	removeMainPanel: function () {
+		if (this._mainPanel) {
+			this._mainPanel.closePanel()
+			this._mainPanel.destroyRecursive()
+		}
 	},
 	
 	addChild: function(child) {

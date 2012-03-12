@@ -45,6 +45,10 @@ dojo.declare("apstrata.horizon.List",
 	editable: false,
 	filterable: false,
 	sortable: false,
+	
+	// Experimental, if true the panel will only shrink to show the icons 
+	narrowOnClick: false,
+	
 	// Install simple filter widget
 	filterWidget: apstrata.horizon.list.SimpleFilterAndSort,
 	

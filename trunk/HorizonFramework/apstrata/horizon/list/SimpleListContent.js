@@ -137,6 +137,9 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 				this.parent.onClick(index, this._selectId, { selectIds: self._selectIds });
 			}
 		}
+		
+		// Experimental, if true the panel will only shrink to show the icons 
+		if (this.parent.narrowOnClick) dojo.style(this.parent.domNode, {width: "55px"})
 	},
 
 	toggleItem: function(id, selected) {

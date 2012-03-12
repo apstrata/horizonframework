@@ -271,7 +271,12 @@ dojo.declare("apstrata.horizon.Panel",
 			if(this.dvFooter){
 				footerHeight = dojo.marginBox(this.dvFooter).h;
 			}
-			dojo.style(this.dvContent, "height", (box.h - 20 - footerHeight)+ "px");
+			
+			var totHeight = box.h - 40 - footerHeight;
+			dojo.style(this.dvContent, "height", totHeight + "px");
+			if (this._listContent) {
+				dojo.style(this._listContent.domNode, "height", totHeight + "px");
+			}			
 		}
 	},
 	

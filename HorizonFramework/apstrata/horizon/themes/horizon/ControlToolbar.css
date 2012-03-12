@@ -6,8 +6,8 @@
 }
 
 .horizonControlToolbar .tab {
-	background: #888899;
-	background-image: url('images/buttonBackground.png');
+	background: #cacaca;
+	dbackground-image: url('images/buttonBackground.png');
 
 	border: 1px solid rgba(187, 187, 204, .45);
 	border-bottom: 0px;

@@ -90,7 +90,9 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 	layout: function() {
 		var self = this
 
-		dojo.style(self.domNode, "height", self.parent.getContentHeight() + "px")				
+		// IE8 breaks when value is negative
+		if (self.parent.getContentHeight() >= 0)
+			dojo.style(self.domNode, "height", self.parent.getContentHeight() + "px")				
 		if (self._lastSelectedIndex) self.toggleItem(self._lastSelectedIndex, true)
 	},
 

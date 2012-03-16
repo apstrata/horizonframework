@@ -140,9 +140,19 @@ dojo.declare("apstrata.horizon.Panel",
 		this.inherited(arguments)
 	},
 
-	// Create the inner content widget by dynamically creating a _Tempalted widget based on the tempalte path
-	//  this.contentTempaltePath
-	// 	
+	/**
+	 * Instantiates an inner DTL content widget by dynamically creating a _Tempalted widget based on the contentTemplatePath
+	 *  
+	 *  expects:
+	 *    this.contentTemplatePath equivalent of templatePath 
+	 *    this.contentTemplateString equivalent of templateString
+	 *    bindEvents array of strings, list of methods in Panel that are bound to events using dojoAttachEvent
+	 *    	TODO: bindEvents should be made automatic
+	 *  
+	 *  adds the following:
+	 *    this.contentDomNode: DOM node of the content panel widget
+	 *    all events and attachpoints are linked to Panel
+	 */
 	_createContentWidget: function() {
 		var containerPanel = this
 		

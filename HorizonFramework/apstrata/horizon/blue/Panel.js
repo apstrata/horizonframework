@@ -25,8 +25,8 @@ dojo.declare("apstrata.horizon.blue.Panel",
 [apstrata.horizon.Panel], 
 {
 	widgetsInTemplate: true,
-//	templatePath: dojo.moduleUrl("apstrata.horizon.blue", "templates/HomePanel.html"),
-//	templateString: "<div class='panel' style='width: 400px;'><br><div style='height: 100%;overflow-x: auto;overflow-y: scroll'>{{ content }}</div></div>",
+	contentTemplateString: "<div><h2>The panel</h2><button dojoAttachEvent='onclick: showContent'>regen</button><div dojoAttachPoint='dvColors'></div></div>",
+	bindEvents: ["showContent"],
 	
 	maximizable: true,
 	content: "",
@@ -41,16 +41,13 @@ dojo.declare("apstrata.horizon.blue.Panel",
 	showContent: function() {
 		var tmp = '<br>'
 		var blueHue
-		for (i = 0; i < 1200; i++) {
+		for (i = 0; i < 400; i++) {
 
 			blueHue = Math.floor(Math.random()*150, 0) + 105
 			tmp += "<span style='opacity: .9;margin-top: 12px; -o-border-radius: 5px;-moz-border-radius: 5px;-webkit-border-radius: 5px;border-radius: 5px;padding: 5px; color: rgb(10, " + blueHue + ", 10); background: rgb(10, 10," + blueHue + ")'>"
 			tmp += (blueHue+" ") + "</span>"
 		}
-		dojo.style(this.domNode, {
-			"innerHTML": ""
-		})
-		this.dvContent.innerHTML = tmp
+		this.dvColors.innerHTML = tmp
 		
 		this.showAsBusy(false)
 	},
@@ -60,7 +57,6 @@ dojo.declare("apstrata.horizon.blue.Panel",
 		
 		setTimeout(dojo.hitch(this, "showContent"), 1000)
 		
-//		this.showAsBusy(false)
 		this.inherited(arguments)
 	}
 	

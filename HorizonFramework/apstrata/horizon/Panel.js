@@ -169,7 +169,7 @@ dojo.declare("apstrata.horizon.Panel",
 				})
 				
 				// Call containerPanel postCreatePanel lifecycle method in its context
-  				dojo.hitch(this, containerPanel.postCreatePanel)()
+  				dojo.hitch(this, containerPanel.postCreateContent)()
 			}
 		}
 
@@ -183,9 +183,14 @@ dojo.declare("apstrata.horizon.Panel",
 
 		// Instantiate a new instance of dynamicContentWidgetDefinition
 		var w = new (dojo.getObject(containerPanel.declaredClass+".Panel"))()
+		this.contentDomNode = w.domNode
 		
 		// Place into DOM at the containerPanel node
-		dojo.place(w.domNode, containerPanel.dvContent)
+		dojo.place(this.contentDomNode, containerPanel.dvContent)
+	},
+	
+	postCreateContent: function() {
+		
 	},
 
 	/**

@@ -22,8 +22,8 @@
 
 .horizon .panel .content {
 	height: 100%;
-	overflow-x: auto;
-	overflow-y: scroll;
+	overflow-x: none;
+	overflow-y: auto;
 }
 
 .horizon .panel .panelCurtain {

@@ -20,7 +20,9 @@
 
 dojo.provide('apstrata.horizon.Panel');
 
-dojo.require('dojox.dtl._Templated');
+dojo.require('dojox.dtl._Templated')
+dojo.require('apstrata.horizon.util._Templated')
+
 dojo.require('dijit.layout.ContentPane')
 dojo.require('apstrata.horizon.PanelIcons')
 dojo.require("apstrata.horizon.PanelAlert")
@@ -128,11 +130,62 @@ dojo.declare("apstrata.horizon.Panel",
 				self.resize()
 			})
 		}
+
+		// Instantiate the inner content widget		
+		this._createContentWidget()
 		
 		this._animateToPosition()
 		//self.deferred.callback({success: true})			
 
 		this.inherited(arguments)
+	},
+
+	// Create the inner content widget by dynamically creating a _Tempalted widget based on the tempalte path
+	//  this.contentTempaltePath
+	// 	
+	_createContentWidget: function() {
+		var containerPanel = this
+		
+		// If there's no contentTemplate Path or String, exit
+		if (!(this.contentTemplatePath || this.contentTemplateString)) return
+
+		var dynamicContentWidgetDefinition = {
+			constructor: function() {
+				var panel = this
+				this.parentPanel = containerPanel
+				
+				dojo.forEach(containerPanel.bindEvents, function(event) {
+					// bind methods associated with dojoAttachEvent(s) in this dynamic widget's context
+					// 		as is expected by dijit._Widget 
+					panel[event] = dojo.hitch(containerPanel, event)
+				})
+			},	
+			
+			postCreate: function() {
+				// find all dojoAttachEvent nodes and make them properties to containerPanel 
+				//		so they can be accessed from methods in containerPanel context
+				dojo.query("[dojoAttachPoint]", this.domNode).forEach(function(node, index, arr) {
+					containerPanel[dojo.attr(node, "dojoAttachPoint")] = node
+				})
+				
+				// Call containerPanel postCreatePanel lifecycle method in its context
+  				dojo.hitch(this, containerPanel.postCreatePanel)()
+			}
+		}
+
+		// Copy the template attributes into the new dynamic widget
+		if (this.widgetsInTemplate) dynamicContentWidgetDefinition.widgetsInTemplate = true
+		if (this.contentTemplateString) dynamicContentWidgetDefinition.contentTemplateString = this.contentTemplateString
+		if (this.contentTemplatePath) dynamicContentWidgetDefinition.contentTemplatePath = this.contentTemplatePath
+
+		// Declare a new class based on the prototype of dynamicContentWidgetDefinition
+		dojo.declare(containerPanel.declaredClass+".Panel", [dijit._Widget, apstrata.horizon.util._Templated], dynamicContentWidgetDefinition)
+
+		// Instantiate a new instance of dynamicContentWidgetDefinition
+		var w = new (dojo.getObject(containerPanel.declaredClass+".Panel"))()
+		
+		// Place into DOM at the containerPanel node
+		dojo.place(w.domNode, containerPanel.dvContent)
 	},
 
 	/**

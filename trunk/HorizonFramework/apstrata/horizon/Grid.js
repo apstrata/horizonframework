@@ -58,6 +58,11 @@ dojo.declare("apstrata.horizon.Grid",
 		}
 		
 		this.resize()
+		
+		this._grid = new this.gridClass(this.gridParams)
+		dojo.place(this._grid.domNode, this.dvContent)
+		this._grid.startup()
+		this._handle = dojo.connect(this._grid, "onRowClick", dojo.hitch(this, "onClick")) 
 
 		this.inherited(arguments)
 	},
@@ -73,19 +78,10 @@ dojo.declare("apstrata.horizon.Grid",
 
 		dojo.style(this.dvContent, "height", self.getContentHeight() + "px")				
 		
-		// On resize, we are destroying the grid
 		if (this._grid) {
-			dojo.disconnect(this._handle)
-			this._grid.destroyRecursive()
+			this._grid.resize({h: self.getContentHeight()})
+			this._grid.update()
 		}
-		
-		// And recreating it
-		// TODO: this has to be changed to autoresize, need to find out why it's not working
-		//		we put it in a child div of dvContent because it gets destroyed with the widget
-		var gridDv = dojo.create("div", null, this.dvContent)
-		this._grid = new this.gridClass(this.gridParams, gridDv)
-		this._grid.startup()
-		this._handle = dojo.connect(this._grid, "onRowClick", dojo.hitch(this, "onClick")) 
 
 		this.inherited(arguments)
 	},

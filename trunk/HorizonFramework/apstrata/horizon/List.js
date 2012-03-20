@@ -123,7 +123,6 @@ dojo.declare("apstrata.horizon.List",
 	// function called each time containers dimensions change
 	resize: function() {
 		var self = this
-
 		if (self._listContent) self._listContent.layout()
 		if (self._filterWidget) self._filterWidget.layout()
 			
@@ -272,7 +271,6 @@ dojo.declare("apstrata.horizon.List",
 		var item = this.store.get(id)
 		item[this.labelProperty] = label
 		var a = this.store.put(item, {overwrite: true})
-		console.dir(a)
 		if (this.store.save) {
 			// if the store supports save, we need to save the change in the remote storage
 			this.store.save.then(function(){

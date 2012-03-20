@@ -207,6 +207,9 @@ dojo.declare("apstrata.horizon.Panel",
 	 * Panels are usually animated into place, this event gets called after the animation has ended
 	 */
 	onAnimationEnd: function() {
+		// Resize after adding a panel because the scroll bar might show on the container
+		// TODO: this should be handled differently
+		this.container.layout()
 	},
 
 	/*
@@ -267,11 +270,7 @@ dojo.declare("apstrata.horizon.Panel",
 
 		// Add to DojoLayout container
 		this.getContainer().addChild(this._openPanel)
-		
-		// Resize after adding a panel because the scroll bar might show on the container
-		// TODO: this should be handled differently
-		this.resize()
-		
+				
 		return this._openPanel
 	},
 	

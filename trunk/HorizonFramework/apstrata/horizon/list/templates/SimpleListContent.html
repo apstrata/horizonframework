@@ -36,6 +36,12 @@
 							<td width='0' valign="top">
 								<div class='icon'><img src='{{ o.iconSrc }}'></div>
 							</td>
+						{% else %}
+							{% if o.iconClass %}
+								<td width='0' valign="top">
+									<div class='{{ o.iconClass }}'></div>
+								</td>
+							{% endif %}
 						{% endif %} 
 							<td valign='center' class='label' width='100%' style="line-height: 1.3em"> 
 									{% if o.isEditable %}

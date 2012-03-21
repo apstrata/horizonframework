@@ -373,9 +373,11 @@ dojo.declare("apstrata.horizon.Panel",
 			
 			if (message) this.setBusyMessage(message); else this.setBusyMessage("")
 		} else {
-			if (this._curtain.parentNode)
-				this._curtain.parentNode.removeChild(this._curtain)
-			if (this._curtain) delete this._curtain
+			if (this._curtain) {
+				if (this._curtain.parentNode)
+					this._curtain.parentNode.removeChild(this._curtain)
+				delete this._curtain
+			}
 		}
 	},
 	

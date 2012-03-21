@@ -375,6 +375,7 @@ dojo.declare("apstrata.horizon.Panel",
 		} else {
 			if (this._curtain.parentNode)
 				this._curtain.parentNode.removeChild(this._curtain)
+			if (this._curtain) delete this._curtain
 		}
 	},
 	

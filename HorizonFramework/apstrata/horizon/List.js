@@ -153,33 +153,6 @@ dojo.declare("apstrata.horizon.List",
 		)
 	},
 	
-	showDeleteIcons: function() {
-		var items = dojo.query('.deleteCell', this.domNode)
-		dojo.forEach(items, function(item) {
-			dojo.style(item, "display", "none")
-		})
-	},
-	
-	hideDeleteIcons: function() {
-		var items = dojo.query('.deleteCell', this.domNode)
-		dojo.forEach(items, function(item) {
-			dojo.style(item, "display", "block")
-		})
-	},
-	
-	dimReadOnlyLabels: function() {
-		var items = dojo.query('.readOnly', this.domNode)
-		dojo.forEach(items, function(item) {
-			dojo.addClass(item, "dim")
-		})
-	},
-	
-	unDimReadOnlyLabels: function() {
-		var items = dojo.query('.readOnly', this.domNode)
-		dojo.forEach(items, function(item) {
-			dojo.removeClass(item, "dim")
-		})
-	},
 
 	_markSelected: function(e) {
 		
@@ -189,105 +162,6 @@ dojo.declare("apstrata.horizon.List",
 		this.inherited(arguments)
 		this._listContent.selectItem(id)
 	},	
-
-	onClick: function(index, id, args) {
-		console.debug(index, id, args)
-	},
-	
-	_newItem: function() {
-		this._tglEdit.set('checked', false)
-		this.setEditMode(false)
-		
-		this.newItem()
-	},
-	
-	newItem: function() {},
-	
-	showEditTooltip: function() {
-		var self = this
-		var items = dojo.query('.listInnerLabel', this.domNode)
-		dojo.forEach(items, function(item) {
-			dojo.attr(item, "title", self._messages.clickToEditMessage)
-		})
-	},
-	
-	hideEditTooltip: function() {
-		var items = dojo.query('.listInnerLabel', this.domNode)
-		dojo.forEach(items, function(item) {
-			dojo.attr(item, "title", "")
-		})
-	},
-	
-	setEditMode: function(editMode) {
-		var self = this
-		
-		// Close any open panels
-		this.closePanel()
-
-		this._editMode = editMode
-
-		if (editMode) {
-			// edit mode
-
-			if (self._filterWidget) self._filterWidget.set('enabled', false)
-			this.showEditTooltip()
-			this.hideDeleteIcons()
-			this.dimReadOnlyLabels()
-			this._tglEdit.set('checked', true)
-		} else {
-			// normal mode
-			this._editMode = false
-
-			if (self._filterWidget) self._filterWidget.set('enabled', true)
-			this.hideEditTooltip()
-			this.showDeleteIcons()
-			this.unDimReadOnlyLabels()
-			this._listContent.cancelEdits()
-			this._tglEdit.set('checked', false)
-		}	
-	},
-	
-	editItems: function() {
-		this.setEditMode(this._tglEdit.get('checked'))
-	},
-	
-	
-	onDeleteRequest: function(id, item) {},
-	onChangeRequest: function(id, oldValue, newValue) {},
-	
-	deleteItem: function(id) {
-		this.store.remove(id)
-		
-		//this._listContent.removeItem(id)
-		
-		this.reload()
-		this._tglEdit.set("checked", false) 
-		if (this._filterWidget) this._filterWidget.set('enabled', true)
-	},
-	
-	changeItemLabel: function(id, label) {
-		var self = this
-		
-		var item = this.store.get(id)
-		item[this.labelProperty] = label
-		var a = this.store.put(item, {overwrite: true})
-		if (this.store.save) {
-			// if the store supports save, we need to save the change in the remote storage
-			this.store.save.then(function(){
-				// on success we can show the modified label
-				self._listContent.changeItemLabel(id, label)
-			}, function() {
-				// on failure revert the old value
-				self._listContent.revertItemEdit()
-			})
-		} else {
-			self._listContent.changeItemLabel(id, label)
-		}
-	},
-	
-	revertItemEdit: function() {
-		this._listContent.revertItemEdit()
-	}, 
 	
 	/*
 	 * Works by default for dojo.store.Memory and for filtering a label based on a string
@@ -327,6 +201,183 @@ dojo.declare("apstrata.horizon.List",
 	
 	getContentHeight: function() {
 		return  dojo.contentBox(this.domNode).h  - dojo.contentBox(this.dvHeader).h - dojo.contentBox(this.dvFooter).h
-	}
+	},
+	
+	//
+	// Rendering and visual state widgets
+	// 
+	
+	/**
+	 * Toggles edit mode by showing delete icons, making labels clickable and closing child panels
+	 * @param {Object} editMode boolean if true puts form into edit mode
+	 */
+	setEditMode: function(editMode) {
+		var self = this
+		
+		// Close any open panels
+		this.closePanel()
+
+		this._editMode = editMode
+
+		if (editMode) {
+			// edit mode
+
+			if (self._filterWidget) self._filterWidget.set('enabled', false)
+			this.showEditTooltip()
+			this.hideDeleteIcons()
+			this.dimReadOnlyLabels()
+			this._tglEdit.set('checked', true)
+		} else {
+			// normal mode
+			this._editMode = false
+
+			if (self._filterWidget) self._filterWidget.set('enabled', true)
+			this.hideEditTooltip()
+			this.showDeleteIcons()
+			this.unDimReadOnlyLabels()
+			this._listContent.cancelEdits()
+			this._tglEdit.set('checked', false)
+		}	
+	},
+
+	showEditTooltip: function() {
+		var self = this
+		var items = dojo.query('.listInnerLabel', this.domNode)
+		dojo.forEach(items, function(item) {
+			dojo.attr(item, "title", self._messages.clickToEditMessage)
+		})
+	},
+	
+	hideEditTooltip: function() {
+		var items = dojo.query('.listInnerLabel', this.domNode)
+		dojo.forEach(items, function(item) {
+			dojo.attr(item, "title", "")
+		})
+	},
+
+	showDeleteIcons: function() {
+		var items = dojo.query('.deleteCell', this.domNode)
+		dojo.forEach(items, function(item) {
+			dojo.style(item, "display", "none")
+		})
+	},
+	
+	hideDeleteIcons: function() {
+		var items = dojo.query('.deleteCell', this.domNode)
+		dojo.forEach(items, function(item) {
+			dojo.style(item, "display", "block")
+		})
+	},
+	
+	dimReadOnlyLabels: function() {
+		var items = dojo.query('.readOnly', this.domNode)
+		dojo.forEach(items, function(item) {
+			dojo.addClass(item, "dim")
+		})
+	},
+	
+	unDimReadOnlyLabels: function() {
+		var items = dojo.query('.readOnly', this.domNode)
+		dojo.forEach(items, function(item) {
+			dojo.removeClass(item, "dim")
+		})
+	},
+
+	//
+	// List data manipulation methods
+	//
+
+	addItem: function(item) {
+		var self = this
+		dojo.when (
+			this.store.add(item),
+			function() {
+				self.reload()
+				self._tglEdit.set("checked", false) 
+				if (self._filterWidget) self._filterWidget.set('enabled', true)
+			},
+			function() {
+				
+			}
+		)
+	},
+	
+	deleteItem: function(id) {
+		var self = this
+		dojo.when (
+			this.store.remove(id),
+			function() {
+				self.reload()
+				self._tglEdit.set("checked", false) 
+				if (self._filterWidget) self._filterWidget.set('enabled', true)
+			},
+			function() {
+				
+			}
+		)
+	},
+
+	changeItemLabel: function(id, label) {
+		var self = this
+		
+		var item = this.store.get(id)
+		item[this.labelProperty] = label
+		var a = this.store.put(item, {overwrite: true})
+		if (this.store.save) {
+			// if the store supports save, we need to save the change in the remote storage
+			this.store.save.then(function(){
+				// on success we can show the modified label
+				self._listContent.changeItemLabel(id, label)
+			}, function() {
+				// on failure revert the old value
+				self._listContent.revertItemEdit()
+			})
+		} else {
+			self._listContent.changeItemLabel(id, label)
+		}
+	},
+	
+	revertItemEdit: function() {
+		this._listContent.revertItemEdit()
+	}, 
+	
+	//
+	// Private action handlers
+	//
+
+	/**
+	 * Triggered when new button is pressed
+	 */		
+	_newItem: function() {
+		this._tglEdit.set('checked', false)
+		this.setEditMode(false)
+		
+		this.onAddItem()
+		this.newItem() // calling this for backward compatibility
+	},
+	
+	/**
+	 * Triggered when editItems button is pressed
+	 */
+	editItems: function() {
+		this.setEditMode(this._tglEdit.get('checked'))
+	},
+				
+	
+	//
+	// Obsolete action handlers
+	//
+	onDeleteRequest: function(id, item) { console.warn('apstrata.horizon.List.onDeleteRequest is Obsolete, use onDeleteItem instead') },
+	onChangeRequest: function(id, oldValue, newValue) { console.warn('apstrata.horizon.List.onChangeRequest is Obsolete, use onChangeLabel instead') },
+	newItem: function() { console.warn('apstrata.horizon.List.newItem is Obsolete, use onAddItem instead') },
+	
+	//
+	// Action handlers
+	//
+	onAddItem: function() {},
+	onDeleteItem: function(id) {},
+	onChangeLabel: function(id, oldValue, newValue) {},
+	onClick: function(index, id, args) {}
+	
 })			
 

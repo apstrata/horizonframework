@@ -48,6 +48,14 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 			if (item.canBeDeleted) item.isDeleteable = true; else item.isDeleteable = false 
 			if (item.canBeEdited) item.isEditable = true; else item.isEditable = false 
 			
+			if (self.parent.itemIsDeleteable) {
+				item.isDeleteable = self.parent.itemIsDeleteable(item)
+			}
+
+			if (self.parent.itemIsEditable) {
+				item.isEditable = self.parent.itemIsEditable(item)
+			}
+			
 			self.data.push(item);
 		})
 	},

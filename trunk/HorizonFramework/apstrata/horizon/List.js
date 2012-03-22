@@ -304,8 +304,9 @@ dojo.declare("apstrata.horizon.List",
 	
 	deleteItem: function(id) {
 		var self = this
+		var deferred = this.store.remove(id) 
 		dojo.when (
-			this.store.remove(id),
+			deferred,
 			function() {
 				self.reload()
 				self._tglEdit.set("checked", false) 
@@ -315,6 +316,7 @@ dojo.declare("apstrata.horizon.List",
 				
 			}
 		)
+		return deferred
 	},
 
 	changeItemLabel: function(id, label) {

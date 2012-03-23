@@ -302,6 +302,21 @@ dojo.declare("apstrata.horizon.List",
 		)
 	},
 	
+	putItem: function(item) {
+		var self = this
+		dojo.when (
+			this.store.put(item),
+			function() {
+				self.reload()
+				self._tglEdit.set("checked", false) 
+				if (self._filterWidget) self._filterWidget.set('enabled', true)
+			},
+			function() {
+				
+			}
+		)
+	},
+
 	deleteItem: function(id) {
 		var self = this
 		var deferred = this.store.remove(id) 

@@ -278,6 +278,12 @@ dojo.declare("apstrata.horizon.Panel",
 	 * Closes a panel and ensures cleanup
 	 */
 	closePanel: function() {
+		var degrees = 0;
+//		dojo.require("dojox.css3.fx");
+//		dojo.style(node, "transform", "rotate(70deg)");
+// http://www.w3schools.com/css3/css3_2dtransforms.asp		
+
+		
 		// Destroy an existing child open panel
 		if (this._openPanel) {
 			this.getContainer().removeChild(this._openPanel)

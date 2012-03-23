@@ -62,6 +62,14 @@ dojo.declare("apstrata.horizon.blue.List",
 		this.inherited(arguments)	
 	},
 	
+	itemIsDeleteable: function(item) {
+		return true
+	},
+
+	itemIsEditable: function(item) {
+		return false
+	},
+
 	onClick: function(index, id) {},
 	
 	onDeleteRequest: function(id, item) {

@@ -186,6 +186,7 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 		var item = self.parent.store.get(id)
 
 		self.parent.onDeleteRequest(id, item)
+		self.parent.onDeleteItem(id, item)
 	},
 	
 	// this needs to be reviewed, currently not using it

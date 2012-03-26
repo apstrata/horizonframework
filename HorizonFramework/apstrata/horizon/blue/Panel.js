@@ -41,7 +41,7 @@ dojo.declare("apstrata.horizon.blue.Panel",
 	showContent: function() {
 		var tmp = '<br>'
 		var blueHue
-		for (i = 0; i < 400; i++) {
+		for (var i = 0; i < 400; i++) {
 
 			blueHue = Math.floor(Math.random()*150, 0) + 105
 			tmp += "<span style='opacity: .9;margin-top: 12px; -o-border-radius: 5px;-moz-border-radius: 5px;-webkit-border-radius: 5px;border-radius: 5px;padding: 5px; color: rgb(10, " + blueHue + ", 10); background: rgb(10, 10," + blueHue + ")'>"

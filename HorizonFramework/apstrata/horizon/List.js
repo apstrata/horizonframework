@@ -354,6 +354,15 @@ dojo.declare("apstrata.horizon.List",
 		}
 	},
 	
+	changeStaticItemLabel: function(id, label) {
+		var self = this
+		
+		var item = this.store.get(id)
+		item[this.labelProperty] = label
+		var a = this.store.put(item, {overwrite: true})		
+		self._listContent.changeStaticItemLabel(id, label)
+	},	
+	
 	revertItemEdit: function() {
 		this._listContent.revertItemEdit()
 	}, 

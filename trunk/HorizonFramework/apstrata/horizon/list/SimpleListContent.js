@@ -263,6 +263,13 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 		this._activeEdit = false
 	},
 	
+	changeStaticItemLabel: function(id, label) {
+		var node =dojo.query("[itemid=\""+ id +"\"] .listInnerLabel", this.domNode)[0];
+		if (node) { 
+			node.innerHTML = label;
+		}
+	},	
+	
 	revertItemEdit: function() {
 		if (!this._activeInlineEdit) return
 		

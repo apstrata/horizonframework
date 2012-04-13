@@ -57,6 +57,12 @@ dojo.declare("apstrata.horizon.blue.Menu",
 				panelClass: "apstrata.horizon.blue.Colors"
 			},
 			{
+				id:"wrapper", 
+				label: "Wrapper", 
+				iconSrc: apstrata.baseUrl+"/horizon/resources/images/pencil-icons/computer.png",
+				panelClass: "apstrata.horizon.NewList"
+			},
+			{
 				id:"apstrata", 
 				label: "apstrata widgets", 
 				iconSrc: apstrata.baseUrl+"/horizon/resources/images/pencil-icons/datebase.png", 

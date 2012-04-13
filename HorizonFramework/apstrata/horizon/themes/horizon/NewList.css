@@ -1,0 +1,72 @@
+.horizon .NewList {
+	width: 200px;
+	padding: 0px;
+}
+
+.horizon .NewList .header {
+	height: 30px;
+}
+
+.horizon .NewList .footer {
+	height: 40px;
+	text-align: center;
+}
+
+.horizon .NewList .content {
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.horizon .NewList .item {
+	width: 800px;
+	margin-left: 4px;
+	height: auto;
+	cursor: pointer;
+
+	-moz-border-radius-topleft: 5px;
+	-webkit-border-top-left-radius: 5px;
+	border-top-left-radius: 5px;
+
+	-moz-border-radius-bottomleft: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+
+    -o-border-radius: 5px;
+}
+
+.horizon .NewList .item:hover {
+	background: #898989;
+}
+
+.horizon .NewList .itemSelected {
+	background: #8888EE;
+	color: white;
+}
+
+.horizon .NewList .itemSelected:hover {
+	background: #8888EE;
+	color: white;
+}
+
+.horizon .NewList .content .itemContent {
+}
+
+
+.horizon .NewList .item .icon {
+	position: relative;
+	margin-left: 5px;
+	margin-right: 5px;
+	display: inline-block;
+	background-image:url('../../resources/images/pencil-icons/computer.png');
+	width: 40px;
+	height: 40px;
+	background-size: 100% 100%;
+}
+
+.horizon .NewList .item .label {
+	top: -16px;
+	position: relative;
+	display: inline-block;
+}
+
+

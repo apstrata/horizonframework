@@ -134,7 +134,7 @@ dojo.declare("apstrata.horizon.PanelAlert",
  	
  	postCreate: function() {
 		// delaying reflowing of divs because occasionally it breaks
-		setTimeout(dojo.hitch(this, "_layout"), 200)
+		setTimeout(dojo.hitch(this, "_layout"), 100)
  	},
 	
 	onClick: function(action) {

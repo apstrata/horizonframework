@@ -30,7 +30,8 @@ dojo.declare("apstrata.horizon.Menu",
 				id:"<unique key>", 
 				label: "<label>", 
 				iconSrc: "(optional) <icon>",
-				panelClass: "(optional) <class to instantiate>"
+				panelClass: "(optional) <class to instantiate>",
+				args: (options) instantion arguments for panelClass
 			}
 		]
 	 */
@@ -42,6 +43,8 @@ dojo.declare("apstrata.horizon.Menu",
 		if (this.store) dojo.when(
 			this.store.get(id),
 			function(item) {
+				if (item.args) args = dojo.mixin(args, item.args)
+				
 				// in case the item has an associated class
 				if (item.panelClass) {
 					// load it dynamically

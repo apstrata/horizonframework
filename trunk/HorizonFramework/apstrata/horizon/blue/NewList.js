@@ -17,45 +17,52 @@
  *  along with Apstrata Database Javascript Client.  If not, see <http://www.gnu.org/licenses/>.
  * *****************************************************************************
  */
-dojo.provide('apstrata.horizon.Menu');
-dojo.require('apstrata.horizon.List');
+dojo.provide("apstrata.horizon.blue.NewList")
 
-dojo.declare("apstrata.horizon.Menu", 
-[apstrata.horizon.List], 
+dojo.require("dojo.store.Memory")
+dojo.require("apstrata.horizon.NewList")
+dojo.require("apstrata.horizon.blue.TestData")
+
+dojo.declare("apstrata.horizon.blue.NewList", 
+[apstrata.horizon.NewList], 
 {
-	/*
-	 * the items array member should have this form:
-	items: [
-			{	
-				id:"<unique key>", 
-				label: "<label>", 
-				iconSrc: "(optional) <icon>",
-				panelClass: "(optional) <class to instantiate>",
-				args: (options) instantion arguments for panelClass
-			}
-		]
-	 */
+	labelAttribute: "Album",
 	
-	onClick: function(index, id, args) {
-		var self = this	
+	constructor: function() {
+		var self = this
 
-		if (args && !args.menuItemId) args.menuItemId = id;
-		if (this.store) dojo.when(
-			this.store.get(id),
-			function(item) {
-				if (item.attrs) args = dojo.mixin(args, item.attrs)
-				
-				// in case the item has an associated class
-				if (item.panelClass) {
-					// load it dynamically
-					dojo.require(item.panelClass)
-					// (dojo.addOnLoad will insure that the module is loaded)
-					dojo.addOnLoad(function() {
-						// open it as a child panel
-						self.openPanel(dojo.getObject(item.panelClass), args)
-					})
-				}
-			}			
-		)
-	}
+		//
+		// widget attributes
+		//
+		this.filterable = true
+		this.sortable = true
+		this.editable = true
+		this.maximizable = false
+		
+		this.store = musicStore // defined in apstrata.horizon.blue.TestData
+	},
+		
+	postCreate: function() {
+		dojo.style(this.domNode, "width", "250px")
+		this.inherited(arguments)	
+	},
+	
+	isItemDeleteable: function(item) {
+		return item.canBeDeleted
+	},
+	
+	isItemEditable: function(item) {
+		return item.canBeEdited
+	},
+	
+	//
+	// Calculate special item attributes: label, id, isDeleteable, isEditable
+	//
+	itemIsDeleteable: function(item) {
+		return item.canBeDeleted
+	},
+	
+	itemIsEditable: function(item) {
+		return item.canBeEdited
+	}	
 })

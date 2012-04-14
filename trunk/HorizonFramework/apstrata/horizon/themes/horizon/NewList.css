@@ -25,7 +25,9 @@
 	background-size: 100% 100%;
 }
 
-
+.horizon .NewList .deleteNodeDisabled {
+	background-image:url('../../resources/images/pencil-icons/stop-disabled-sml.png');
+}
 
 .horizon .NewList .content {
 	overflow-x: hidden;
@@ -98,7 +100,12 @@
 	display: inline-block;
 }
 
+.horizon .NewList .item .labelEditDisabled {
+	color: #999;
+}
+
 .horizon .NewList .item .deleted {
 	color: red;
+	text-decoration: line-through;
 }
 

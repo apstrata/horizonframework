@@ -1,0 +1,13 @@
+.horizon .Wrapper {
+	width: 200px;
+	padding: 0px;
+}
+
+.horizon .Wrapper .header {
+	height: 30px;
+}
+
+.horizon .Wrapper .footer {
+	height: 40px;
+	text-align: center;
+}

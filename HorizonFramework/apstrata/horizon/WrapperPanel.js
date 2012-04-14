@@ -27,31 +27,50 @@ dojo.require("apstrata.horizon.Panel")
  */
 dojo.declare("apstrata.horizon.WrapperPanel", 
 [apstrata.horizon.Panel], 
-{
-//	templatePath: dojo.moduleUrl("apstrata.horizon", "templates/List.html"),
-	templateString: "<div></div>",
+{	
+	templateString: "<div class='panel Wrapper'>{{ }}<div dojoAttachPoint='dvHeader' class='header'></div><div dojoAttachPoint='dvContent' class='content'><div dojoAttachPoint='dvWidget'></div></div> <div dojoAttachPoint='dvFooter' class='footer'></div></div>",
+	
 	widgetsInTemplate: true,
 	
 	constructor: function(options) {
+		var self = this
 		this.options = options
 	},
 	
-	startup: function() {
+	postCreate: function() {
 		var self = this
+		if (this.options.widgetClass) {
+			var attrs = this.options.attrs?this.options.attrs:{}
+			
+			dojo.require(this.options.widgetClass)
+			dojo.ready(function() {
+				self._widget = new dojo.getObject(self.options.widgetClass)(attrs, self.dvWidget)
+			})
+		}
 
-		dojo.place(self.options.widget.domNode, self.dvContent)
-		
-		if (this.optinos.widget) this.optinos.widget.reload()
-		
 		this.inherited(arguments)
 	},
+	
+	//
+	// Properties
+	//
+	getWidget: function() {
+		return self._widget
+	},
+	
+	
+	// 
+	// Public methods
+	//
+	resize: function() {
+		var h = dojo.contentBox(this.domNode).h
+		var hh = dojo.contentBox(this.dvHeader).h
+		var fh = dojo.contentBox(this.dvFooter).h
 		
-	reload: function() {
-		var self = this
+		dojo.style(this.dvContent, {
+			height: h-hh-fh + "px"
+		})
+	}
 		
-		if (this.optinos.widget) this.optinos.widget.reload()
-		
-		this.inherited(arguments)
-	}	
 })
 

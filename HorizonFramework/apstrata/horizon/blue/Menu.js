@@ -57,10 +57,22 @@ dojo.declare("apstrata.horizon.blue.Menu",
 				panelClass: "apstrata.horizon.blue.Colors"
 			},
 			{
+				id:"newList", 
+				label: "New List", 
+				iconSrc: apstrata.baseUrl+"/horizon/resources/images/pencil-icons/computer.png",
+				panelClass: "apstrata.horizon.blue.NewList"
+			},
+			{
 				id:"wrapper", 
 				label: "Wrapper", 
 				iconSrc: apstrata.baseUrl+"/horizon/resources/images/pencil-icons/computer.png",
-				panelClass: "apstrata.horizon.NewList"
+				panelClass: "apstrata.horizon.WrapperPanel",
+				attrs: {
+					widgetClass: "dijit.form.Button",
+					attrs: {
+						label: "KILL BILL"
+					} 
+				}
 			},
 			{
 				id:"apstrata", 

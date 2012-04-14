@@ -35,20 +35,13 @@ dojo.declare("apstrata.horizon.Container",
 	// Provides a unique key for storing preferences data (by default to a cookie)
 	applicationId: "horizon",
 
+	margin: null,
 	_marginRight: 0,
 	controlToolbarClass: apstrata.horizon.ControlToolbar,
 	showToolbar: true,
-
-	//
-	// Widget attributes
-	//
-	margin: null,
-	loginWidget: null,
 	
 	constructor: function(attrs) {
 		if (attrs && attrs.applicationId) this.applicationId = attrs.applicationId
-		
-		this.loginWidget = attrs.loginWidget
 
 		// Extract the request params into an object		
 		var s = window.location.search.substring(1)
@@ -111,55 +104,17 @@ dojo.declare("apstrata.horizon.Container",
 		console.debug('URL Hash changed to: ' + hash)
 	},
 	
-	listenToHashChange: function(v) {
-		if (v) {
-			this._listenUrlHashChange = setInterval(dojo.hitch(this,"_checkUrlHashChange"), 500)
-		} else {
-			clearInterval(this._listenUrlHashChange)
-		}
-	},
-	
-	/**
-	 * Overriden by child classes to login application
-	 * 
-	 * @param {Object} credentials
-	 */
-	onCredentials: function(credentials) {
-		
-	},
-	
 	startup: function() {
-		var self = this
 		//setTimeout(dojo.hitch(this, 'loadPreferences'), 3000)
 		//setTimeout(dojo.hitch(this, 'layout'), 100)
-		
-		if (this.loginWidget) {
-			this.loginWidget.set("dimension", this._boundingRectangle)
-			dojo.place(this.loginWidget.domNode, dojo.body())
-			this.loginWidget.then(function(credentials) {
-				self.onCredentials(credentials)
-				self._instantiateMainPanel()
-				self.listenToHashChange(true)
-				self.loginWidget.destroyRecursive()
-			},
-			function() {
-				
-			})
-		} else {
-			self._instantiateMainPanel()
-			this.listenToHashChange(true)
-		}
+
+		setInterval(dojo.hitch(this,"_checkUrlHashChange"), 500)
 
 		this.inherited(arguments)
 	},
 	
 	autoScroll: function() {
-		try {
-			this.domNode.scrollLeft = this.domNode.scrollWidth - this.domNode.clientWidth		
-		} catch (e) {
-//			console.error(e)
-		}
-		
+		this.domNode.scrollLeft = this.domNode.scrollWidth - this.domNode.clientWidth
 	},
 		
 	getRemainingFreeWidth: function(excludeId) {
@@ -168,19 +123,20 @@ dojo.declare("apstrata.horizon.Container",
 		for (id in this.__children) {
 			if (id != excludeId) {
 				var child = this.__children[id]
-				w += dojo.marginBox(child.domNode).w
+				
+				w += child.domNode.offsetWidth
 			}
 		}
-		
-		return dojo.marginBox(this.domNode).w - w
+
+		return this.domNode.offsetWidth - w
 	},
 	
 	layout: function() {
 		this._containerLayout()
-		if (this.loginWidget) this.loginWidget.set("dimension", this._boundingRectangle)
+		
 		// Call layout for each contained widget upon resize
 		dojo.forEach(this.getChildren(), function(child) {
-				child.resize()	
+			child.resize();
 		})
 
 		if (this._mainPanel) {
@@ -232,6 +188,7 @@ dojo.declare("apstrata.horizon.Container",
 			bounding.width = this._CSSdim.w
 		}
 		
+		
 		var container = {}
 		var fixedPanel = {}
 		
@@ -262,9 +219,6 @@ dojo.declare("apstrata.horizon.Container",
 		background.left = (bounding.left - bMargin)
 		background.width = (bounding.width)
 		background.height = (bounding.height)
-
-		this._boundingRectangle = background
-
 
 		// Calculate Control toolbar position
 		var toolbar = {}

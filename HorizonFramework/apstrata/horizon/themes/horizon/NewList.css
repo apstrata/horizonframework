@@ -12,16 +12,34 @@
 	text-align: center;
 }
 
+.horizon .NewList .deleteNode {
+	top: -14px;
+	position: relative;
+	
+	margin-left: 4px;
+
+	display: none;
+	background-image:url('../../resources/images/pencil-icons/stop-red-sml.png');
+	width: 17px;
+	height: 17px;
+	background-size: 100% 100%;
+}
+
+
+
 .horizon .NewList .content {
 	overflow-x: hidden;
 	overflow-y: auto;
+	margin-left: 4px;
 }
 
 .horizon .NewList .item {
-	width: 800px;
-	margin-left: 4px;
+	display: inline-block;
+	width: 100%;
+	margin-left: 0px;
 	height: auto;
 	cursor: pointer;
+	overflow: hidden;
 
 	-moz-border-radius-topleft: 5px;
 	-webkit-border-top-left-radius: 5px;
@@ -43,12 +61,23 @@
 	color: white;
 }
 
+.horizon .NewList .dijitTextBox {
+	color: black;
+}
+
+.horizon .NewList .dijitButton {
+	color: black;
+}
+
 .horizon .NewList .itemSelected:hover {
 	background: #8888EE;
 	color: white;
 }
 
 .horizon .NewList .content .itemContent {
+	left: 0px;
+	width: 800px;
+	height: auto;
 }
 
 
@@ -69,4 +98,7 @@
 	display: inline-block;
 }
 
+.horizon .NewList .item .deleted {
+	color: red;
+}
 

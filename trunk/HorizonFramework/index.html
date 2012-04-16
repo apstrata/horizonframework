@@ -9,7 +9,7 @@
 		<script type="text/javascript" src="lib/dojo/dojo/dojo.js" djConfig="parseOnLoad: false, isDebug: true"></script>
 
 		<!-- 
-			pencil icons are under cc license from http://olawolska.com/newsy/49-hand-drawing-icons-set/
+			pencil icons are under cc license from http://handdrawing.olawolska.com/
 		-->
 
 	    <style type="text/css">
@@ -70,14 +70,8 @@
 					"panel.finalAlpha": .95
 				}
 
-				// use apstrata demo account credentials
-				var credentials = {
-					key:"",
-					secret:""
-				}
-
 				dojo.setObject("bluehorizon.config.apstrataConnection", 
-					new apstrata.Connection({credentials: credentials}))
+					new apstrata.Connection())
 
 				dojo.require("dojo.parser")
 				dojo.parser.parse()

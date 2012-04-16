@@ -1,32 +1,5 @@
 .horizon .NewList {
-	width: 200px;
 	padding: 0px;
-}
-
-.horizon .NewList .header {
-	height: 30px;
-}
-
-.horizon .NewList .footer {
-	height: 40px;
-	text-align: center;
-}
-
-.horizon .NewList .deleteNode {
-	top: -14px;
-	position: relative;
-	
-	margin-left: 4px;
-
-	display: none;
-	background-image:url('../../resources/images/pencil-icons/stop-red-sml.png');
-	width: 17px;
-	height: 17px;
-	background-size: 100% 100%;
-}
-
-.horizon .NewList .deleteNodeDisabled {
-	background-image:url('../../resources/images/pencil-icons/stop-disabled-sml.png');
 }
 
 .horizon .NewList .content {
@@ -35,13 +8,87 @@
 	margin-left: 4px;
 }
 
+/** search widget **/
+
+
+.horizon .NewList .sortField {
+	padding: 0px;
+	border: 0px;
+	width: 26px;
+	float: left;
+}
+
+.horizon .NewList .searchField {
+	padding: 0px;
+	border: 0px;
+	text-align: left;
+	float: left;
+}
+
+.horizon .NewList .searchField input {
+	font-size:0.8em;
+	width: 50px;
+
+	-moz-border-radius-topleft: 3px;
+	-webkit-border-top-left-radius: 3px;
+	border-top-left-radius: 3px;
+
+	-moz-border-radius-bottomleft: 3px;
+	-webkit-border-bottom-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+
+	text-align: left;
+	border-bottom: 1px solid #CECECE;
+	border-top: 1px solid #CECECE;
+	border-left: 1px solid #CECECE;
+	border-right: 0px solid #CECECE;
+	padding: 1px;
+}
+
+.horizon .NewList .sortField .on {
+	opacity: 1;
+	cursor: pointer;
+}
+
+.horizon .NewList .sortField .off {
+	opacity: .3;
+	cursor: pointer;
+}
+
+.horizon .NewList .highlightFilter {
+	background: #9999FF;
+	#color: white;
+	
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+}
+
+/** header **/
+
+.horizon .NewList .header {
+	margin-top: 5px;
+	margin-left: 9px;
+}
+
+/** footer **/
+
+.horizon .NewList .footer {
+	height: 35px;
+	text-align: center;
+}
+
+.horizon .NewList .footerCollapsed {
+	height: 15px;
+}
+
+/** List inner **/
 .horizon .NewList .item {
-	display: inline-block;
+	display: table;
+	
 	width: 100%;
-	margin-left: 0px;
 	height: auto;
 	cursor: pointer;
-	overflow: hidden;
 
 	-moz-border-radius-topleft: 5px;
 	-webkit-border-top-left-radius: 5px;
@@ -53,7 +100,7 @@
 
     -o-border-radius: 5px;
 }
-
+ 
 .horizon .NewList .item:hover {
 	background: #898989;
 }
@@ -63,49 +110,79 @@
 	color: white;
 }
 
-.horizon .NewList .dijitTextBox {
-	color: black;
-}
-
-.horizon .NewList .dijitButton {
-	color: black;
-}
-
 .horizon .NewList .itemSelected:hover {
 	background: #8888EE;
 	color: white;
 }
-
-.horizon .NewList .content .itemContent {
-	left: 0px;
-	width: 800px;
-	height: auto;
+ 
+.horizon .NewList .deleteCell {
+	display: none;
+	vertical-align: middle;
+	overflow: hidden;
+	width: 17px;
 }
 
+.horizon .NewList .iconCell {
+	display: table-cell;
+	vertical-align: middle;
+	overflow: hidden;
+	width: 40px;
+}
 
-.horizon .NewList .item .icon {
-	position: relative;
+.horizon .NewList .labelCell {
+	display: table-cell;
+	vertical-align: middle;
+	overflow: hidden;
+	padding-left: 5px;
+}
+ 
+.horizon .NewList .deleteIcon {
+	vertical-align: middle;	
+
+	margin-left: 4px;
+	
+	float: left;
+
+	background-image:url('../../resources/images/pencil-icons/stop-red-sml.png');
+	width: 17px;
+	height: 17px;
+	background-size: 100% 100%;	
+} 
+
+.horizon .NewList .deleteIconDisabled {
+	background-image:url('../../resources/images/pencil-icons/stop-disabled-sml.png');
+}
+ 
+.horizon .NewList .icon {
+	display: table-cell;
+	vertical-align: middle;
+	
 	margin-left: 5px;
 	margin-right: 5px;
-	display: inline-block;
 	background-image:url('../../resources/images/pencil-icons/computer.png');
 	width: 40px;
 	height: 40px;
 	background-size: 100% 100%;
-}
+} 
 
-.horizon .NewList .item .label {
-	top: -16px;
-	position: relative;
-	display: inline-block;
-}
+.horizon .NewList .label {
+} 
 
-.horizon .NewList .item .labelEditDisabled {
+.horizon .NewList .labelEditDisabled {
 	color: #999;
 }
 
-.horizon .NewList .item .deleted {
+.horizon .NewList .deleted {
 	color: red;
 	text-decoration: line-through;
 }
+
+.horizon .NewList .label .dijitTextBox {
+	color: black;
+}
+
+.horizon .NewList .label .dijitButton {
+	color: black;
+}
+
 

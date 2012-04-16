@@ -26,6 +26,9 @@ dojo.require('dijit.form.ToggleButton')
 dojo.require('dijit.form.Button')
 dojo.require('apstrata.horizon.PanelAlert')
 
+dojo.require('apstrata.horizon.util.FilterLabelsByString')
+dojo.require('apstrata.horizon.list.SimpleFilterAndSort')
+
 dojo.require("apstrata.horizon.Panel")
 
 /*
@@ -50,7 +53,8 @@ dojo.declare("apstrata.horizon.NewList",
 	// mode
 	editable: true,
 	multiEditMode: true,
-	confirmPerChange: true,
+	confirmDeletes: true,
+	confirmEdits: true,
 
 	// Features
 	filterable: false,
@@ -59,6 +63,15 @@ dojo.declare("apstrata.horizon.NewList",
 	// Visual
 	dockOnClick: false,
 	
+	// Install simple filter widget
+	filterWidget: apstrata.horizon.list.SimpleFilterAndSort,
+
+	//
+	// private variables
+	//
+	_filter: '',
+	_queryOptions: null,
+
 	constructor: function(options) {
 		dojo.mixin(this, options)	
 		
@@ -95,9 +108,25 @@ dojo.declare("apstrata.horizon.NewList",
 		}
 	},
 	
-	postCreate: function(options) {
+	postCreate: function(options) {	
+		if (!this.editable)	dojo.addClass(this.dvFooter, "footerCollapsed")
+		this.inherited(arguments)
+	},
+	
+	startup: function(options) {
+		var self = this
+		
 		this.reload()
 		this._addActions()
+
+		// Place the sorting filtering widget
+		if (this.sortable || this.filterable) {
+			self._filterWidget = new this.filterWidget({parent: self})		
+			dojo.place(self._filterWidget.domNode, self.dvHeader)
+
+			dojo.connect(self._filterWidget, "onSortChange", dojo.hitch(this, "sort"))
+			dojo.connect(self._filterWidget, "onFilterChange", dojo.hitch(this, "filter"))
+		}
 		
 		this.inherited(arguments)
 	},
@@ -120,12 +149,14 @@ dojo.declare("apstrata.horizon.NewList",
 		
 		if (!this.store) return
 
-		var query = function(item) { return true }
-		var queryOptions = {}
+		var query = this._queryParams()
+		var queryOptions = this._queryOptions()
 
+		this.showAsBusy(true, "refreshing list")
 		dojo.when(
 			this.store.query(query, queryOptions),
 			function(result) {
+				self.showAsBusy(false)
 				self._render(result)				
 				if (self._selectedId) 
 					if (self._cachedResult[self._selectedId]) self.select(self._selectedId);
@@ -134,10 +165,22 @@ dojo.declare("apstrata.horizon.NewList",
 		)
 	},
 	
+	/**
+	 * This can be overriden to make some items non deleteable
+	 * 
+	 * @param {Object} item
+	 */
 	isItemDeleteable: function(item) {
 		return true
 	},
 	
+	
+	/**
+	 * Called internally by the renderer to understand if an item is deleteable or not
+	 * This can be overriden to make some items non editable
+	 * 
+	 * @param {Object} item
+	 */
 	isItemEditable: function(item) {
 		return true
 	},
@@ -145,6 +188,7 @@ dojo.declare("apstrata.horizon.NewList",
 	// Actions
 	
 	/**
+	 * Called internally by the renderer to understand if an item is editable or not
 	 * Mark an item as selected
 	 * 
 	 * @param {string} id
@@ -171,6 +215,10 @@ dojo.declare("apstrata.horizon.NewList",
 		this._selectedNode = this._itemNodes[id]
 	},
 	
+	/**
+	 * Removes any highlited item
+	 * 
+	 */
 	deSelect: function() {
 		if (this._selectedNode) {
 			dojo.removeClass(this._selectedNode, "itemSelected")
@@ -189,35 +237,18 @@ dojo.declare("apstrata.horizon.NewList",
 		var r = this._cachedResult[id] //this.store.get(id)
 		this._renderItem(r)
 	},
-	
-	//
-	// Properties
-	//
-	
-	/**
-	 * Returns true if the list is in edit mode
-	 */
-	isEditMode: function() {
-		return this._tglEdit && this._tglEdit.get('checked')
+
+	filter: function(filter) {
+		this._filter = filter
+		this.reload()
 	},
 	
-	//
-	// Events
-	//
-	
-	/**
-	 * Called when the new button is clicked
-	 */
-	onNew: function() {},
-	
-	
-	/**
-	 * Called when the list is taken out of edit mode
-	 *  The standard behavior commits items in the dirtyBuffer to the object store and reloads the list
-	 * 
-	 * @param {Object} list of items that changed
-	 */
-	onEditCommit: function(dirtyBuffer) {
+	sort: function(sort) {
+		this._sort = sort
+		this.reload()
+	},
+
+	commitChanges: function(dirtyBuffer) {
 		var self = this
 				
 		for (var id in dirtyBuffer) {
@@ -236,6 +267,43 @@ dojo.declare("apstrata.horizon.NewList",
 		console.dir(dirtyBuffer)
 	},
 
+	//
+	// Properties
+	//
+	
+	/**
+	 * Returns true if the list is in edit mode
+	 */
+	isEditMode: function() {
+		return this._tglEdit && this._tglEdit.get('checked')
+	},
+	
+	/**
+	 * Returns the selected Id
+	 */
+	getSelectedId: function() {
+		return this._selectedId
+	},
+	
+	//
+	// Events
+	//
+	
+	/**
+	 * Called when the new button is clicked
+	 */
+	onNew: function() {},
+	
+	/**
+	 * Called when the list is taken out of edit mode
+	 *  The standard behavior commits items in the dirtyBuffer to the object store and reloads the list
+	 * 
+	 * @param {Object} list of items that changed
+	 */
+	onEdit: function(state, dirtyBuffer) {
+		this.commitChanges(dirtyBuffer)
+	},
+
 	/**
 	 * Called when an item is clicked
 	 * 
@@ -248,12 +316,12 @@ dojo.declare("apstrata.horizon.NewList",
 	 * 
 	 * @param {string} id
 	 */
-	onDelete: function(id) {
+	onDeleteItem: function(id) {
 		var self = this
 		
 		var label = this.getLabel(this._cachedResult[id])
 		
-		if (this.multiEditMode && this.confirmPerChange) {
+		if (this.multiEditMode && this.confirmDeletes) {
 			new apstrata.horizon.PanelAlert({
 				panel: self,
 				width: 320,
@@ -285,7 +353,7 @@ dojo.declare("apstrata.horizon.NewList",
 	onEditLabel: function(id, oldLabel, newLabel) {
 		var self = this
 
-		if (this.multiEditMode && this.confirmPerChange) {
+		if (this.multiEditMode && this.confirmEdits) {
 			new apstrata.horizon.PanelAlert({
 				panel: self,
 				width: 320,
@@ -315,16 +383,52 @@ dojo.declare("apstrata.horizon.NewList",
 	 * @param {string} id
 	 */
 	_onDelete: function(id) {
-		
 		if (this._dirtyBuffer.isDeleted(id)) {
 			dojo.removeClass(this._labelNodes[id], "deleted")
 			this._dirtyBuffer.markDeleted(id, false)
 		} else {
 			dojo.addClass(this._labelNodes[id], "deleted")
 			this._dirtyBuffer.markDeleted(id, true)
-			this.onDelete(id)
+			this.onDeleteItem(id)
 		}
 	},
+
+	/*
+	 * Works by default for dojo.store.Memory and for filtering a label based on a string
+	 * It should be overriden for different stores or for different filtering requirements 
+	 */
+	_queryParams: function() {
+		var self = this
+
+		return function(item) { return apstrata.horizon.util.NewFilterLabelsByString(item, self._filter, self.labelAttribute) }
+	},
+	
+	/*
+	 * Works by default for dojo.store.Memory and for sorting the label attribute
+	 * It should be overriden for different stores or for different sorting requirements 
+	 */
+	_queryOptions: function() {
+		var _queryOptions = {}
+		
+		if (this._sort == 1) {
+			_queryOptions = {
+				sort: [{
+					attribute: self.labelAttribute,
+					ascending: true
+				}]
+			}
+		} else if (this._sort == 2) {
+			_queryOptions = {
+				sort: [{
+					attribute: self.labelAttribute,
+					descending: true
+				}]
+			}
+		} 
+		
+		return _queryOptions 
+	},
+
 	
 	//
 	// Data methods
@@ -371,46 +475,45 @@ dojo.declare("apstrata.horizon.NewList",
 			self._renderItem(row)
 		})
 	},
-	
+
+	_addNode: function(elementn, attributes, cssClass, parent) {
+		var n = dojo.create(elementn, attributes)
+		dojo.addClass(n, cssClass)
+		dojo.place(n, parent)
+		
+		return n
+	},
+
 	_renderItem: function(row) {
 		var self = this
 		
-		var n = self._itemNodes[self.getId(row)]
+		// clear node contents if any so it can be re-rendered
+		var n = self._itemNodes[this.getId(row)]
 		n.innerHTML = ""
 		
-		// Outer div
-		var contentNode = dojo.create("div")
-		dojo.place(contentNode, n)
-		dojo.addClass(contentNode, "itemContent")
-		dojo.connect(contentNode, "onclick", dojo.hitch(self, "select", (self.getId(row)+"")))
+		var item = this._addNode("div", {title: self.getLabel(row)}, "item", n)
+			var cell1 = this._addNode("div", {}, "deleteCell", item)
+			var cell2 = this._addNode("div", {}, "iconCell", item)
+			var cell3 = this._addNode("div", {}, "labelCell", item)
+			
+		var deleteIcon = this._addNode("div", {}, "deleteIcon", cell1)
+		var icon = this._addNode("div", {}, "icon", cell2)
+		var label = this._addNode("div", {innerHTML: self.getLabel(row)}, "label", cell3)
 
-		// delete icon div
-		var deleteNode = dojo.create("div")
-		dojo.place(deleteNode, contentNode)
-		dojo.addClass(deleteNode, "deleteNode")
-		
+		dojo.connect(item, "onclick", dojo.hitch(self, "select", (self.getId(row)+"")))
+		dojo.connect(label, "onclick", dojo.hitch(self, "_editLabel", (self.getId(row)+"")))
+
 		if (!this.isItemDeleteable(row)) {
-			dojo.addClass(deleteNode, "deleteNodeDisabled");
+			dojo.addClass(deleteIcon, "deleteIconDisabled");
 		} else {
-			dojo.connect(deleteNode, "onclick", dojo.hitch(self, "_onDelete", (self.getId(row)+"")))
+			dojo.connect(deleteIcon, "onclick", dojo.hitch(self, "_onDelete", (self.getId(row)+"")))
 		}
 		
-		dojo.style(deleteNode, "display", this.isEditMode()?"inline-block":"none")
-		
-		// item icon div
-		var iconNode = dojo.create("div")
-		dojo.place(iconNode, contentNode)
-		var iconClass = self.getIconClass(row)
-		if (iconClass) dojo.addClass(iconNode, iconClass)
+		dojo.style(cell1, "display", this.isEditMode()?"table-cell":"none")
 
-		// item label div
-		var labelNode = dojo.create("div", {innerHTML: self.getLabel(row)})
-		dojo.place(labelNode, contentNode)
-		dojo.addClass(labelNode, "label")
-		dojo.connect(labelNode, "onclick", dojo.hitch(self, "_editLabel", (self.getId(row)+"")))
-		self._labelNodes[self.getId(row)] = labelNode
+		self._labelNodes[self.getId(row)] = label
 	},
-	
+		
 	_addActions: function() {
 		var self = this
 		
@@ -432,12 +535,16 @@ dojo.declare("apstrata.horizon.NewList",
 	},
 
 		_startEditingList: function() {
+			var self = this
+			
 			this._tglEdit.set('label', 'Save Edits')
 			this._btnNew.set('disabled', 'disabled')
 
 			// show delete nodes
-			dojo.query(".deleteNode", this.domNode).forEach(function(node){
-				dojo.style(node, "display", "inline-block")
+			dojo.query(".deleteCell", this.domNode).forEach(function(node){
+				dojo.style(node, "display", "table-cell")
+				if (self.multiEditMode) dojo.attr(node, "title", "click to delete/undelete");
+				else dojo.attr(node, "title", "click to delete")
 			})
 
 			// Make non editable labels appear disabled
@@ -447,6 +554,13 @@ dojo.declare("apstrata.horizon.NewList",
 
 				if (!this.isItemEditable(row)) dojo.addClass(labelNode, "labelEditDisabled")
 			}
+			
+			// Install label tooltips
+			dojo.query(".labelCell", this.domNode).forEach(function(node){
+				dojo.attr(node, "title", "double-click to edit")
+			})
+			
+			this.onEdit(true)
 		},
 		
 		_finishEditingList: function() {
@@ -456,13 +570,18 @@ dojo.declare("apstrata.horizon.NewList",
 			if (self._activeInlineEdit) this._finishEditingLabel()
 
 			// hide delete nodes
-			dojo.query(".deleteNode", this.domNode).forEach(function(node){
+			dojo.query(".deleteCell", this.domNode).forEach(function(node){
 				dojo.style(node, "display", "none")
 			})
 			
 			// remove deleted row effect on label
 			dojo.query(".label", this.domNode).forEach(function(node){
 				dojo.removeClass(node, "deleted")
+			})
+
+			// remove tooltips
+			dojo.query(".labelCell", this.domNode).forEach(function(node){
+				dojo.attr(node, "title", "")
 			})
 
 			// remove disabled effect from non editable rows
@@ -475,7 +594,7 @@ dojo.declare("apstrata.horizon.NewList",
 			
 			if (this._tglEdit.get('checked')) this._tglEdit.set('checked', false)
 			
-			this.onEditCommit(this._dirtyBuffer.get())
+			this.onEdit(false, this._dirtyBuffer.get())
 			
 			this._dirtyBuffer.empty()
 		},
@@ -499,21 +618,21 @@ dojo.declare("apstrata.horizon.NewList",
 		if (this._dirtyBuffer.isDeleted(id)) return
 		
 		var v = self._labelNodes[id].innerHTML
-		self._labelNodes[id].innerHTML = ""
+		self._labelNodes[id].innerHTML = ""		
 		var editNode = dojo.create("div", {innerHTML:v})
 		dojo.place(editNode, self._labelNodes[id])
 
 		this._activeInlineEdit = new dijit.InlineEditBox({ 
 			editor: "dijit.form.TextBox",
 			renderAsHtml: false, 
-			autoSave: true,
+			autoSave: false,
 			editorParams: {},
 			onChange:function() {
 				var newValue = this.get("value")
 				self._startEditingLabel(id, newValue, v)
 			},
 			onCancel: function() {
-				self._finishEditingLabel(v)
+				self._finishEditingLabel(id, v)
 			}
 		}, editNode)
 	},
@@ -528,7 +647,7 @@ dojo.declare("apstrata.horizon.NewList",
 			self.onEditLabel(id, v, newValue)
 		},
 		
-		_finishEditingLabel: function() {
+		_finishEditingLabel: function(id, v) {
 			var self = this
 			self._activeInlineEdit.destroyRecursive()
 			delete self._activeInlineEdit

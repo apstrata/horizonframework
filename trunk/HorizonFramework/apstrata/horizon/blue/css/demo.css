@@ -89,3 +89,9 @@ html, body {
 .documentation ul {
 	line-height: 1.4em;
 }
+
+.horizon .NewList .customIcon {
+	background-image:url('../../resources/images/pencil-icons/computer.png');
+	width: 40px;
+	height: 40px;
+}

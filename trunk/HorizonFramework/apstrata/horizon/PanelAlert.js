@@ -37,6 +37,13 @@ dojo.declare("apstrata.horizon.PanelAlert",
 		dojo.mixin(this, attr)
  	},
 	
+	/**
+	 * This class might be isntantiated with a panel or the container, this finds the pointer to the container
+	 */
+	_getContainer: function() {
+		if (this.panel.showCurtain) return this.panel; else return this.panel.getContainer()
+	},
+	
 	_layout: function() {
 		var self = this
 
@@ -56,7 +63,7 @@ dojo.declare("apstrata.horizon.PanelAlert",
 		
 		dojo.style(this.dvMessage, "display", "none")
 		
-		self.panel.container.showCurtain()
+		self._getContainer().showCurtain()
 		
 		// Animate to full height
 		dojo.animateProperty({
@@ -139,7 +146,7 @@ dojo.declare("apstrata.horizon.PanelAlert",
 	
 	onClick: function(action) {
 		this.actionHandler(action)
-		this.panel.container.hideCurtain()
+		this._getContainer().hideCurtain()
 //		this._curtain.parentNode.removeChild(this._curtain)
 		this.destroyRecursive()
 	}

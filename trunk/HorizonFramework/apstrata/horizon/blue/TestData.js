@@ -134,6 +134,8 @@ for (var i = 0; i < musicData.length; i++) {
 	
 	musicData[i].canBeDeleted = (i>3)
 	musicData[i].canBeEdited = (i>1)
+	
+	musicData[i].iconClass = "customIcon"
 }
 
 

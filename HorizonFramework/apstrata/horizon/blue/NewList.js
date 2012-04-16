@@ -43,7 +43,7 @@ dojo.declare("apstrata.horizon.blue.NewList",
 	},
 		
 	postCreate: function() {
-		dojo.style(this.domNode, "width", "250px")
+		dojo.style(this.domNode, "width", "240px")
 		this.inherited(arguments)	
 	},
 	

@@ -52,4 +52,34 @@ apstrata.horizon.util.FilterLabelsByString = function(item, filterString) {
 	
 	return selected
 }
+
+apstrata.horizon.util.NewFilterLabelsByString = function(item, filterString, searchAttribute) {
+	var self = this
+	var selected = false
+	var pos
+
+	// if we had modified label for highlighting chars, restore the original one
+	if (item._originalLabel) item[searchAttribute] = item._originalLabel
+
+	if (filterString == '') {
+		// if there's no filter string, all items should be selected
+		selected = true
+	} else {
+		// find the filter string pos in the label
+		pos = (item[searchAttribute].toLowerCase()).indexOf(filterString)
+		selected = pos>=0
+
+		if (selected) {
+			// save the original label before adding highlight HTML
+			item._originalLabel = item[searchAttribute]
+			console.debug()
+			// add highlight HTML
+			item[searchAttribute] = item[searchAttribute].substring(0, pos) + 
+				"<span class='highlightFilter'>" + item[searchAttribute].substring(pos, pos + filterString.length) + "</span>" + 
+				item[searchAttribute].substring(pos + filterString.length) 
+		}
+	}
+	
+	return selected
+}
 	

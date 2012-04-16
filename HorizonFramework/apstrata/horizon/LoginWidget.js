@@ -25,6 +25,7 @@ dojo.require('dijit.form.ValidationTextBox')
 
 dojo.require('apstrata.ui.forms.FormGenerator')
 dojo.require('apstrata.ui.FlashAlert')
+dojo.require('apstrata.ui.ApstrataAnimation')
 
 dojo.require('apstrata.sdk.Connection')
 dojo.require('apstrata.sdk.Client')
@@ -41,6 +42,8 @@ dojo.declare("apstrata.horizon.LoginWidget",
 
 	postCreate: function() {
 		var self = this
+		
+		this._animation = new apstrata.ui.ApstrataAnimation({node: self.domNode})
 
 		this.form = new apstrata.ui.forms.FormGenerator({
 			definition: {
@@ -57,15 +60,18 @@ dojo.declare("apstrata.horizon.LoginWidget",
 			},
 			displayGroups: self.type?self.type:"master",
 			login: function(values) {
-				self.form.showAsBusy(true, self.dvLogin)
+				self.form.disable()
+				self._animation.show()
 				var connection = new apstrata.sdk.Connection({credentials: values, loginType: apstrata.sdk.Connection.prototype._LOGIN_TYPE_MASTER})
 				connection.login().then(
 					function() {
-						self.form.showAsBusy(false)
+						self.form.enable()
+						self._animation.hide()
 						if (self._success) self._success(values)
 					},
 					function() {
-						self.form.showAsBusy(false)
+						self.form.enable()
+						self._animation.hide()
 						self.form.vibrate(self.domNode)
 						self.message("BAD CREDENTIALS")
 						
@@ -76,6 +82,7 @@ dojo.declare("apstrata.horizon.LoginWidget",
 		})
 		dojo.place(this.form.domNode, this.dvLogin)
 		
+		// If credentials have been supplied in apConfig, show them
 		if (apstrata.apConfig) this.form.set("value", apstrata.apConfig)
 		
 		this.inherited(arguments)	
@@ -103,12 +110,11 @@ dojo.declare("apstrata.horizon.LoginWidget",
 	 */
 	set: function(name, v) {
 		if ((name=="dimension") && v){
+			var d = dojo.marginBox(this.domNode)
 			if (this.domNode) 
 				dojo.style(this.domNode, {
-					top: v.top + "px",
-					left: v.left + "px",
-					width: v.width  + "px",
-					height: v.height  + "px"
+					top:  (v.height - d.h)/2 + "px",
+					left: (v.width - d.w)/2 + "px"
 				})
 		}
 		this.inherited(arguments)

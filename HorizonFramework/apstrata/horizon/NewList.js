@@ -48,7 +48,7 @@ dojo.declare("apstrata.horizon.NewList",
 	store: null,
 	labelAttribute: "label",
 	idAttribute: "id",
-	iconAttribute: "icon",
+	iconAttribute: "iconClass",
 
 	// mode
 	editable: true,
@@ -195,8 +195,7 @@ dojo.declare("apstrata.horizon.NewList",
 	 */
 	select: function(id) {
 		this.highlight(id)
-		
-		this.onClick(id)
+		if (!this._tglEdit.get('checked')) this.onClick(id)
 	},
 	
 	/**
@@ -301,7 +300,7 @@ dojo.declare("apstrata.horizon.NewList",
 	 * @param {Object} list of items that changed
 	 */
 	onEdit: function(state, dirtyBuffer) {
-		this.commitChanges(dirtyBuffer)
+		if (false) this.commitChanges(dirtyBuffer)
 	},
 
 	/**
@@ -446,7 +445,6 @@ dojo.declare("apstrata.horizon.NewList",
 	},
 	
 	getIconClass: function(item) {
-		return "icon"
 		return item[this.iconAttribute]
 	},
 	
@@ -491,14 +489,19 @@ dojo.declare("apstrata.horizon.NewList",
 		var n = self._itemNodes[this.getId(row)]
 		n.innerHTML = ""
 		
+		var customIcon = this.getIconClass(row)
+		
 		var item = this._addNode("div", {title: self.getLabel(row)}, "item", n)
 			var cell1 = this._addNode("div", {}, "deleteCell", item)
 			var cell2 = this._addNode("div", {}, "iconCell", item)
 			var cell3 = this._addNode("div", {}, "labelCell", item)
-			
+						
 		var deleteIcon = this._addNode("div", {}, "deleteIcon", cell1)
-		var icon = this._addNode("div", {}, "icon", cell2)
+		var icon = this._addNode("div", {}, "icon " + customIcon, cell2)
 		var label = this._addNode("div", {innerHTML: self.getLabel(row)}, "label", cell3)
+
+		// If no icon class has been set for the item, hide the icon cell, otherwise add the icon class to the node
+		if (!customIcon) dojo.style(cell2, "display",  "none"); else dojo.addClass(icon, customIcon)
 
 		dojo.connect(item, "onclick", dojo.hitch(self, "select", (self.getId(row)+"")))
 		dojo.connect(label, "onclick", dojo.hitch(self, "_editLabel", (self.getId(row)+"")))
@@ -536,6 +539,9 @@ dojo.declare("apstrata.horizon.NewList",
 
 		_startEditingList: function() {
 			var self = this
+
+			// Close any open panels before putting this in edit mode			
+			this.closePanel()
 			
 			this._tglEdit.set('label', 'Save Edits')
 			this._btnNew.set('disabled', 'disabled')

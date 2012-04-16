@@ -135,16 +135,18 @@ dojo.declare("apstrata.horizon.Container",
 
 
 		if (this.loginWidget) {
-			this.loginWidget.set("dimension", this._boundingRectangle)
+			//this.loginWidget.set("dimension", this._boundingRectangle)
 			dojo.place(this.loginWidget.domNode, dojo.body())
+			this.showCurtain()
 			this.loginWidget.then(function(credentials) {
 				self.onCredentials(credentials)
 				self._instantiateMainPanel()
 				self.listenToHashChange(true)
 				self.loginWidget.destroyRecursive()
+				delete self.loginWidget
+				self.hideCurtain()
 			},
 			function() {
-				
 			})
 		}
 		
@@ -175,7 +177,9 @@ dojo.declare("apstrata.horizon.Container",
 	
 	layout: function() {
 		this._containerLayout()
+
 		if (this.loginWidget) this.loginWidget.set("dimension", this._boundingRectangle)
+
 		// Call layout for each contained widget upon resize
 		dojo.forEach(this.getChildren(), function(child) {
 				child.resize()	

@@ -31,6 +31,9 @@ dojo.require('apstrata.horizon.list.SimpleFilterAndSort')
 
 dojo.require("apstrata.horizon.Panel")
 
+dojo.requireLocalization("apstrata.horizon", "list")
+
+
 /*
  * This List provides a scrolling vertical list of items. It provides edit and new functionality  
  */
@@ -106,6 +109,13 @@ dojo.declare("apstrata.horizon.NewList",
 				if (this._buffer[id]) delete this._buffer[id]
 			}
 		}
+
+		if (options.selectIds) {
+			this._selectId = options.selectIds.shift()
+			this._selectIds = options.selectIds
+		}
+		
+		this.nls = dojo.i18n.getLocalization("apstrata.horizon", "list")
 	},
 	
 	postCreate: function(options) {	
@@ -146,7 +156,7 @@ dojo.declare("apstrata.horizon.NewList",
 	
 	reload: function() {
 		var self = this
-		
+
 		if (!this.store) return
 
 		var query = this._queryParams()
@@ -158,8 +168,8 @@ dojo.declare("apstrata.horizon.NewList",
 			function(result) {
 				self.showAsBusy(false)
 				self._render(result)				
-				if (self._selectedId) 
-					if (self._cachedResult[self._selectedId]) self.select(self._selectedId);
+				if (self._selectId) 
+					if (self._cachedResult[self._selectId]) self.select(self._selectId);
 						else delete self._selectedId
 			}
 		)
@@ -195,7 +205,7 @@ dojo.declare("apstrata.horizon.NewList",
 	 */
 	select: function(id) {
 		this.highlight(id)
-		if (!this._tglEdit.get('checked')) this.onClick(id)
+		if (!this._tglEdit || !this._tglEdit.get('checked')) this.onClick(id, this._selectIds)
 	},
 	
 	/**
@@ -308,7 +318,7 @@ dojo.declare("apstrata.horizon.NewList",
 	 * 
 	 * @param {string} id
 	 */
-	onClick: function(id) {},
+	onClick: function(id, selectedIds) {},
 	
 	/**
 	 * Called when an item delete icon is clicked
@@ -325,7 +335,7 @@ dojo.declare("apstrata.horizon.NewList",
 				panel: self,
 				width: 320,
 				height: 150,
-				message: "Are you sure you want to delete item: " + '[' + label + "] ?",
+				message: dojo.string.substitute(self.nls.CONFIRM_DELETE, [label]),
 				iconClass: "deleteIcon",
 				actions: [
 					'Yes',
@@ -357,7 +367,7 @@ dojo.declare("apstrata.horizon.NewList",
 				panel: self,
 				width: 320,
 				height: 150,
-				message: "Are you sure you want to change the label: " + '[' + oldLabel + "] to [" + newLabel + "] ?",
+				message: dojo.string.substitute(self.nls.CONFIRM_EDIT, [oldLabel, newLabel]),
 				iconClass: "editIcon",
 				actions: ['Yes', 'No'],
 				actionHandler: function(action){
@@ -549,8 +559,8 @@ dojo.declare("apstrata.horizon.NewList",
 			// show delete nodes
 			dojo.query(".deleteCell", this.domNode).forEach(function(node){
 				dojo.style(node, "display", "table-cell")
-				if (self.multiEditMode) dojo.attr(node, "title", "click to delete/undelete");
-				else dojo.attr(node, "title", "click to delete")
+				if (self.multiEditMode) dojo.attr(node, "title", self.nls.TOOLTIP_DELETE_UNDELETE);
+				else dojo.attr(node, "title", self.nls.TOOLTIP_DELETE)
 			})
 
 			// Make non editable labels appear disabled
@@ -563,7 +573,7 @@ dojo.declare("apstrata.horizon.NewList",
 			
 			// Install label tooltips
 			dojo.query(".labelCell", this.domNode).forEach(function(node){
-				dojo.attr(node, "title", "double-click to edit")
+				dojo.attr(node, "title", self.nls.TOOLTIP_EDIT)
 			})
 			
 			this.onEdit(true)

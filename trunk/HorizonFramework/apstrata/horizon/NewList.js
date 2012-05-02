@@ -275,6 +275,23 @@ dojo.declare("apstrata.horizon.NewList",
 
 		console.dir(dirtyBuffer)
 	},
+	
+	deleteItem: function(id) {
+		var self = this
+		var deferred = this.store.remove(id) 
+		dojo.when (
+			deferred,
+			function() {
+				self.reload()
+				self._tglEdit.set("checked", true) 
+				if (self._filterWidget) self._filterWidget.set('enabled', true)
+			},
+			function() {
+				
+			}
+		)
+		return deferred
+	},
 
 	//
 	// Properties

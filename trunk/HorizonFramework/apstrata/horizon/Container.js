@@ -108,7 +108,7 @@ dojo.declare("apstrata.horizon.Container",
 	},
 	
 	onUrlHashChange: function(hash) {
-		console.debug('URL Hash changed to: ' + hash)
+		console.info('URL Hash changed to: ' + hash)
 	},
 	
 	listenToHashChange: function(v) {
@@ -133,7 +133,6 @@ dojo.declare("apstrata.horizon.Container",
 		//setTimeout(dojo.hitch(this, 'loadPreferences'), 3000)
 		//setTimeout(dojo.hitch(this, 'layout'), 100)
 
-
 		if (this.loginWidget) {
 			//this.loginWidget.set("dimension", this._boundingRectangle)
 			dojo.place(this.loginWidget.domNode, dojo.body())
@@ -148,6 +147,8 @@ dojo.declare("apstrata.horizon.Container",
 			},
 			function() {
 			})
+		} else {
+			self.listenToHashChange(true)
 		}
 		
 		this.inherited(arguments)
@@ -178,7 +179,7 @@ dojo.declare("apstrata.horizon.Container",
 	layout: function() {
 		this._containerLayout()
 
-		if (this.loginWidget) this.loginWidget.set("dimension", this._boundingRectangle)
+		if (this.loginWidget) this.loginWidget.set("centerTo", this._boundingRectangle)
 
 		// Call layout for each contained widget upon resize
 		dojo.forEach(this.getChildren(), function(child) {

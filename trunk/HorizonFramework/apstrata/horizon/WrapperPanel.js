@@ -35,18 +35,21 @@ dojo.declare("apstrata.horizon.WrapperPanel",
 	constructor: function(options) {
 		var self = this
 		this.options = options
+		this.widgetClass = options.widgetClass
+		this.attrs = options.attrs
+		this.cssClass = options.cssClass
+		
+		if (options.maximizable) this.maximizable = true
 	},
 	
 	postCreate: function() {
 		var self = this
-		if (this.options.widgetClass) {
-			var attrs = this.options.attrs?this.options.attrs:{}
-			
-			//dojo.require(this.options.widgetClass)
-			dojo["require"](this.options.widgetClass)
-			dojo.ready(function() {
-				self._widget = new dojo.getObject(self.options.widgetClass)(attrs, self.dvWidget)
-			})
+		
+		if (this["cssClass"]) dojo.addClass(this.domNode, this["cssClass"])
+		
+		if (this.widgetClass) {
+			var attrs = this.attrs?this.attrs:{}
+			self._widget = new dojo.getObject(self.widgetClass)(attrs, self.dvWidget)
 		}
 
 		this.inherited(arguments)
@@ -56,7 +59,7 @@ dojo.declare("apstrata.horizon.WrapperPanel",
 	// Properties
 	//
 	getWidget: function() {
-		return self._widget
+		return this._widget
 	},
 	
 	

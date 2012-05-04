@@ -167,7 +167,9 @@ dojo.declare("apstrata.horizon.NewList",
 			this.store.query(query, queryOptions),
 			function(result) {
 				self.showAsBusy(false)
-				self._render(result)				
+				self._tglEdit.set('checked', false)
+				self._editList()
+				self._render(result)	
 				if (self._selectId) 
 					if (self._cachedResult[self._selectId]) self.select(self._selectId);
 						else delete self._selectedId
@@ -234,6 +236,13 @@ dojo.declare("apstrata.horizon.NewList",
 		}
 
 		delete this._selectedId
+	},
+	
+	/**
+	 * Toggles the list between editable and non-editable
+	 */
+	toggleEdit: function() {
+		this._editList()
 	},
 	
 	/**

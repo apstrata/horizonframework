@@ -448,14 +448,14 @@ dojo.declare("apstrata.horizon.NewList",
 		if (this._sort == 1) {
 			_queryOptions = {
 				sort: [{
-					attribute: self.labelAttribute,
+					attribute: this.labelAttribute,
 					ascending: true
 				}]
 			}
 		} else if (this._sort == 2) {
 			_queryOptions = {
 				sort: [{
-					attribute: self.labelAttribute,
+					attribute: this.labelAttribute,
 					descending: true
 				}]
 			}

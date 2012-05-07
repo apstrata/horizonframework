@@ -36,7 +36,7 @@ apstrata.horizon.util.FilterLabelsByString = function(item, filterString) {
 		selected = true
 	} else {
 		// find the filter string pos in the label
-		pos = (item.label.toLowerCase()).indexOf(filterString)
+		pos = (item.label.toLowerCase()).indexOf(filterString.toLowerCase())
 		selected = pos>=0
 
 		if (selected) {
@@ -57,26 +57,47 @@ apstrata.horizon.util.NewFilterLabelsByString = function(item, filterString, sea
 	var self = this
 	var selected = false
 	var pos
+	var itemLabelValue = ''
+	var itemLabelValueIsArray = false
+	
+	if (dojo.isArray(item[searchAttribute])) {
+		itemLabelValue = item[searchAttribute][0]
+		itemLabelValueIsArray = true
+	} else {
+		itemLabelValue = item[searchAttribute]
+	}
 
 	// if we had modified label for highlighting chars, restore the original one
-	if (item._originalLabel) item[searchAttribute] = item._originalLabel
+	if (item._originalLabel) {
+		if (itemLabelValueIsArray) {
+			item[searchAttribute][0] = item._originalLabel
+		} else {
+			item[searchAttribute] = item._originalLabel
+		}
+	}
 
 	if (filterString == '') {
 		// if there's no filter string, all items should be selected
 		selected = true
 	} else {
 		// find the filter string pos in the label
-		pos = (item[searchAttribute].toLowerCase()).indexOf(filterString)
+		pos = (itemLabelValue.toLowerCase()).indexOf(filterString.toLowerCase())	
 		selected = pos>=0
 
 		if (selected) {
 			// save the original label before adding highlight HTML
-			item._originalLabel = item[searchAttribute]
+			item._originalLabel = itemLabelValue
 			console.debug()
 			// add highlight HTML
-			item[searchAttribute] = item[searchAttribute].substring(0, pos) + 
-				"<span class='highlightFilter'>" + item[searchAttribute].substring(pos, pos + filterString.length) + "</span>" + 
-				item[searchAttribute].substring(pos + filterString.length) 
+			if (itemLabelValueIsArray) {
+				item[searchAttribute][0] = item[searchAttribute][0].substring(0, pos) + 
+					"<span class='highlightFilter'>" + item[searchAttribute][0].substring(pos, pos + filterString.length) + "</span>" + 
+					item[searchAttribute][0].substring(pos + filterString.length)
+			} else {
+				item[searchAttribute] = item[searchAttribute].substring(0, pos) + 
+					"<span class='highlightFilter'>" + item[searchAttribute].substring(pos, pos + filterString.length) + "</span>" + 
+					item[searchAttribute].substring(pos + filterString.length)				
+			} 
 		}
 	}
 	

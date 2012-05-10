@@ -174,8 +174,8 @@ dojo.declare("apstrata.horizon.NewList",
 					if (self._cachedResult[self._selectId]) self.select(self._selectId);
 						else delete self._selectedId
 			},
-			function(response) {
-				self.displayError(response.metadata.errorCode, response.metadata.errorDetail)
+			function(responseMetadata) {
+				self.displayError(responseMetadata.errorCode, responseMetadata.errorDetail)
 			}
 		)
 	},

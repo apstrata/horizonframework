@@ -400,5 +400,26 @@ dojo.declare("apstrata.horizon.Panel",
 			top: i.t+i.h + "px",
 			left: (c.w - m.w)/2 + "px"
 		})
+	}, 
+	
+	displayError: function(errorCode, errorDetail) {
+		var self = this
+		
+		new apstrata.horizon.PanelAlert({
+			panel: self,
+			width: 350,
+			height: 150,
+			title: "OOPS! An error has occured.",
+			message: errorCode + ": " + errorDetail,
+			iconClass: "errorIcon",
+			actions: [
+				'Ok'
+			],
+			actionHandler: function(action) {
+				if (action=='Ok') {
+					//do nothing
+				} 
+			}
+		})
 	}
 })

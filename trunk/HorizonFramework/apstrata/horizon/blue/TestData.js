@@ -140,3 +140,22 @@ for (var i = 0; i < musicData.length; i++) {
 
 
 var musicStore = new dojo.store.Memory({data: musicData})
+
+var musicStoreForm = {
+	label: "Album",
+	fieldset: [
+		{name: "Name"},	
+		{name: "Artist"},	
+		{name: "Genre"},
+		{name: "Album"},	
+		{name: "Track"},	
+		{name: "Heard", type: "boolean"},
+		{name: "Checked", type: "boolean"},
+		{name: "Year"},
+		{name: "Length"},	
+		{name: "Composer"},	
+		{name: "Download Date"},
+		{name: "Last Played"}
+	],
+	actions: ['save', 'cancel']
+}

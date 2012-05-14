@@ -39,6 +39,12 @@ dojo.declare("apstrata.horizon.blue.Menu",
 				panelClass: "apstrata.horizon.blue.Panel"
 			},
 			{
+				id:"listOfDocs", 
+				label: "List of docs", 
+				iconSrc: apstrata.baseUrl+"/horizon/resources/images/pencil-icons/computer.png",
+				panelClass: "apstrata.horizon.blue.ListOfDocuments"
+			},
+			{
 				id:"list", 
 				label: "List", 
 				iconSrc: apstrata.baseUrl+"/horizon/resources/images/pencil-icons/computer.png", 

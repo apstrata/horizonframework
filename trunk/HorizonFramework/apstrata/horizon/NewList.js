@@ -159,6 +159,8 @@ dojo.declare("apstrata.horizon.NewList",
 
 		if (!this.store) return
 
+		this.closePanel()
+
 		var query = this._queryParams()
 		var queryOptions = this._queryOptions()
 
@@ -167,8 +169,8 @@ dojo.declare("apstrata.horizon.NewList",
 			this.store.query(query, queryOptions),
 			function(result) {
 				self.showAsBusy(false)
-				self._tglEdit.set('checked', false)
-				self._editList()
+				if (self._tglEdit) self._tglEdit.set('checked', false)
+				if (self._tglEdit) self._editList()
 				self._render(result)	
 				if (self._selectId) 
 					if (self._cachedResult[self._selectId]) self.select(self._selectId);
@@ -212,7 +214,7 @@ dojo.declare("apstrata.horizon.NewList",
 		this.highlight(id)
 		if (!this._tglEdit || !this._tglEdit.get('checked')) this.onClick(id, this._selectIds)
 	},
-	
+		
 	/**
 	 * Highlight an item without causing an onClick
 	 * 
@@ -260,6 +262,7 @@ dojo.declare("apstrata.horizon.NewList",
 	},
 
 	filter: function(filter) {
+		this._selectId = null
 		this._filter = filter
 		this.reload()
 	},
@@ -295,7 +298,7 @@ dojo.declare("apstrata.horizon.NewList",
 			deferred,
 			function() {
 				self.reload()
-				self._tglEdit.set("checked", true) 
+				if (self._tglEdit) self._tglEdit.set("checked", true) 
 				if (self._filterWidget) self._filterWidget.set('enabled', true)
 			},
 			function() {

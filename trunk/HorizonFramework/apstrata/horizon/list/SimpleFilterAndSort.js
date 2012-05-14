@@ -41,29 +41,14 @@ dojo.declare("apstrata.horizon.list.SimpleFilterAndSort",
 	
 	layout: function() {
 		var self = this
-		
-/* TODO: why doesn't this work?
-		var p = dojo.position(this.fldSearchField)
-		dojo.style(this.fldSearchField, {
-			width: (self.parent.width - p.x) + "px"
-		})
-or this
-		setTimeout(function(){
-			var p = dojo.position(self.fldSearchField)
-			var w = dojo.contentBox(self.parent.domNode).w
-			
-			dojo.style(self.fldSearchField, {
-				width: (w - p.x) + "px"
-			})
-		},1)
- */
 
 		// TODO: the timeout should be replaced with a hook into the end of the panel slide animation 
 		setTimeout(
 			function() {
-			var p = dojo.marginBox (self.parent.domNode)
-				dojo.style(self.fldSearchField, {
-					width: (p.w - apstrata.horizon.magicUIdimensions["list.SimpleFilterAndSort.width"] - 3) + "px"
+				var p = dojo.contentBox(self.domNode)
+				var p1 = dojo.marginBox(self.dvSortField)
+				dojo.style(self.fldSearch.domNode, {
+					width: (p.w - p1.w-3) + "px"
 				})
 			}, 
 		1)
@@ -150,16 +135,9 @@ or this
 		this.onSortChange(this._sort)
 	},
 
-	filterChange: function(e) {
-		var self = this
-		if (e.keyCode == 8) {
-			this._filter = (e.currentTarget.value).substr(0, e.currentTarget.value.length-1)
-		} else {
-			this._filter = e.currentTarget.value + e.keyChar
-		}
-		
-		this.onFilterChange(this._filter)
-	},
+	change: function(v) {
+		this.onFilterChange(v.trim())
+	}, 
 	
 	onSortChange: function(sort) {},
 	onFilterChange: function(filter) {},

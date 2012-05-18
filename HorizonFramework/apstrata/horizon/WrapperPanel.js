@@ -49,6 +49,7 @@ dojo.declare("apstrata.horizon.WrapperPanel",
 		
 		if (this.widgetClass) {
 			var attrs = this.attrs?this.attrs:{}
+			attrs.container = this.container
 			self._widget = new dojo.getObject(self.widgetClass)(attrs, self.dvWidget)
 		}
 

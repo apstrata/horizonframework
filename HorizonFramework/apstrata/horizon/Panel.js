@@ -282,6 +282,9 @@ dojo.declare("apstrata.horizon.Panel",
 	
 			// Add to DojoLayout container
 			this.getContainer().addChild(this._openPanel)
+
+			// Add a reference to the child panel.
+			this.child = this._openPanel;
 					
 	//		return this._openPanel
 		}
@@ -310,7 +313,11 @@ dojo.declare("apstrata.horizon.Panel",
 			this._openPanel = null
 		}
 	},
-	
+
+	getChild: function () {
+		return this.child;
+	},
+
 	/*
 	 * 
 	 */

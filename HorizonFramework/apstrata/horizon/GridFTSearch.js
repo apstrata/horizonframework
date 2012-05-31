@@ -16,5 +16,12 @@ dojo.declare("apstrata.horizon.GridFTSearch",
 		})
 	},
 	
-	search: function(attr) {}
+	search: function(attr) {},    
+	
+	enterCheck: function(evt) {
+        if(evt.keyCode == dojo.keys.ENTER) {
+        	this._search();
+            dojo.stopEvent(evt);
+        }
+    }
 })

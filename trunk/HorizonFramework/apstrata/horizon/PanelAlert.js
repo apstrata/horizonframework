@@ -17,8 +17,8 @@
  *  along with Apstrata Database Javascript Client.  If not, see <http://www.gnu.org/licenses/>.
  * *****************************************************************************
  */
-dojo.provide("apstrata.horizon.PanelAlert") 
-dojo.require("dojo.fx.easing")
+dojo.provide("apstrata.horizon.PanelAlert"); 
+dojo.require("dojo.fx.easing");
  
 dojo.declare("apstrata.horizon.PanelAlert", 
 [dijit._Widget, dojox.dtl._Templated], 
@@ -28,13 +28,16 @@ dojo.declare("apstrata.horizon.PanelAlert",
 
 	/**
 	 * 
-	 * @param {Object} attr: {panel: rootPanel, message: "", actions: ['button1', 'button2'], actionHandler: function(action) {} }
+	 * @param {Object} attr: {panel: rootPanel, message: "", actions: ['button1', 'button2'],startFocus: "" ,actionHandler: function(action) {} }
 	 */
 	width: 300,
 	height: 200,
 	
  	constructor: function(attr) {
-		dojo.mixin(this, attr)
+ 		if (attr) {
+			if (attr.startFocus) this.startFocus = attr.startFocus
+ 		}
+ 		dojo.mixin(this, attr)
  	},
 	
 	/**
@@ -97,6 +100,8 @@ dojo.declare("apstrata.horizon.PanelAlert",
 		dojo.style(self.dvMessage, "display", "block")
 
 		// Add the buttons
+	   this._buttons = [];
+	   
 		for (var i=0; i<self.actions.length; i++) {
 			var button = new dijit.form.Button({
 				label: self.actions[i],
@@ -104,7 +109,23 @@ dojo.declare("apstrata.horizon.PanelAlert",
 					self.onClick(this.label)
 				}
 			})
-			dojo.place(button.domNode, self.dvActions)
+			self._buttons.push(button);
+			dojo.place(button.domNode, self.dvActions);
+		}
+		// Set the focus on the action button in the alert if an action was set to be focused on.
+		var isFocusedOnAnAction = false;
+		if (self.startFocus) {
+			for (var i=0; i<self._buttons.length; i++) {
+				if (self.startFocus == self._buttons[i].label) {
+					self._buttons[i].focus();
+					isFocusedOnAnAction = true;
+					break;
+				}
+			}
+		}
+		// default focus
+		if (!isFocusedOnAnAction && self._buttons && self._buttons.length > 0) {
+			self._buttons[self._buttons.length - 1].focus();
 		}
 		
 		// If an icon path is specified, show the img

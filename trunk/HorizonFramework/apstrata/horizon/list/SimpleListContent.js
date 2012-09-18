@@ -250,7 +250,7 @@ dojo.declare("apstrata.horizon.list.SimpleListContent",
 	},
 	
 	cancelEdits: function() {
-		if (this._activeInlineEdit) this._activeInlineEdit.cancel()
+		if (this._activeInlineEdit && this._activeInlineEdit.wrapperWidget) this._activeInlineEdit.cancel()
 	},
 	
 	changeItemLabel: function(id, label) {

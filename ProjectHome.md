@@ -1,0 +1,1 @@
+Javascript library to implement a sliding panels based user interface. Based on the dojo toolkit
